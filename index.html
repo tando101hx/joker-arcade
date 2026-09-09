@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>烂键盘游戏库</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f18;
+  --bg2:#1a1a28;
+  --panel:#1e1e2e;
+  --panel2:#282838;
+  --line:rgba(255,255,255,.08);
+  --dim:rgba(255,255,255,.45);
+  --gold:#fbbf24;
+  --blue:#3b82f6;
+  --purple:#a855f7;
+  --green:#22c55e;
+  --red:#ef4444;
+  --f-display:'Press Start 2P','ZCOOL QingKe HuangYou',monospace;
+  --f-zh:'ZCOOL QingKe HuangYou','Noto Sans SC',sans-serif;
+  --f-body:'Noto Sans SC',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  background:var(--bg);
+  color:#fff;
+  font-family:var(--f-body);
+  overflow-x:hidden;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* 动态背景 */
+.bg-fluid{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.bg-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.25;animation:bgFloat 18s ease-in-out infinite;}
+.bg-blob:nth-child(1){width:420px;height:420px;background:var(--purple);top:-100px;left:-80px;animation-delay:0s;}
+.bg-blob:nth-child(2){width:380px;height:380px;background:var(--blue);bottom:-120px;right:-100px;animation-delay:-6s;}
+.bg-blob:nth-child(3){width:300px;height:300px;background:var(--gold);top:40%;right:20%;animation-delay:-12s;opacity:.12;}
+@keyframes bgFloat{
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(40px,-30px) scale(1.1);}
+  66%{transform:translate(-30px,40px) scale(.9);}
+}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:40px 40px;}
+
+/* 顶部导航 */
+.topbar{
+  position:relative;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px;
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(12px);
+  background:rgba(15,15,24,.6);
+}
+.topbar-brand{display:flex;align-items:center;gap:12px;}
+.topbar-logo{
+  width:42px;height:42px;border-radius:10px;
+  background:linear-gradient(135deg,var(--gold),#f59e0b);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;box-shadow:0 0 20px rgba(251,191,36,.3);
+}
+.topbar-title{font-family:var(--f-zh);font-size:22px;letter-spacing:2px;}
+.topbar-sub{font-size:11px;color:var(--dim);letter-spacing:1px;}
+.topbar-nav{display:flex;gap:16px;}
+.topbar-link{font-size:13px;color:var(--dim);text-decoration:none;transition:color .2s;}
+.topbar-link:hover{color:#fff;}
+
+/* 主区域 */
+.main{
+  flex:1;position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  padding:32px 24px 24px;
+  max-width:1200px;margin:0 auto;width:100%;
+}
+
+/* Hero 区 */
+.hero{text-align:center;margin-bottom:40px;animation:heroIn .6s ease-out;}
+@keyframes heroIn{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+.hero-title{
+  font-family:var(--f-zh);font-size:clamp(28px,5vw,44px);
+  letter-spacing:4px;margin-bottom:10px;
+  background:linear-gradient(135deg,#fff,#fbbf24);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:14px;color:var(--dim);letter-spacing:2px;line-height:1.6;}
+
+/* 游戏卡片网格 */
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+  margin-bottom:40px;
+}
+
+/* 游戏卡片 */
+.game-card{
+  position:relative;
+  background:linear-gradient(160deg,var(--panel2),var(--panel));
+  border:2px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,border-color .25s;
+  text-decoration:none;
+  color:inherit;
+  display:flex;flex-direction:column;
+  animation:cardIn .5s ease-out backwards;
+}
+.game-card:nth-child(1){animation-delay:.05s;}
+.game-card:nth-child(2){animation-delay:.12s;}
+.game-card:nth-child(3){animation-delay:.19s;}
+.game-card:nth-child(4){animation-delay:.26s;}
+.game-card:nth-child(5){animation-delay:.33s;}
+.game-card:nth-child(6){animation-delay:.40s;}
+@keyframes cardIn{0%{opacity:0;transform:translateY(24px) scale(.95);}100%{opacity:1;transform:translateY(0) scale(1);}}
+
+.game-card:hover{
+  transform:translateY(-8px) scale(1.03);
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+}
+.game-card-banner{
+  height:160px;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.game-card-banner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.08),transparent 70%);
+}
+.game-card-icon{
+  font-size:64px;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));
+  position:relative;z-index:1;
+  transition:transform .3s;
+}
+.game-card:hover .game-card-icon{transform:scale(1.15);}
+.game-card-tag{
+  position:absolute;top:10px;right:10px;
+  font-size:10px;padding:3px 8px;border-radius:6px;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
+  letter-spacing:1px;font-weight:600;z-index:2;
+}
+.game-card-body{
+  padding:16px 18px 18px;
+  flex:1;display:flex;flex-direction:column;
+}
+.game-card-name{
+  font-family:var(--f-zh);font-size:20px;letter-spacing:2px;
+  margin-bottom:6px;color:#fff;
+}
+.game-card-desc{
+  font-size:12.5px;color:var(--dim);line-height:1.6;
+  margin-bottom:12px;flex:1;
+}
+.game-card-meta{
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+.game-card-chip{
+  font-size:10.5px;padding:3px 8px;border-radius:5px;
+  background:rgba(255,255,255,.08);color:var(--dim);
+  letter-spacing:1px;
+}
+.game-card-status{
+  position:absolute;bottom:0;left:0;right:0;
+  height:3px;
+  background:var(--green);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s;
+}
+.game-card:hover .game-card-status{transform:scaleX(1);}
+
+/* 卡片颜色主题 */
+.game-card[data-theme="joker"] .game-card-banner{
+  background:linear-gradient(135deg,#2a1a3a,#1a1a2e);
+}
+.game-card[data-theme="joker"] .game-card-status{background:var(--purple);}
+.game-card[data-theme="coming"]{
+  opacity:.5;cursor:not-allowed;
+}
+.game-card[data-theme="coming"] .game-card-banner{
+  background:linear-gradient(135deg,#1a1a1a,#0f0f0f);
+}
+.game-card[data-theme="coming"]:hover{
+  transform:none;box-shadow:none;
+}
+
+/* 底部 */
+.footer{
+  text-align:center;padding:20px;
+  font-size:12px;color:var(--dim);letter-spacing:1px;
+  border-top:1px solid var(--line);
+  position:relative;z-index:1;
+}
+.footer a{color:var(--dim);text-decoration:none;}
+
+/* 移动端 */
+@media(max-width:600px){
+  .topbar{padding:14px 16px;}
+  .topbar-logo{width:36px;height:36px;font-size:18px;}
+  .topbar-title{font-size:18px;}
+  .topbar-sub{font-size:10px;}
+  .topbar-nav{display:none;}
+  .main{padding:20px 14px 14px;}
+  .hero{margin-bottom:24px;}
+  .games-grid{grid-template-columns:1fr;gap:14px;}
+  .game-card-banner{height:120px;}
+  .game-card-icon{font-size:48px;}
+  .game-card-name{font-size:18px;}
+  .game-card-desc{font-size:12px;}
+}
+@media(min-width:601px) and (max-width:900px){
+  .games-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-height:500px) and (orientation:landscape){
+  .hero{margin-bottom:16px;}
+  .hero-title{font-size:24px;}
+  .games-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+  .game-card-banner{height:90px;}
+  .game-card-icon{font-size:40px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-fluid">
+  <div class="bg-blob"></div>
+  <div class="bg-blob"></div>
+  <div class="bg-blob"></div>
+</div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">🎮</div>
+    <div>
+      <div class="topbar-title">烂键盘游戏库</div>
+      <div class="topbar-sub">JOKER ARCADE</div>
+    </div>
+  </div>
+  <nav class="topbar-nav">
+    <a class="topbar-link" href="#games">游戏</a>
+    <a class="topbar-link" href="#about">关于</a>
+  </nav>
+</header>
+
+<main class="main">
+  <section class="hero">
+    <h1 class="hero-title">烂键盘游戏库</h1>
+    <p class="hero-sub">纯前端 · 零安装 · 手机/平板/电脑三端畅玩</p>
+  </section>
+
+  <section class="games-grid" id="games">
+    <!-- 由JS动态渲染 -->
+  </section>
+
+  <section id="about" style="text-align:center;padding:20px 0 40px;">
+    <div style="font-family:var(--f-zh);font-size:16px;color:var(--dim);letter-spacing:2px;margin-bottom:8px;">关于</div>
+    <div style="font-size:13px;color:var(--dim);line-height:1.8;max-width:480px;margin:0 auto;">
+      烂键盘游戏库是一个纯前端单文件游戏集合，无需服务器、无需安装，打开即玩。<br>
+      所有游戏均为单 HTML 文件，可离线运行、可局域网自建服务器部署。<br>
+      <span style="color:var(--gold);">🎮 像素风 · 🃏 卡牌 · 🕹️ 休闲</span>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div>© 2024 烂键盘游戏库 · 纯前端单文件游戏集合</div>
+</footer>
+
+<script>
+// ==================== 游戏列表（数据驱动，方便后续添加新游戏） ====================
+const GAMES=[
+  {
+    id:'joker',
+    name:'小丑牌',
+    desc:'Balatro 启发的小丑牌策略游戏。打出扑克牌型、收集小丑牌、组合乘法、挑战盲注。含 90+ 小丑、22 张塔罗牌、9 种星球牌、8 级注码。',
+    icon:'🃏',
+    url:'games/joker/index.html',
+    theme:'joker',
+    status:'playable',
+    tags:['策略','卡牌','单机','像素'],
+    badge:'可玩'
+  },
+  {
+    id:'placeholder1',
+    name:'敬请期待',
+    desc:'更多精彩游戏正在开发中…',
+    icon:'🎲',
+    url:null,
+    theme:'coming',
+    status:'coming',
+    tags:[],
+    badge:'即将上线'
+  },
+  {
+    id:'placeholder2',
+    name:'敬请期待',
+    desc:'更多精彩游戏正在开发中…',
+    icon:'🕹️',
+    url:null,
+    theme:'coming',
+    status:'coming',
+    tags:[],
+    badge:'即将上线'
+  }
+];
+
+// ==================== 渲染游戏卡片 ====================
+function renderGames(){
+  const grid=document.getElementById('games');
+  if(!grid)return;
+  grid.innerHTML='';
+  GAMES.forEach(g=>{
+    const a=document.createElement('a');
+    a.className='game-card';
+    a.setAttribute('data-theme',g.theme);
+    if(g.url){
+      a.href=g.url;
+    }else{
+      a.href='javascript:void(0)';
+      a.addEventListener('click',e=>{e.preventDefault();showToast('敬请期待！');});
+    }
+    const badgeColor=g.status==='playable'?'background:var(--green);color:#fff':'background:rgba(255,255,255,.15);color:var(--dim)';
+    a.innerHTML=`
+      <div class="game-card-banner">
+        <span class="game-card-tag" style="${badgeColor}">${g.badge}</span>
+        <span class="game-card-icon">${g.icon}</span>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-name">${g.name}</div>
+        <div class="game-card-desc">${g.desc}</div>
+        <div class="game-card-meta">
+          ${g.tags.map(t=>`<span class="game-card-chip">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="game-card-status"></div>`;
+    grid.appendChild(a);
+  });
+}
+
+// ==================== Toast 提示 ====================
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){
+    t=document.createElement('div');
+    t.id='toast';
+    t.style.cssText='position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;backdrop-filter:blur(8px);';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;
+  t.style.opacity='1';
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>{t.style.opacity='0';},2000);
+}
+
+// ==================== 初始化 ====================
+renderGames();
+</script>
+</body>
+</html>
