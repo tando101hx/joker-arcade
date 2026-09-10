@@ -37,11 +37,21 @@
   /* 安全区：全面屏 Home 指示条/灵动岛，iPad 浏览器无法完全全屏时的遮挡 */
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
   --safe-l:env(safe-area-inset-left,0px);--safe-r:env(safe-area-inset-right,0px);
+  /* 视口高度：优先动态视口（解决移动端地址栏伸缩），fallback 到固定视口 */
+  --app-h:100dvh;
   /* 内容预留 = 安全区 + 额外呼吸留白（移动端在媒体查询里加大） */
   --pad-t:var(--safe-t);--pad-b:var(--safe-b);--pad-l:var(--safe-l);--pad-r:var(--safe-r);
+  /* 布局基准：默认桌面 */
+  --bp:desktop;--card-min:clamp(64px,8vw,96px);--card-max:120px;
+  --ui-scale:1;--hand-fan:26deg;
 }
+/* ===== 统一断点系统（覆盖旧分散断点） =====
+   phone-portrait ≤ 430px  |  phone-landscape ≤ 960px landscape
+   tablet 768–1366px       |  desktop ≥ 1280px
+   ultrawide ≥ 1920px
+===================================================== */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12;font-family:var(--f-body);color:var(--ink);user-select:none;-webkit-user-select:none;}
+html,body{width:100%;height:var(--app-h);min-height:100svh;overflow:hidden;background:#0a0a12;font-family:var(--f-body);color:var(--ink);user-select:none;-webkit-user-select:none;}
 body{touch-action:manipulation;}
 button{font-family:var(--f-body);cursor:pointer;border:none;outline:none;
   transition:transform .12s cubic-bezier(.34,1.56,.64,1),box-shadow .12s,filter .12s,opacity .15s;}
@@ -2090,11 +2100,206 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
   padding:8px 12px;font-family:var(--f-zh);font-size:13px;line-height:1.6;color:#1a1a2e;
   box-shadow:4px 4px 0 rgba(0,0,0,.5);pointer-events:none;opacity:0;transition:opacity .3s;}
 #tut-hint-bubble.show{opacity:1;}
-@media(max-width:600px){
-  #tut-jj-in-game{width:56px;height:66px;}
-  #tut-bubble-in-game{font-size:12px;max-width:62vw;left:84px;padding:8px 10px;}
-  #tut-hint-bubble{font-size:12px;max-width:62vw;left:84px;}
+
+/* =======================================================
+   ===== 统一断点系统（后置，覆盖所有旧分散 media） =====
+   ======================================================= */
+
+/* --- 1. Phone Portrait: ≤ 430px（iPhone mini/SE/12/13/14/15/16 等竖屏） --- */
+@media(max-width:430px){
+  :root{--bp:phone-portrait;--pad-t:calc(var(--safe-t) + 14px);--pad-b:calc(var(--safe-b) + 14px);
+    --pad-l:calc(var(--safe-l) + 10px);--pad-r:calc(var(--safe-r) + 10px);
+    --ui-scale:.88;--hand-fan:22deg;}
+  /* 灵动岛/刘海屏：额外顶部空间 */
+  @supports (padding-top: env(safe-area-inset-top)) and (padding-top: env(safe-area-inset-top) env(safe-area-inset-top)){
+    :root{--pad-t:calc(var(--safe-t) + 24px);}
+  }
+  #s-round{flex-direction:column!important;padding:var(--pad-t) var(--pad-r) calc(var(--pad-b) + 62px) var(--pad-l)!important;gap:6px!important;}
+  #s-round #sidebar{position:fixed!important;top:calc(var(--pad-t) + 6px)!important;right:calc(var(--pad-r) + 6px)!important;bottom:auto!important;left:auto!important;
+    width:auto!important;flex-direction:row!important;padding:4px 8px!important;gap:6px!important;z-index:35!important;
+    background:rgba(0,0,0,.55)!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.12)!important;}
+  #s-round #sidebar > *{flex:0 0 auto!important;margin:0!important;}
+  #play-area{flex:1;min-height:0;margin-top:42px!important;}
+  #top-zones{flex-wrap:wrap!important;padding:4px 0!important;gap:4px!important;}
+  .joker-zone{max-width:100%!important;flex-wrap:wrap!important;gap:4px!important;}
+  .joker-zone .owned-joker{transform:scale(.78)!important;transform-origin:top left!important;}
+  #cons-zone{gap:4px!important;}
+  .cons-card{transform:scale(.78)!important;}
+  #score-display{transform:scale(.85)!important;transform-origin:top right!important;}
+  #hand-container{gap:clamp(2px,1.2vw,5px)!important;}
+  .hand-card{width:clamp(56px,18vw,72px)!important;height:calc(clamp(56px,18vw,72px)*1.4)!important;}
+  #action-bar{position:fixed!important;left:0;right:0;bottom:0!important;padding:6px 8px calc(var(--pad-b) + 6px)!important;
+    gap:6px!important;justify-content:space-around!important;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7))!important;z-index:30;}
+  #action-bar button{font-size:clamp(11px,2.8vw,13px)!important;padding:6px 8px!important;min-width:0!important;}
+  #btn-play,#btn-discard,#btn-sort{min-width:30%!important;flex:1;}
+  #deck-display{right:auto!important;left:8px!important;bottom:calc(var(--pad-b) + 54px)!important;}
+  .deck-pile{width:44px!important;height:62px!important;font-size:10px!important;}
+  .card-count{font-size:10px!important;}
+  .play-score-popup{transform:scale(.85)!important;}
+  .battle-jj{width:44px!important;height:44px!important;top:auto!important;bottom:calc(var(--pad-b) + 62px)!important;right:8px!important;left:auto!important;animation:none!important;}
+  /* 商店：手机竖屏紧凑单列 */
+  #s-shop{padding:calc(var(--pad-t) + 6px) calc(var(--pad-r) + 6px) calc(var(--pad-b) + 6px) calc(var(--pad-l) + 6px)!important;}
+  .shop-rail{position:relative!important;top:auto!important;transform:none!important;margin:0 0 8px!important;flex-direction:row!important;gap:8px!important;justify-content:center!important;}
+  .shop-money-bar{position:relative!important;top:auto!important;transform:none!important;margin:4px auto 8px!important;font-size:clamp(18px,4.2vw,24px)!important;padding:4px 12px!important;}
+  .shop-main{padding:0 0 60px!important;}
+  .shop-row-label{font-size:10px!important;letter-spacing:3px!important;}
+  .shop-grid{gap:6px!important;justify-content:center!important;}
+  #s-shop .shop-grid>.shop-item{width:clamp(60px,20vw,76px)!important;}
+  .sm-goods{gap:12px!important;}
+  .goods-row{flex-wrap:wrap!important;}
+  .shop-col{flex:1 1 100%!important;min-width:0!important;}
+  #btn-next-blind{position:fixed!important;bottom:calc(var(--pad-b) + 8px)!important;right:calc(var(--pad-r) + 8px)!important;z-index:30!important;}
+  /* 盲注选择：单列大卡 */
+  #s-blind{padding:calc(var(--pad-t) + 10px) calc(var(--pad-r) + 8px) calc(var(--pad-b) + 10px) calc(var(--pad-l) + 8px)!important;justify-content:flex-start!important;}
+  .blind-cards{flex-direction:column!important;gap:8px!important;width:100%!important;max-width:340px!important;}
+  .blind-card{width:100%!important;min-height:96px!important;flex-direction:row!important;gap:10px!important;padding:10px 14px!important;}
+  .blind-icon{width:48px!important;height:48px!important;font-size:22px!important;flex-shrink:0!important;}
+  .blind-info{flex:1;align-items:flex-start!important;text-align:left!important;}
+  .blind-name{font-size:18px!important;}
+  .blind-req{font-size:14px!important;}
+  .blind-reward{font-size:13px!important;}
+  /* 主菜单 */
+  .start-logo{padding-top:calc(var(--pad-t) + 20px)!important;margin-top:0!important;}
+  .start-title{font-size:clamp(24px,9vw,36px)!important;letter-spacing:4px!important;}
+  .start-cards .mini-card{width:34px!important;height:48px!important;font-size:12px!important;}
+  .menu-buttons{gap:10px!important;width:80%!important;max-width:280px!important;}
+  .menu-btn{font-size:14px!important;padding:12px 16px!important;}
+  .jj-peek{width:56px!important;height:66px!important;transform:translateX(-44%)!important;}
+  /* 牌组/难度选择 */
+  #s-deck,#s-stake{padding:calc(var(--pad-t) + 8px) calc(var(--pad-r) + 6px) calc(var(--pad-b) + 8px) calc(var(--pad-l) + 6px)!important;}
+  .deck-card,.stake-card{width:min(300px,80vw)!important;max-width:none!important;}
+  /* 结果页 */
+  #s-result{padding:calc(var(--pad-t) + 8px) calc(var(--pad-r) + 8px) calc(var(--pad-b) + 8px) calc(var(--pad-l) + 8px)!important;}
+  .result-next{width:100%!important;margin-top:12px!important;}
+  .result-btns{flex-direction:column!important;gap:8px!important;}
+  /* 教程浮层 */
+  #tut-jj-in-game{width:52px!important;height:62px!important;bottom:calc(var(--pad-b) + 6px)!important;left:8px!important;}
+  #tut-bubble-in-game{bottom:calc(var(--pad-b) + 32px)!important;left:72px!important;font-size:12px!important;max-width:58vw!important;padding:8px 10px!important;}
+  #tut-skip-btn{top:calc(var(--pad-t) + 6px)!important;right:8px!important;padding:6px 12px!important;font-size:11px!important;}
 }
+
+/* --- 2. Phone Landscape: 横屏低高（≤ 540px 高） --- */
+@media(orientation:landscape) and (max-height:540px){
+  :root{--bp:phone-landscape;--pad-t:calc(var(--safe-t) + 4px);--pad-b:calc(var(--safe-b) + 4px);
+    --pad-l:calc(var(--safe-l) + 8px);--pad-r:calc(var(--safe-r) + 8px);}
+  #s-round{flex-direction:row!important;padding:var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l)!important;gap:4px!important;}
+  #s-round #sidebar{width:min(80px,11vw)!important;padding-top:calc(var(--pad-t) + 4px)!important;padding-bottom:calc(var(--pad-b) + 4px)!important;gap:3px!important;}
+  #play-area{min-width:0!important;}
+  #top-zones{padding-top:calc(var(--pad-t) + 4px)!important;padding-bottom:4px!important;gap:6px!important;}
+  .joker-zone .owned-joker,.cons-card{transform:scale(.7)!important;}
+  .hand-card{width:clamp(44px,8vw,60px)!important;}
+  #action-bar{padding:2px 6px calc(4px + var(--pad-b))!important;gap:6px!important;}
+  #action-bar button{font-size:11px!important;padding:4px 8px!important;}
+  .battle-jj{width:40px!important;height:40px!important;top:calc(var(--pad-t) + 4px)!important;right:calc(var(--pad-r) + 4px)!important;}
+  /* 商店 */
+  .shop-rail{position:relative!important;top:auto!important;transform:none!important;margin:0 0 6px!important;}
+  .shop-money-bar{font-size:clamp(16px,3vw,22px)!important;padding:3px 10px!important;}
+  #btn-next-blind{position:absolute!important;bottom:calc(var(--pad-b) + 6px)!important;}
+}
+
+/* --- 3. iPad Air 4/5: 10.9" 竖屏 (820×1180) --- */
+@media(min-width:431px) and (max-width:1024px) and (orientation:portrait){
+  :root{--bp:tablet-portrait;--pad-t:calc(var(--safe-t) + 18px);--pad-b:calc(var(--safe-b) + 18px);
+    --pad-l:calc(var(--safe-l) + 14px);--pad-r:calc(var(--safe-r) + 14px);}
+  #s-round{flex-direction:column!important;padding:var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l)!important;gap:8px!important;}
+  #s-round #sidebar{position:fixed!important;top:calc(var(--pad-t) + 8px)!important;right:calc(var(--pad-r) + 8px)!important;bottom:auto!important;left:auto!important;
+    width:auto!important;flex-direction:row!important;padding:6px 12px!important;gap:10px!important;z-index:35!important;
+    background:rgba(0,0,0,.5)!important;border-radius:14px!important;border:1px solid rgba(255,255,255,.12)!important;}
+  #play-area{flex:1;min-height:0;margin-top:54px!important;}
+  .joker-zone{flex-wrap:wrap!important;max-width:100%!important;gap:6px!important;}
+  .joker-zone .owned-joker{transform:scale(.9)!important;}
+  .hand-card{width:clamp(72px,14vw,96px)!important;height:calc(clamp(72px,14vw,96px)*1.4)!important;}
+  #action-bar{padding:10px 12px calc(10px + var(--pad-b))!important;gap:12px!important;}
+  /* 商店：竖屏平板多列 */
+  #s-shop{padding:calc(var(--pad-t) + 10px) calc(var(--pad-r) + 10px) calc(var(--pad-b) + 10px) calc(var(--pad-l) + 10px)!important;}
+  .shop-rail{position:relative!important;top:auto!important;transform:none!important;margin-bottom:8px!important;flex-direction:row!important;gap:14px!important;justify-content:center!important;}
+  .shop-money-bar{position:relative!important;top:auto!important;transform:none!important;margin:4px auto 10px!important;font-size:clamp(26px,3.4vw,36px)!important;padding:6px 20px!important;}
+  .shop-grid{gap:14px 12px!important;justify-content:center!important;}
+  .shop-col{flex:1 1 50%!important;max-width:600px!important;margin:0 auto!important;}
+  /* 盲注选择：平板竖屏大卡片居中 */
+  #s-blind{padding:calc(var(--pad-t) + 12px) calc(var(--pad-r) + 12px) calc(var(--pad-b) + 12px) calc(var(--pad-l) + 12px)!important;}
+  .blind-cards{gap:16px!important;max-width:600px!important;}
+  .blind-card{min-height:180px!important;padding:16px 20px!important;}
+  .blind-name{font-size:24px!important;}
+  .blind-req{font-size:16px!important;}
+  /* 主菜单 */
+  .start-title{font-size:clamp(44px,6vw,72px)!important;}
+  .menu-buttons{gap:16px!important;max-width:380px!important;}
+  .menu-btn{font-size:18px!important;padding:16px 28px!important;}
+}
+
+/* --- 4. iPad Pro 11"/iPad Air 横屏 (1025–1366px landscape) --- */
+@media(min-width:1025px) and (max-width:1366px) and (orientation:landscape){
+  :root{--bp:tablet-landscape;--pad-t:calc(var(--safe-t) + 10px);--pad-b:calc(var(--safe-b) + 10px);
+    --pad-l:calc(var(--safe-l) + 14px);--pad-r:calc(var(--safe-r) + 14px);}
+  /* 战斗页：沿用桌面的左右布局但紧凑化 */
+  #s-round{padding:var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l)!important;gap:8px!important;}
+  #s-round #sidebar{width:min(110px,10vw)!important;gap:5px!important;padding-top:calc(var(--pad-t) + 4px)!important;padding-bottom:calc(var(--pad-b) + 4px)!important;}
+  .owned-joker,.cons-card{transform:scale(.85)!important;}
+  .hand-card{width:clamp(80px,9vw,110px)!important;}
+  /* 商店 */
+  .shop-rail{gap:16px!important;}
+  .shop-money-bar{font-size:clamp(24px,2.8vw,32px)!important;}
+  .shop-grid{gap:14px!important;}
+  #s-shop .shop-grid>.shop-item{width:clamp(76px,7vw,92px)!important;}
+}
+
+/* --- 5. Desktop Large (≥1280px) --- */
+@media(min-width:1280px){
+  :root{--bp:desktop;--pad-t:20px;--pad-b:20px;--pad-l:20px;--pad-r:20px;}
+  /* 战斗页：保持 Balatro 经典布局，加内容宽度约束 */
+  #s-round #play-area{max-width:calc(100vw - 160px)!important;}
+  .hand-card{width:clamp(78px,7vw,112px)!important;}
+  .shop-grid{gap:20px!important;}
+  .blind-card{min-width:220px!important;}
+}
+
+/* --- 6. Ultrawide (≥1920px) --- */
+@media(min-width:1920px){
+  :root{--bp:ultrawide;--pad-t:28px;--pad-b:28px;--pad-l:32px;--pad-r:32px;--ui-scale:1.08;}
+  #s-round #play-area{max-width:60vw!important;}
+  .hand-card{width:clamp(88px,5.2vw,120px)!important;height:calc(clamp(88px,5.2vw,120px)*1.4)!important;}
+  .hand-card{box-shadow:8px 8px 0 rgba(0,0,0,.6),-4px -4px 0 rgba(255,107,157,.6)!important;}
+  .shop-grid{gap:28px!important;}
+  #s-shop .shop-grid>.shop-item{width:clamp(96px,6vw,130px)!important;}
+  .blind-card{min-width:260px!important;min-height:220px!important;}
+  .menu-btn{font-size:18px!important;padding:18px 40px!important;}
+  .joker-zone .owned-joker,.cons-card{transform:scale(1.05)!important;}
+  .shop-money-bar{font-size:clamp(34px,2.8vw,52px)!important;}
+}
+
+/* --- 7. Android 低高横屏 (≤ 420px 高) --- */
+@media(max-height:420px) and (orientation:landscape){
+  .hand-card{width:clamp(40px,7vw,54px)!important;height:calc(clamp(40px,7vw,54px)*1.4)!important;}
+  .joker-zone .owned-joker,.cons-card{transform:scale(.65)!important;}
+  .battle-jj{width:36px!important;height:36px!important;}
+  #action-bar button{padding:3px 6px!important;font-size:10px!important;}
+}
+
+/* --- 8. PC 鼠标准备（hover/pointer fine） --- */
+@media(hover:hover) and (pointer:fine){
+  .hand-card:hover{transform:translateY(-30px) scale(1.22)!important;}
+  .shop-item:hover{transform:translateY(-26px) scale(1.18)!important;}
+  .battle-jj:hover{transform:scale(1.15)!important;}
+  #action-bar button:hover{filter:brightness(1.12)!important;}
+}
+
+/* --- 9. 触屏设备（无 hover/coarse pointer）统一收紧按钮触控区 --- */
+@media(hover:none) and (pointer:coarse){
+  button{min-height:44px!important;}
+  .hand-card:active{transform:translateY(-20px) scale(1.15)!important;}
+  .shop-item:active{transform:translateY(-16px) scale(1.1)!important;}
+  #action-bar button{min-height:48px!important;font-size:clamp(12px,3vw,14px)!important;}
+}
+
+/* --- 10. 超矮 PC 窗口（≤ 600px 高）--- */
+@media(max-height:600px) and (min-width:961px){
+  #s-round #sidebar{padding-top:calc(4px + var(--pad-t))!important;padding-bottom:calc(4px + var(--pad-b))!important;gap:4px!important;}
+  .owned-joker,.cons-card{transform:scale(.72)!important;}
+  .hand-card{height:clamp(70px,11vh,96px)!important;}
+  #action-bar{padding:2px 8px calc(4px + var(--pad-b))!important;gap:6px!important;}
+}
+
 </style>
 </head>
 <body>
