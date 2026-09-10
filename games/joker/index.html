@@ -485,6 +485,8 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .sb-blind-tag.small{background:var(--blue);color:#fff;}
 .sb-blind-tag.big{background:var(--red);color:#fff;}
 .sb-blind-tag.boss{background:var(--purple);color:#fff;}
+.sb-blind-tag-extra{font-size:11px;color:var(--gold);text-align:center;margin-top:4px;line-height:1.5;
+  background:rgba(0,0,0,.4);border-radius:6px;padding:3px 6px;letter-spacing:.5px;}
 .sb-blind-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0;}
 .sb-blind-ic{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;}
 .sb-blind.small .sb-blind-ic{background:radial-gradient(circle,#3b82f6,#1e40af);}
@@ -3065,6 +3067,31 @@ function enhInfoHTML(keys){
   if(!rows)return '';
   return '<div class="shp-enh"><div class="shp-enh-title">效果说明</div>'+rows+'</div>';
 }
+// 版本贴纸效果说明（Foil/Holo/Poly + 永恒/易逝）
+const EDITION_INFO={
+  foil:{name:'闪箔',ic:'✨',desc:'计分时额外 <b>+50 筹码</b>'},
+  holo:{name:'全息',ic:'🔹',desc:'计分时额外 <b>+10 倍率</b>'},
+  poly:{name:'彩虹',ic:'🌈',desc:'计分时额外 <b>×1.5 倍率</b>'},
+  eternal:{name:'永恒',ic:'♾️',desc:'<b>无法出售</b>，橙注每回合销毁效果也会保护它'},
+  ephemeral:{name:'易逝',ic:'⏳',desc:'<b>回合结束自动销毁</b>'}
+};
+function editionInfoHTML(edition,flags){
+  let rows='';
+  if(EDITION_INFO[edition]){
+    const e=EDITION_INFO[edition];
+    rows+='<div class="shp-enh-row">'+e.ic+' <b>'+e.name+'</b>：'+e.desc+'</div>';
+  }
+  if(flags&&flags.eternal){
+    const e=EDITION_INFO.eternal;
+    rows+='<div class="shp-enh-row">'+e.ic+' <b>'+e.name+'</b>：'+e.desc+'</div>';
+  }
+  if(flags&&flags.ephemeral){
+    const e=EDITION_INFO.ephemeral;
+    rows+='<div class="shp-enh-row">'+e.ic+' <b>'+e.name+'</b>：'+e.desc+'</div>';
+  }
+  if(!rows)return '';
+  return '<div class="shp-enh"><div class="shp-enh-title">版本贴纸</div>'+rows+'</div>';
+}
 // 商店悬停详情浮窗
 function _shopHoverEl(){
   let el=document.getElementById('shop-hover-pop');
@@ -3691,6 +3718,26 @@ function updateSidebar(){
   const tag=document.getElementById('sb-blind-tag');
   tag.className='sb-blind-tag '+['small','big','boss'][blindType];
   tag.textContent=BLIND_NAMES[blindType];
+  // 盲注指定花色/点数：城堡/古老小丑指定花色，邮件回扣指定点数
+  const extraInfo=document.querySelector('.sb-blind-tag-extra');
+  const extras=[];
+  if(G.jokers.some(j=>j.id==='castle')&&G._castleSuit){
+    extras.push(`🏰 弃${SUITS[G._castleSuit].name} +3筹码`);
+  }
+  if(G.jokers.some(j=>j.id==='ancient_joker')&&G._ancientSuit){
+    extras.push(`🏺 ${SUITS[G._ancientSuit].name}花色 ×1.5倍率`);
+  }
+  if(G.jokers.some(j=>j.id==='mail_in_rebate')&&G._rebateRank){
+    extras.push(`📧 弃${RANKS[G._rebateRank].name}点数 +$5`);
+  }
+  if(extraInfo)extraInfo.innerHTML=extras.join('<br>');
+  else if(uniqs.length){
+    const t=document.getElementById('sb-blind-tag');
+    const ex=document.createElement('div');
+    ex.className='sb-blind-tag-extra';
+    ex.innerHTML=extras.join('<br>');
+    t.parentNode.insertBefore(ex,t.nextSibling);
+  }
   const target=currentBlindTarget();
   document.getElementById('sb-target').textContent=target.toLocaleString();
   saveGameThrottled(); // 战斗中关键状态自动存档
@@ -4575,6 +4622,7 @@ function _scoreErrReset(err){
 }
 async function playCards(){
   if(G.isScoring||G.selected.size===0||G.hands<=0)return;
+  tutUpdate('play');
   // Boss: 必须出5张
   if(bossActive()&&G.boss.flag==='fiveCards'&&G.selected.size!==5){
     showToast('必须出恰好5张牌！');return;
@@ -5089,7 +5137,8 @@ function renderShop(){
       <div class="si-kind">小丑牌</div>`;
     if(!j.sold)el.addEventListener('click',()=>{
       if(isCoarse()){shopCardDetailModal({art:getCardArtURL(j,'joker'),name:j.name,cost:cost,
-        type:`小丑牌 · ${['普通','罕见','稀有','传奇'][j.rarity||0]}${edLabel} · 售价 $${cost}`,desc:j.desc||''},()=>buyJoker(i));}
+        type:`小丑牌 · ${['普通','罕见','稀有','传奇'][j.rarity||0]}${edLabel} · 售价 $${cost}`,desc:j.desc||'',
+        extra:editionInfoHTML(j.edition,{eternal:j.eternal,ephemeral:j.ephemeral})},()=>buyJoker(i));}
       else buyJoker(i);
     });
     el.addEventListener('mouseenter',()=>{
@@ -5097,7 +5146,8 @@ function renderShop(){
       openShopHover(el,`<div class="shp-art">${edTag}<img src="${getCardArtURL(j,'joker')}" alt=""></div>
         <div class="shp-name">${j.name}</div>
         <div class="shp-type">小丑牌 · ${['普通','罕见','稀有','传奇'][j.rarity||0]}${edLabel} · 售价 $${cost}</div>
-        <div class="shp-desc">${j.desc||''}</div>`);
+        <div class="shp-desc">${j.desc||''}</div>
+        ${editionInfoHTML(j.edition,{eternal:j.eternal,ephemeral:j.ephemeral})}`);
     });
     el.addEventListener('mouseleave',closeShopHover);
     jc.appendChild(el);
@@ -6219,7 +6269,8 @@ function renderTutorial(){
 function tutorialNext(){
   tutStep++;
   if(tutStep>=TUTORIAL_STEPS.length){
-    startNewGame();
+    // 静态简介完成 → 直接开始游戏，并触发游戏内交互式教程
+    startNewGame(true);
   }else{
     renderTutorial();
   }
@@ -6232,14 +6283,14 @@ let _tutStep=-1;
 let _tutRafId=null;
 // 教程步骤：waitFor = 推进所需的游戏事件；target = 高亮的 CSS 选择器（null=不高亮）
 const INGAME_TUT_STEPS=[
-  {bubble:'欢迎来到小丑牌！我是啾啾，让我来教你玩。点击"小盲注"开始第一局！',waitFor:'enterBlind',target:'.blind-card'},
-  {bubble:'这是你的手牌。点击 2~5 张牌来选中它们，组成扑克牌型（试试选2张相同点数的牌）！',waitFor:'beginRound',target:'#hand-container'},
-  {bubble:'选好了！现在点击"出牌"按钮，打出你选的牌。',waitFor:'select',target:'#btn-play',minSelect:1},
-  {bubble:'得分了！你的目标是在用完出牌次数前达到目标分数。继续出牌吧！',waitFor:'scored',target:null},
-  {bubble:'过关了！分数达标，点击继续进入商店看看好东西。',waitFor:'roundWin',target:null},
-  {bubble:'欢迎来到商店！这里可以买小丑牌增强实力。点击一张小丑牌试试！',waitFor:'openShop',target:'#shop-jokers .shop-item'},
-  {bubble:'买到好东西了！点击"下一盲注"继续你的冒险吧。',waitFor:'buy',target:'#btn-next-blind'},
-  {bubble:'教程结束！你已掌握了基本玩法。祝你好运！',waitFor:'nextBlind',target:null,autoEnd:3000}
+  {bubble:'欢迎来到<b>战斗</b>！点击这张"小盲注"卡片开始第一局！',waitFor:'enterBlind',target:'.blind-card'},
+  {bubble:'这是你的<b>手牌</b>区。点击 2~5 张牌来<b>选中</b>它们（试试选 2 张相同点数的牌组"对子"）！',waitFor:'beginRound',target:'#hand-container'},
+  {bubble:'好，选中牌后，点击这颗<b>"出牌"</b>按钮把它们打出去！',waitFor:'select',target:'#btn-play',minSelect:2},
+  {bubble:'💥 出牌完成！<b>筹码</b>（蓝）×<b>倍率</b>（红）= 最终得分。继续选出牌或弃牌吧！',waitFor:'scored',target:'#sb-round-score'},
+  {bubble:'✅ 过关了！分数达标，点击"继续"按钮进入<b>商店</b>！',waitFor:'roundWin',target:'#btn-next-blind'},
+  {bubble:'🏪 商店到了！这里可以买<b>小丑牌</b>增强实力。悬停查看详情，点一张试试！',waitFor:'openShop',target:'#shop-jokers .shop-item'},
+  {bubble:'买好了？不买也没关系，点击右下角这颗<b>"下一盲注"</b>大按钮继续冒险！',waitFor:'nextBlind',target:'#btn-next-blind'},
+  {bubble:'🎉 教程结束！你已掌握了基本玩法。祝你好运，啾啾会一直陪着你的！',waitFor:'nextBlind',target:null,autoEnd:4000}
 ];
 function startInGameTutorial(){
   IN_TUTORIAL=true;
@@ -7488,15 +7539,16 @@ function refreshContinueBtn(){
     if(del)del.style.display='';
   }else{btn.style.display='none';if(del)del.style.display='none';}
 }
-function startNewGame(){
+function startNewGame(skipIntro){
   clearSave();refreshContinueBtn();
   newGame();
-  // 首次玩家自动进入游戏内教程
-  if(!hasPlayedTutorial()){
-    G._needTutorial=true;
+  // 首次玩家 → 先显示静态文字简介，完成后自动进入游戏内交互式教程
+  // 非首次玩家从菜单点"开始游戏"直接走盲注选择，不显示任何教程
+  if(!skipIntro&&!hasPlayedTutorial()){
+    showTutorial();return;
   }
   showBlindSelect();
-  if(G._needTutorial){
+  if(!skipIntro&&G._needTutorial){
     G._needTutorial=false;
     setTimeout(()=>startInGameTutorial(),600);
   }
