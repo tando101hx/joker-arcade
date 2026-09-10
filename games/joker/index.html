@@ -224,7 +224,7 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 /* 屏幕 */
 .screen{position:absolute;inset:0;display:none;flex-direction:column;z-index:1;}
 .screen.active{display:flex;animation:screenFadeIn .3s ease-out;}
-@keyframes screenFadeIn{0%{opacity:0;transform:scale(.98);}100%{opacity:1;transform:scale(1);}}
+@keyframes screenFadeIn{0%{opacity:0;}100%{opacity:1;}}
 
 /* ==================== 主界面 ==================== */
 #s-start{align-items:center;justify-content:center;}
@@ -476,7 +476,7 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .deck-btn:disabled{opacity:.45;cursor:not-allowed;}
 
 /* ==================== 对战界面 ==================== */
-#s-round{flex-direction:row;}
+#s-round{flex-direction:row;padding:0;}
 /* 左侧边栏 */
 #sidebar{width:220px;min-width:220px;background:linear-gradient(180deg,var(--sidebar),var(--panel));overflow-y:auto;overflow-x:hidden;
   border-right:2px solid var(--line);display:flex;flex-direction:column;padding:calc(12px + var(--pad-t)) 10px calc(12px + var(--pad-b));gap:8px;z-index:5;}
@@ -1290,9 +1290,9 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 #s-start .start-title{font-size:clamp(36px,8vw,72px)!important;letter-spacing:6px!important;}
 #s-start .start-cards .mini-card{width:52px!important;height:74px!important;font-size:18px!important;}
 #s-start .start-cards{gap:10px!important;margin-bottom:12px!important;}
-/* 横屏安全区 */
+/* 横屏安全区：侧栏黑框仍贴住物理边缘，仅内容内缩避开刘海 */
 @media(orientation:landscape){
-  #sidebar{margin-left:env(safe-area-inset-left,0px);}
+  #sidebar{padding-left:calc(10px + env(safe-area-inset-left,0px));}
   #play-area{padding-right:env(safe-area-inset-right,0px);}
 }
 html{background:#0a0a12;}
@@ -1339,17 +1339,14 @@ html{background:#0a0a12;}
   .blind-card{animation:blindCardIn .5s ease-out backwards;}
 }
 
-/* 触屏：牌堆定位 */
+/* 触屏：牌堆统一放右侧竖直中部（横竖屏同位，避开手牌与按钮） */
 @media(hover:none) and (pointer:coarse){
-  #deck-display{bottom:auto!important;top:46%;transform:translateY(-50%);right:calc(6px + var(--safe-r,0px))!important;z-index:30!important;}
-  .deck-back{width:40px;height:56px;}
+  #deck-display{bottom:auto!important;top:44%;transform:translateY(-50%);right:calc(6px + var(--safe-r,0px))!important;left:auto!important;z-index:30!important;}
+  .deck-back{width:clamp(34px,4.6vw,44px);height:clamp(48px,6.4vw,62px);}
   .deck-count{font-size:9px;padding:2px 6px;}
 }
-@media(hover:none) and (pointer:coarse) and (orientation:portrait){
-  #deck-display{top:auto;bottom:calc(120px + var(--safe-b,0px));right:calc(8px + var(--safe-r,0px))!important;transform:none;}
-}
 @media(max-height:520px) and (orientation:landscape){
-  #deck-display{top:48%!important;bottom:auto!important;right:calc(4px + var(--safe-r,0px))!important;}
+  #deck-display{top:46%!important;bottom:auto!important;right:calc(4px + var(--safe-r,0px))!important;}
   .deck-back{width:32px;height:46px;}
   .deck-count{font-size:8px;}
 }
@@ -1463,6 +1460,74 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
    ===== 统一断点系统（后置，覆盖所有旧分散 media） =====
    ======================================================= */
 
+/* --- 0. 竖屏战斗页（≤1024px portrait）：全信息 HUD 横条（手机/平板共用） ---
+   设计目标：侧栏所有信息（盲注/分数/筹码×倍率/出牌弃牌/金钱/底注回合）全部保留展示 */
+@media(orientation:portrait) and (max-width:1024px){
+  #s-round{flex-direction:column!important;padding:0!important;gap:0!important;}
+  /* 侧栏 → 顶部信息横条：全部子元素 chip 化、自动换行（自身顶垫承担刘海安全区，牌桌全屏铺满） */
+  #s-round #sidebar{position:static!important;width:100%!important;max-width:none!important;min-width:0!important;
+    height:auto!important;max-height:none!important;overflow:visible!important;
+    flex-direction:row!important;flex-wrap:wrap!important;justify-content:center!important;align-items:stretch!important;
+    gap:4px!important;padding:calc(var(--pad-t) + 2px) 6px 0!important;margin:0!important;background:none;border-right:none!important;z-index:5!important;}
+  #s-round #sidebar>*{flex:0 1 auto;}
+  .sb-blind{display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px;padding:4px 8px!important;border-radius:8px;text-align:left;}
+  .sb-blind-tag{margin:0!important;font-size:11px!important;padding:2px 8px!important;}
+  .sb-blind-row{margin:0!important;gap:6px!important;}
+  .sb-blind-ic{width:26px!important;height:26px!important;font-size:12px!important;flex:0 0 auto;}
+  .sb-blind-target{font-size:15px!important;}
+  .sb-blind-reward{font-size:10px!important;}
+  .sb-boss-bar{flex:1 1 100%!important;padding:4px 8px!important;gap:6px!important;border-radius:8px;}
+  .sb-boss-bar .ic{font-size:14px!important;}
+  .sb-boss-bar .bn{font-size:11px!important;}
+  .sb-boss-bar .bd{font-size:10px!important;line-height:1.3!important;}
+  .sb-score-box{display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px;padding:4px 8px!important;border-radius:8px;}
+  .sb-score-label{margin:0!important;font-size:10px!important;white-space:nowrap;}
+  .sb-score-val{font-size:13px!important;padding:2px 6px!important;}
+  .sb-chips-mult{flex-direction:row!important;align-items:center!important;gap:4px!important;margin:0!important;}
+  .sb-chips,.sb-mult{font-size:14px!important;padding:5px 9px!important;border-radius:8px!important;box-shadow:0 3px 0 rgba(0,0,0,.4)!important;}
+  .sb-x{font-size:12px!important;}
+  .sb-hd{gap:4px!important;}
+  .sb-hd-item{padding:4px 8px!important;}
+  .sb-hd-label{font-size:9px!important;}
+  .sb-hd-val{font-size:13px!important;}
+  .sb-btn{width:auto!important;padding:5px 10px!important;font-size:11px!important;border-radius:8px;}
+  .sb-money{font-size:13px!important;padding:5px 8px!important;border-radius:8px;}
+  .sb-ante-round{gap:4px!important;}
+  .sb-ar-item{padding:4px 8px!important;}
+  .sb-ar-label{font-size:9px!important;}
+  .sb-ar-val{font-size:11px!important;}
+  /* 牌桌区：不留侧栏空位 */
+  #play-area{flex:1;min-height:0;margin-top:0!important;}
+  #top-zones{flex-wrap:wrap!important;padding:2px 6px!important;gap:4px!important;}
+  .joker-zone{max-width:100%!important;flex-wrap:wrap!important;gap:4px!important;}
+  .cons-zone{flex-wrap:wrap!important;}
+  .buff-display{padding:2px 6px!important;margin-top:2px!important;gap:4px!important;}
+  /* 出牌栏回归文档流：不再悬浮与手牌争位 */
+  #action-bar{position:static!important;left:auto!important;right:auto!important;bottom:auto!important;
+    padding:6px 6px calc(8px + var(--pad-b))!important;gap:6px!important;justify-content:space-around!important;}
+  #action-bar button{font-size:clamp(12px,3vw,14px)!important;padding:8px 10px!important;min-width:0!important;}
+  #btn-play,#btn-discard,#btn-sort{min-width:26%!important;flex:1 1 auto;}
+  .action-btn.sort{padding:4px 10px!important;min-width:0!important;gap:2px!important;}
+  .action-btn.sort .sort-label{font-size:12px!important;letter-spacing:1px!important;}
+  .action-btn.sort .sort-sub button{font-size:11px!important;padding:3px 8px!important;}
+  .action-btn .cnt{font-size:10px!important;margin-top:2px!important;}
+  /* 计分区：竖屏紧凑 */
+  #scoring-cards{min-height:84px!important;gap:8px!important;}
+  .score-card{width:50px!important;height:72px!important;--cw:50px;}
+  #hand-type-name{font-size:clamp(16px,4.6vw,24px)!important;margin-bottom:6px!important;}
+  #final-score{font-size:clamp(22px,6.4vw,40px)!important;margin-top:8px!important;}
+  #score-run{font-size:clamp(11px,2.8vw,16px)!important;margin-bottom:6px!important;}
+  /* 啾啾挪到左侧竖直中部（与右侧牌堆对称，避开手牌/按钮） */
+  .battle-jj{top:42%!important;bottom:auto!important;left:calc(6px + var(--safe-l,0px))!important;right:auto!important;animation:none!important;}
+  .battle-jj-bubble{right:auto!important;left:calc(100% + 6px)!important;top:-4px!important;}
+  .battle-jj-bubble::after{right:auto!important;left:-10px!important;border-right-color:transparent!important;border-left-color:#fff!important;}
+  /* 竖屏牌堆缩到右侧中部偏上，避开底部 action-bar 区和左侧啾啾 */
+  #deck-display{top:28%!important;bottom:auto!important;left:auto!important;right:calc(6px + var(--safe-r,0px))!important;
+    transform:none!important;z-index:25!important;}
+  #deck-display .deck-back{width:clamp(30px,7vw,42px)!important;height:calc(clamp(30px,7vw,42px)*1.43)!important;}
+  #deck-display .deck-count{font-size:8px!important;padding:1px 5px!important;}
+}
+
 /* --- 1. Phone Portrait: ≤ 430px（iPhone mini/SE/12/13/14/15/16 等竖屏） --- */
 @media(max-width:430px){
   :root{--bp:phone-portrait;--pad-t:calc(var(--safe-t) + 14px);--pad-b:calc(var(--safe-b) + 14px);
@@ -1472,50 +1537,67 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
   @supports (padding-top: env(safe-area-inset-top)) and (padding-top: env(safe-area-inset-top) env(safe-area-inset-top)){
     :root{--pad-t:calc(var(--safe-t) + 24px);}
   }
-  #s-round{flex-direction:column!important;padding:var(--pad-t) var(--pad-r) calc(var(--pad-b) + 62px) var(--pad-l)!important;gap:6px!important;}
-  #s-round #sidebar{position:fixed!important;top:calc(var(--pad-t) + 6px)!important;right:calc(var(--pad-r) + 6px)!important;bottom:auto!important;left:auto!important;
-    width:max-content!important;flex-direction:row!important;flex-wrap:wrap!important;padding:4px 8px!important;gap:6px!important;z-index:35!important;
-    background:rgba(0,0,0,.55)!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.12)!important;max-width:70vw!important;}
-  #s-round #sidebar > *{flex:0 0 auto!important;margin:0!important;}
-  #play-area{flex:1;min-height:0;margin-top:42px!important;}
-  #top-zones{flex-wrap:wrap!important;padding:4px 0!important;gap:4px!important;}
-  .joker-zone{max-width:100%!important;flex-wrap:wrap!important;gap:4px!important;}
-  .joker-zone .owned-joker{transform:scale(.78)!important;transform-origin:top left!important;}
-  #cons-zone{gap:4px!important;}
-  .cons-card{transform:scale(.78)!important;}
-  #score-display{transform:scale(.85)!important;transform-origin:top right!important;}
-  #hand-container{gap:clamp(2px,1.2vw,5px)!important;}
-  .hand-card{width:clamp(56px,18vw,72px)!important;height:calc(clamp(56px,18vw,72px)*1.4)!important;}
-  #action-bar{position:fixed!important;left:0;right:0;bottom:0!important;padding:6px 8px calc(var(--pad-b) + 6px)!important;
-    gap:6px!important;justify-content:space-around!important;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7))!important;z-index:30;}
-  #action-bar button{font-size:clamp(11px,2.8vw,13px)!important;padding:6px 8px!important;min-width:0!important;}
-  #btn-play,#btn-discard,#btn-sort{min-width:30%!important;flex:1;}
-  #deck-display{right:auto!important;left:8px!important;bottom:calc(var(--pad-b) + 54px)!important;}
-  .deck-pile{width:44px!important;height:62px!important;font-size:10px!important;}
-  .card-count{font-size:10px!important;}
+  /* HUD 再收紧一档 */
+  .sb-blind-target{font-size:14px!important;}
+  .sb-chips,.sb-mult{font-size:13px!important;padding:4px 7px!important;}
+  .sb-score-val{font-size:12px!important;}
+  /* 顶区卡牌：真实尺寸缩卡（不用 transform scale，避免占位空隙） */
+  .joker-card,.slot{width:clamp(46px,12vw,58px)!important;height:calc(clamp(46px,12vw,58px)*1.36)!important;}
+  .joker-card .jc-name{font-size:9px!important;}
+  .joker-card .jc-desc{display:none!important;}
+  .joker-card .jc-ic{font-size:20px!important;margin-bottom:1px!important;}
+  .joker-card .jc-art{max-width:84%!important;}
+  .joker-card .jc-rarity{width:5px!important;height:5px!important;}
+  .cons-card{width:clamp(40px,10.5vw,52px)!important;height:calc(clamp(40px,10.5vw,52px)*1.36)!important;}
+  .cons-card .cc-ic{font-size:16px!important;}
+  .cons-card .cc-name{font-size:8px!important;}
+  .cons-card .cc-art{max-width:86%!important;}
+  /* 手牌区 */
+  #hand-area{padding:0 4px 2px!important;}
+  #hand-container{height:clamp(120px,26vw,210px)!important;gap:clamp(2px,1.2vw,5px)!important;}
+  .score-card{width:46px!important;height:67px!important;--cw:46px;}
   .play-score-popup{transform:scale(.85)!important;}
-  .battle-jj{width:44px!important;height:44px!important;top:auto!important;bottom:calc(var(--pad-b) + 62px)!important;right:8px!important;left:auto!important;animation:none!important;}
-  /* 商店：手机竖屏紧凑单列 */
+  .deck-back{width:34px!important;height:48px!important;}
+  .deck-count{font-size:8px!important;}
+  /* 商店：手机竖屏紧凑流式（清掉绝对定位残留的 left/right 偏移） */
   #s-shop{padding:calc(var(--pad-t) + 6px) calc(var(--pad-r) + 6px) calc(var(--pad-b) + 6px) calc(var(--pad-l) + 6px)!important;}
-  .shop-rail{position:relative!important;top:auto!important;transform:none!important;margin:0 0 8px!important;flex-direction:row!important;gap:8px!important;justify-content:center!important;}
-  .shop-money-bar{position:relative!important;top:auto!important;transform:none!important;margin:4px auto 8px!important;font-size:clamp(18px,4.2vw,24px)!important;padding:4px 12px!important;}
-  .shop-main{padding:0 0 60px!important;}
+  .shop-money-bar{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;
+    margin:4px auto 8px!important;font-size:clamp(18px,4.2vw,24px)!important;padding:4px 12px!important;}
+  .shop-rail{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;
+    margin:0 0 8px!important;flex-direction:row!important;gap:8px!important;justify-content:center!important;align-items:center;}
+  .shop-main{padding:0 0 24px!important;position:relative!important;left:auto!important;transform:none!important;width:100%!important;}
   .shop-row-label{font-size:10px!important;letter-spacing:3px!important;}
   .shop-grid{gap:6px!important;justify-content:center!important;}
   #s-shop .shop-grid>.shop-item{width:clamp(60px,20vw,76px)!important;}
   .sm-goods{gap:12px!important;}
   .goods-row{flex-wrap:wrap!important;}
   .shop-col{flex:1 1 100%!important;min-width:0!important;}
-  #btn-next-blind{position:fixed!important;bottom:calc(var(--pad-b) + 8px)!important;right:calc(var(--pad-r) + 8px)!important;z-index:30!important;}
-  /* 盲注选择：单列大卡 */
+  /* 下一盲注大按钮：跟随文档流居中放大，不再悬浮压住商品 */
+  .rail-right{position:relative!important;left:auto!important;right:auto!important;top:auto!important;transform:none!important;order:3;margin:6px auto!important;}
+  #btn-next-blind{position:static!important;bottom:auto!important;right:auto!important;}
+  .rn-disc{width:clamp(84px,22vw,104px)!important;height:clamp(84px,22vw,104px)!important;}
+  .rn-ic{font-size:clamp(20px,5vw,26px)!important;}
+  .rn-label{font-size:12px!important;}
+  .rail-reroll{min-width:84px!important;padding:6px 10px 5px!important;}
+  .rail-reroll .rr-name{font-size:13px!important;letter-spacing:2px!important;}
+  .rail-reroll .rr-cost{font-size:14px!important;}
+  .rail-vouchers{gap:5px!important;}
+  .vs-slot{width:38px!important;height:38px!important;font-size:17px!important;}
+  .rail-vlabel{display:none!important;}
+  .shop-deckpile{position:relative!important;left:auto!important;bottom:auto!important;order:4;margin:4px auto!important;}
+  .shop-corner-btn{position:relative!important;right:auto!important;bottom:auto!important;order:5;margin:4px auto 0!important;}
+  /* 盲注选择：紧凑单卡 */
   #s-blind{padding:calc(var(--pad-t) + 10px) calc(var(--pad-r) + 8px) calc(var(--pad-b) + 10px) calc(var(--pad-l) + 8px)!important;justify-content:flex-start!important;}
-  .blind-cards{flex-direction:column!important;gap:8px!important;width:100%!important;max-width:340px!important;}
-  .blind-card{width:100%!important;min-height:96px!important;flex-direction:row!important;gap:10px!important;padding:10px 14px!important;}
-  .blind-icon{width:48px!important;height:48px!important;font-size:22px!important;flex-shrink:0!important;}
-  .blind-info{flex:1;align-items:flex-start!important;text-align:left!important;}
-  .blind-name{font-size:18px!important;}
-  .blind-req{font-size:14px!important;}
-  .blind-reward{font-size:13px!important;}
+  .blind-cards{width:100%!important;max-width:340px!important;}
+  .blind-card{width:100%!important;padding:12px 14px!important;animation:blindCardIn .5s ease-out backwards!important;}
+  .blind-icon{width:44px!important;height:44px!important;font-size:20px!important;margin-bottom:6px!important;}
+  .blind-name{font-size:17px!important;}
+  .blind-target{font-size:20px!important;margin:4px 0!important;}
+  .blind-reward{font-size:12px!important;}
+  .blind-tag-chip{width:34px!important;height:34px!important;font-size:17px!important;top:-8px!important;right:-8px!important;}
+  .blind-skip{margin-top:8px!important;}
+  .skip-desc{font-size:12px!important;margin-bottom:8px!important;}
+  .skip-btn{padding:11px 30px!important;font-size:15px!important;}
   /* 主菜单 */
   .start-logo{padding-top:calc(var(--pad-t) + 20px)!important;margin-top:0!important;}
   .start-title{font-size:clamp(24px,9vw,36px)!important;letter-spacing:4px!important;}
@@ -1526,13 +1608,24 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
   /* 牌组/难度选择 */
   #s-deck,#s-stake{padding:calc(var(--pad-t) + 8px) calc(var(--pad-r) + 6px) calc(var(--pad-b) + 8px) calc(var(--pad-l) + 6px)!important;}
   .deck-card,.stake-card{width:min(300px,80vw)!important;max-width:none!important;}
+  .deck-stage{height:min(440px,56vh)!important;min-height:min(440px,56vh)!important;}
   /* 结果页 */
   #s-result{padding:calc(var(--pad-t) + 8px) calc(var(--pad-r) + 8px) calc(var(--pad-b) + 8px) calc(var(--pad-l) + 8px)!important;}
+  .result-box{padding:16px!important;}
   .result-next{width:100%!important;margin-top:12px!important;}
   .result-btns{flex-direction:column!important;gap:8px!important;}
-  /* 教程浮层 */
-  #tut-jj-in-game{width:52px!important;height:62px!important;bottom:calc(var(--pad-b) + 6px)!important;left:8px!important;}
-  #tut-bubble-in-game{bottom:calc(var(--pad-b) + 32px)!important;left:72px!important;font-size:12px!important;max-width:58vw!important;padding:8px 10px!important;}
+  /* 卡包：选卡缩小防溢出（保留全息与选中效果） */
+  .pack-reveal{gap:10px!important;padding:12px 8px!important;}
+  .reveal-card{width:clamp(78px,25vw,110px)!important;height:auto!important;aspect-ratio:158/228!important;}
+  .reveal-card .rc-art{width:72%!important;height:auto!important;}
+  .reveal-card .rc-ic{font-size:22px!important;margin-top:8px!important;}
+  .reveal-card .rc-name{font-size:12px!important;margin-top:4px!important;}
+  .reveal-card .rc-desc{font-size:9px!important;padding:3px 5px!important;}
+  .pack-visual{width:128px!important;height:190px!important;}
+  /* 教程浮层：锚到 HUD 下方左侧，不压手牌 */
+  #tut-jj-in-game{width:48px!important;height:58px!important;top:calc(var(--pad-t) + 118px)!important;bottom:auto!important;left:8px!important;}
+  #tut-bubble-in-game{top:calc(var(--pad-t) + 114px)!important;bottom:auto!important;left:64px!important;font-size:12px!important;max-width:calc(100vw - 84px)!important;padding:8px 10px!important;}
+  #tut-bubble-in-game::after,#tut-bubble-in-game::before{bottom:14px!important;}
   #tut-skip-btn{top:calc(var(--pad-t) + 6px)!important;right:8px!important;padding:6px 12px!important;font-size:11px!important;}
 }
 
@@ -1540,46 +1633,89 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
 @media(orientation:landscape) and (max-height:540px){
   :root{--bp:phone-landscape;--pad-t:calc(var(--safe-t) + 4px);--pad-b:calc(var(--safe-b) + 4px);
     --pad-l:calc(var(--safe-l) + 8px);--pad-r:calc(var(--safe-r) + 8px);}
-  #s-round{flex-direction:row!important;padding:var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l)!important;gap:4px!important;}
-  #s-round #sidebar{width:min(80px,11vw)!important;padding-top:calc(var(--pad-t) + 4px)!important;padding-bottom:calc(var(--pad-b) + 4px)!important;gap:3px!important;}
+  #s-round{flex-direction:row!important;padding:0!important;gap:0!important;}
+  /* 窄侧栏：必须清掉基础规则的 min-width:220px 才能真正收窄 */
+  #s-round #sidebar{width:min(96px,13vw)!important;min-width:0!important;max-width:96px!important;height:100%!important;
+    padding:calc(var(--pad-t) + 2px) 5px calc(var(--pad-b) + 2px)!important;gap:3px!important;}
+  .sb-blind{padding:5px 4px!important;}
+  .sb-blind-tag{font-size:11px!important;padding:2px 6px!important;margin-bottom:2px!important;}
+  .sb-blind-ic{width:24px!important;height:24px!important;font-size:11px!important;}
+  .sb-blind-target{font-size:14px!important;}
+  .sb-blind-reward{font-size:9px!important;}
+  .sb-score-label{font-size:9px!important;margin-bottom:2px!important;}
+  .sb-score-val{font-size:12px!important;padding:3px!important;}
+  .sb-chips,.sb-mult{font-size:12px!important;padding:5px 3px!important;box-shadow:0 2px 0 rgba(0,0,0,.4)!important;}
+  .sb-x{font-size:10px!important;}
+  .sb-hd-label{font-size:9px!important;}
+  .sb-hd-val{font-size:12px!important;}
+  .sb-hd-item{padding:3px!important;}
+  .sb-btn{padding:4px 2px!important;font-size:10px!important;}
+  .sb-money{font-size:12px!important;padding:4px 2px!important;}
+  .sb-ar-label{font-size:8px!important;}
+  .sb-ar-val{font-size:10px!important;}
+  .sb-ar-item{padding:3px 2px!important;}
+  .sb-boss-bar .bn{font-size:9px!important;}
+  .sb-boss-bar .bd{font-size:8px!important;line-height:1.25!important;}
   #play-area{min-width:0!important;}
-  #top-zones{padding-top:calc(var(--pad-t) + 4px)!important;padding-bottom:4px!important;gap:6px!important;}
+  #top-zones{padding-top:calc(var(--pad-t) + 2px)!important;padding-bottom:3px!important;gap:5px!important;}
   .joker-zone .owned-joker,.cons-card{transform:scale(.7)!important;}
+  .joker-card{width:clamp(40px,5.6vw,52px)!important;height:calc(clamp(40px,5.6vw,52px)*1.36)!important;}
+  .joker-card .jc-name{font-size:8px!important;}
+  .joker-card .jc-desc{display:none!important;}
   .hand-card{width:clamp(44px,8vw,60px)!important;}
   #action-bar{padding:2px 6px calc(4px + var(--pad-b))!important;gap:6px!important;}
   #action-bar button{font-size:11px!important;padding:4px 8px!important;}
+  .action-btn .cnt{font-size:9px!important;}
   .battle-jj{width:40px!important;height:40px!important;top:calc(var(--pad-t) + 4px)!important;right:calc(var(--pad-r) + 4px)!important;}
   /* 商店 */
-  .shop-rail{position:relative!important;top:auto!important;transform:none!important;margin:0 0 6px!important;}
+  .shop-rail{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;margin:0 0 6px!important;}
   .shop-money-bar{font-size:clamp(16px,3vw,22px)!important;padding:3px 10px!important;}
   #btn-next-blind{position:absolute!important;bottom:calc(var(--pad-b) + 6px)!important;}
+  .rn-disc{width:clamp(80px,12vh,110px)!important;height:clamp(80px,12vh,110px)!important;}
+  /* 卡包：横屏矮高度，5 张卡一排不溢出 */
+  .pack-reveal{gap:14px!important;padding:10px 8px!important;}
+  .reveal-card{width:clamp(96px,16.5vh,140px)!important;height:auto!important;aspect-ratio:158/228!important;}
 }
 
-/* --- 3. iPad Air 4/5: 10.9" 竖屏 (820×1180) --- */
+/* --- 3. iPad / 平板竖屏 (431–1024px portrait) --- */
 @media(min-width:431px) and (max-width:1024px) and (orientation:portrait){
   :root{--bp:tablet-portrait;--pad-t:calc(var(--safe-t) + 18px);--pad-b:calc(var(--safe-b) + 18px);
     --pad-l:calc(var(--safe-l) + 14px);--pad-r:calc(var(--safe-r) + 14px);}
-  #s-round{flex-direction:column!important;padding:var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l)!important;gap:8px!important;}
-  #s-round #sidebar{position:fixed!important;top:calc(var(--pad-t) + 8px)!important;right:calc(var(--pad-r) + 8px)!important;bottom:auto!important;left:auto!important;
-    width:max-content!important;flex-direction:row!important;flex-wrap:wrap!important;padding:6px 12px!important;gap:10px!important;z-index:35!important;
-    background:rgba(0,0,0,.5)!important;border-radius:14px!important;border:1px solid rgba(255,255,255,.12)!important;max-width:60vw!important;}
-  #play-area{flex:1;min-height:0;margin-top:54px!important;}
-  .joker-zone{flex-wrap:wrap!important;max-width:100%!important;gap:6px!important;}
-  .joker-zone .owned-joker{transform:scale(.9)!important;}
-  .hand-card{width:clamp(72px,14vw,96px)!important;height:calc(clamp(72px,14vw,96px)*1.4)!important;}
-  #action-bar{padding:10px 12px calc(10px + var(--pad-b))!important;gap:12px!important;}
-  /* 商店：竖屏平板多列 */
+  /* HUD 字号放大一档（信息条更饱满） */
+  .sb-blind-target{font-size:17px!important;}
+  .sb-chips,.sb-mult{font-size:16px!important;padding:6px 12px!important;}
+  .sb-score-val{font-size:14px!important;}
+  .sb-hd-val{font-size:15px!important;}
+  .sb-money{font-size:15px!important;}
+  .sb-btn{font-size:12px!important;padding:6px 12px!important;}
+  /* 顶区卡牌：平板尺寸 */
+  .joker-card,.slot{width:clamp(58px,9vw,84px)!important;height:calc(clamp(58px,9vw,84px)*1.36)!important;}
+  .joker-card .jc-name{font-size:11px!important;}
+  .cons-card{width:clamp(50px,8vw,72px)!important;height:calc(clamp(50px,8vw,72px)*1.36)!important;}
+  #hand-container{height:clamp(160px,30vw,320px)!important;}
+  .score-card{width:60px!important;height:87px!important;--cw:60px;}
+  /* 商店：竖屏多列流式（清除绝对定位残留偏移） */
   #s-shop{padding:calc(var(--pad-t) + 10px) calc(var(--pad-r) + 10px) calc(var(--pad-b) + 10px) calc(var(--pad-l) + 10px)!important;}
-  .shop-rail{position:relative!important;top:auto!important;transform:none!important;margin-bottom:8px!important;flex-direction:row!important;gap:14px!important;justify-content:center!important;}
-  .shop-money-bar{position:relative!important;top:auto!important;transform:none!important;margin:4px auto 10px!important;font-size:clamp(26px,3.4vw,36px)!important;padding:6px 20px!important;}
+  .shop-money-bar{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;
+    margin:4px auto 10px!important;font-size:clamp(26px,3.4vw,36px)!important;padding:6px 20px!important;}
+  .shop-rail{position:relative!important;top:auto!important;left:auto!important;right:auto!important;transform:none!important;
+    margin-bottom:10px!important;flex-direction:row!important;gap:16px!important;justify-content:center!important;align-items:center;}
+  .rail-right{order:3;margin:8px auto!important;}
+  #btn-next-blind{position:static!important;bottom:auto!important;right:auto!important;}
+  .rn-disc{width:clamp(104px,15vw,136px)!important;height:clamp(104px,15vw,136px)!important;}
   .shop-grid{gap:14px 12px!important;justify-content:center!important;}
+  #s-shop .shop-grid>.shop-item{width:clamp(76px,10vw,96px)!important;}
   .shop-col{flex:1 1 50%!important;max-width:600px!important;margin:0 auto!important;}
-  /* 盲注选择：平板竖屏大卡片居中 */
+  .shop-deckpile{position:relative!important;left:auto!important;bottom:auto!important;order:4;margin:6px auto!important;}
+  .shop-corner-btn{position:relative!important;right:auto!important;bottom:auto!important;order:5;margin:4px auto 0!important;}
+  /* 盲注选择 */
   #s-blind{padding:calc(var(--pad-t) + 12px) calc(var(--pad-r) + 12px) calc(var(--pad-b) + 12px) calc(var(--pad-l) + 12px)!important;}
-  .blind-cards{gap:16px!important;max-width:min(600px,92vw)!important;}
-  .blind-card{min-height:180px!important;padding:16px 20px!important;}
+  .blind-card{padding:16px 20px!important;}
   .blind-name{font-size:24px!important;}
-  .blind-req{font-size:16px!important;}
+  .blind-target{font-size:26px!important;}
+  /* 卡包：平板竖屏 5 张一排 */
+  .pack-reveal{gap:14px!important;padding:16px 10px!important;}
+  .reveal-card{width:clamp(104px,17vw,140px)!important;height:auto!important;aspect-ratio:158/228!important;}
   /* 主菜单 */
   .start-title{font-size:clamp(44px,6vw,72px)!important;}
   .menu-buttons{gap:16px!important;max-width:380px!important;}
@@ -1590,9 +1726,11 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
 @media(min-width:1025px) and (max-width:1366px) and (orientation:landscape){
   :root{--bp:tablet-landscape;--pad-t:calc(var(--safe-t) + 10px);--pad-b:calc(var(--safe-b) + 10px);
     --pad-l:calc(var(--safe-l) + 14px);--pad-r:calc(var(--safe-r) + 14px);}
-  /* 战斗页：沿用桌面的左右布局但紧凑化 */
-  #s-round{padding:var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l)!important;gap:8px!important;}
-  #s-round #sidebar{width:min(110px,10vw)!important;gap:5px!important;padding-top:calc(var(--pad-t) + 4px)!important;padding-bottom:calc(var(--pad-b) + 4px)!important;}
+  /* 战斗页：沿用桌面经典左右布局（220px 侧栏信息完整）——s-round 零内边距让侧栏黑框真正贴边 */
+  #s-round{padding:0!important;gap:0!important;}
+  #s-round #sidebar{gap:5px!important;height:100%!important;overflow-y:auto!important;
+    padding-top:calc(10px + var(--pad-t))!important;padding-bottom:calc(10px + var(--pad-b))!important;}
+  #s-round #play-area{flex:1;min-width:0!important;}
   .owned-joker,.cons-card{transform:scale(.85)!important;}
   .hand-card{width:clamp(80px,9vw,110px)!important;}
   /* 商店 */
@@ -1605,8 +1743,7 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
 /* --- 5. Desktop Large (≥1280px) --- */
 @media(min-width:1280px){
   :root{--bp:desktop;--pad-t:20px;--pad-b:20px;--pad-l:20px;--pad-r:20px;}
-  /* 战斗页：保持 Balatro 经典布局，加内容宽度约束 */
-  #s-round #play-area{max-width:calc(100vw - 160px)!important;}
+  /* 战斗页：保持 Balatro 经典布局，牌桌铺满（不再限制宽度） */
   .hand-card{width:clamp(78px,7vw,112px)!important;}
   .shop-grid{gap:20px!important;}
   .blind-card{min-width:220px!important;}
@@ -1615,7 +1752,9 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
 /* --- 6. Ultrawide (≥1920px) --- */
 @media(min-width:1920px){
   :root{--bp:ultrawide;--pad-t:28px;--pad-b:28px;--pad-l:32px;--pad-r:32px;--ui-scale:1.08;}
-  #s-round #play-area{max-width:60vw!important;}
+  /* 牌桌铺满整屏（原版逻辑）；侧栏加宽保持信息可读比例 */
+  #s-round #sidebar{width:280px;min-width:280px;}
+  #s-round #play-area{flex:1;min-width:0!important;}
   .hand-card{width:clamp(88px,5.2vw,120px)!important;height:calc(clamp(88px,5.2vw,120px)*1.4)!important;}
   .hand-card{box-shadow:8px 8px 0 rgba(0,0,0,.6),-4px -4px 0 rgba(255,107,157,.6)!important;}
   .shop-grid{gap:28px!important;}
