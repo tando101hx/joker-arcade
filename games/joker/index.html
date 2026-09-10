@@ -7,7 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* ==================== 像素中文字体（Fusion Pixel 缝合怪像素） ==================== */
+/* ==================== 像素中文字体（Zpix 最像素，开源 OFL 协议，自托管） ==================== */
+@font-face{font-family:'Zpix';src:url('fonts/zpix.woff2') format('woff2');font-display:swap;}
 /* ==================== 变量与全局 ==================== */
 :root{
   --sidebar:#2b2b38;
@@ -29,10 +30,10 @@
   --cyan:#22d3ee;
   --pink:#ff6b9d;
   --orange:#fb923c;
-  --f-display:'Press Start 2P',monospace;
-  --f-zh:'ZCOOL QingKe HuangYou',sans-serif;
-  --f-pixel-zh:var(--f-display),'Noto Sans SC',monospace;
-  --f-body:'ZCOOL QingKe HuangYou','Press Start 2P',sans-serif;
+  --f-display:'Press Start 2P','Zpix',monospace;
+  --f-zh:'Zpix','ZCOOL QingKe HuangYou',monospace;
+  --f-pixel-zh:'Press Start 2P','Zpix',monospace;
+  --f-body:'Zpix','Press Start 2P','ZCOOL QingKe HuangYou',monospace;
   /* 安全区：全面屏 Home 指示条/灵动岛，iPad 浏览器无法完全全屏时的遮挡 */
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
   --safe-l:env(safe-area-inset-left,0px);--safe-r:env(safe-area-inset-right,0px);
@@ -57,6 +58,143 @@ button.btn-press{filter:brightness(1.3)!important;transform:scale(.9)!important;
 .fluid-purple{background:linear-gradient(135deg,#2a1a3a,#180f28,#2a1a3a);}
 .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;animation:blobMove 12s ease-in-out infinite alternate;}
 @keyframes blobMove{0%{transform:translate(0,0) scale(1);}100%{transform:translate(40px,-30px) scale(1.2);}}
+/* 商店：Balatro 式毛毡牌桌（木框包边 + 深青呢绒台面，与战斗同一张牌桌） */
+#s-shop .fluid-bg{background:
+    radial-gradient(ellipse at center,rgba(70,120,120,.22) 0%,transparent 60%),
+    radial-gradient(ellipse at 50% 42%,#20414f 0%,#15303d 52%,#0c1e28 100%);}
+#s-shop .fluid-bg::after{content:'';position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 clamp(10px,2.2vw,26px) #3a2413,
+    inset 0 0 0 clamp(14px,3vw,34px) #5d3a1c,
+    inset 0 0 clamp(40px,8vw,120px) rgba(0,0,0,.66);}
+#s-shop .blob{display:none;}
+/* ===== 原版 Balatro 商店布局：商品都摆在同一张牌桌上 ===== */
+.shop-table{position:absolute;inset:0;z-index:2;}
+/* 顶部居中金钱 */
+.shop-money-bar{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:6;
+  display:flex;align-items:baseline;gap:8px;font-family:var(--f-display);font-weight:900;
+  font-size:clamp(26px,3.2vw,40px);color:#fbbf24;text-shadow:0 3px 0 rgba(0,0,0,.55),0 0 20px rgba(251,191,36,.5);
+  background:rgba(0,0,0,.32);padding:6px 22px;border-radius:14px;border:1px solid rgba(251,191,36,.35);white-space:nowrap;}
+.shop-money-bar .smb-coin{color:#fbbf24;}
+.shop-money-bar .smb-round{font-family:var(--f-zh);font-size:12px;font-weight:400;color:rgba(255,255,255,.75);letter-spacing:1px;}
+/* 左右栏 */
+.shop-rail{position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  display:flex;flex-direction:column;align-items:center;gap:14px;}
+.rail-left{left:clamp(12px,2.6vw,44px);}
+.rail-right{right:clamp(12px,2.6vw,44px);}
+/* 重掷钮（原版红色块） */
+.rail-reroll{background:linear-gradient(180deg,#ef4444,#b91c1c);color:#fff;border:3px solid #7f1d1d;border-radius:12px;
+  padding:10px 16px 8px;box-shadow:0 5px 0 #601010,0 10px 22px rgba(0,0,0,.45);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:1px;min-width:98px;
+  font-family:var(--f-zh);transition:transform .12s,box-shadow .12s,filter .15s;}
+.rail-reroll .rr-name{font-size:16px;letter-spacing:4px;}
+.rail-reroll .rr-cost{font-family:var(--f-display);font-size:17px;line-height:1.1;}
+.rail-reroll:hover{filter:brightness(1.12);}
+.rail-reroll:active{transform:translateY(4px);box-shadow:0 1px 0 #601010;}
+/* 代金券 2×2 槽 */
+.rail-vouchers{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vs-slot{width:46px;height:46px;border-radius:10px;background:rgba(0,0,0,.32);border:2px dashed rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;font-size:22px;}
+.vs-slot.owned{border-style:solid;border-color:#22d3ee;background:linear-gradient(160deg,#0e3a44,#08222a);cursor:pointer;
+  box-shadow:0 3px 0 rgba(0,0,0,.45),0 0 12px rgba(34,211,238,.35);}
+.vs-slot.owned:hover{transform:translateY(-2px);filter:brightness(1.15);}
+.vs-empty{opacity:.22;filter:grayscale(1);}
+.rail-vlabel{font-family:var(--f-zh);font-size:12px;color:rgba(255,255,255,.6);letter-spacing:4px;}
+/* 下一盲注大圆钮 */
+.rail-next{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;padding:0;}
+.rn-disc{width:clamp(96px,10.5vw,138px);height:clamp(96px,10.5vw,138px);border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,#93c5fd,#3b82f6 55%,#1e3a8a);
+  border:4px solid #0b1530;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 0 rgba(0,0,0,.45),0 0 32px rgba(59,130,246,.5),inset 0 -10px 18px rgba(0,0,0,.35),inset 0 8px 14px rgba(255,255,255,.4);
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1);}
+.rail-next.t1 .rn-disc{background:radial-gradient(circle at 35% 28%,#86efac,#22c55e 55%,#14532d);
+  box-shadow:0 8px 0 rgba(0,0,0,.45),0 0 32px rgba(34,197,94,.5),inset 0 -10px 18px rgba(0,0,0,.35),inset 0 8px 14px rgba(255,255,255,.4);}
+.rail-next.t2 .rn-disc{background:radial-gradient(circle at 35% 28%,#fca5a5,#ef4444 55%,#7f1d1d);
+  box-shadow:0 8px 0 rgba(0,0,0,.45),0 0 32px rgba(239,68,68,.55),inset 0 -10px 18px rgba(0,0,0,.35),inset 0 8px 14px rgba(255,255,255,.4);}
+.rn-ic{font-family:var(--f-display);font-weight:900;font-size:clamp(24px,3vw,38px);color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.45);}
+.rn-label{font-family:var(--f-zh);font-size:14px;color:#fff;background:rgba(0,0,0,.5);padding:4px 14px;border-radius:8px;letter-spacing:2px;
+  border:1px solid rgba(255,255,255,.18);white-space:nowrap;}
+.rail-next:hover .rn-disc{transform:translateY(-5px) scale(1.06);}
+.rail-next:active .rn-disc{transform:translateY(3px) scale(.97);}
+/* 中央商品区 */
+.shop-main{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(60vw,740px);max-height:92%;display:flex;flex-direction:column;align-items:center;
+  gap:clamp(6px,1.4vh,16px);z-index:4;}
+.sm-owned .owned-jokers,.sm-consowned .owned-jokers{justify-content:center;margin-top:0;}
+.sm-consowned .owned-joker{opacity:.92;}
+.sm-goods{display:flex;flex-direction:column;gap:24px;width:100%;align-items:center;}
+.goods-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;width:100%;}
+.goods-row .shop-grid{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+/* ===== v6 商品区：分组标签 + 正常扑克牌比例卡片（名称/描述走悬停浮窗） ===== */
+.shop-row-label{font-family:var(--f-zh);font-size:12px;color:rgba(255,255,255,.85);letter-spacing:4px;
+  text-align:center;margin-bottom:4px;text-shadow:0 2px 0 rgba(0,0,0,.7);white-space:nowrap;}
+.owned-row-label{font-family:var(--f-zh);font-size:11px;color:rgba(255,255,255,.62);letter-spacing:4px;
+  text-align:center;margin-bottom:2px;text-shadow:0 2px 0 rgba(0,0,0,.7);}
+.shop-col{display:flex;flex-direction:column;align-items:center;}
+#s-shop .goods-row .shop-grid{gap:32px 18px;}
+#s-shop .shop-grid>.shop-item{width:clamp(76px,8.2vw,100px);max-width:none;}
+#s-shop .shop-item{aspect-ratio:1/1.4;min-height:0;overflow:visible;padding:0;
+  background:linear-gradient(180deg,#fdf8ec,#ece2c8);border:3px solid #2a2140;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.55),inset -2px -2px 0 rgba(0,0,0,.18),0 5px 0 rgba(0,0,0,.45);}
+#s-shop .shop-item::before{display:none;}
+#s-shop .shop-item .si-art{position:absolute;inset:0;height:auto;border:none;border-radius:inherit;overflow:hidden;
+  background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;}
+#s-shop .shop-item .si-art img.si-art-img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated;display:block;}
+#s-shop .shop-item .si-body{display:none;}
+#s-shop .shop-item.voucher .si-art{font-size:42px;}
+#s-shop .shop-item .si-cost{position:absolute;top:100%;left:50%;transform:translate(-50%,-8px);z-index:5;
+  background:linear-gradient(180deg,#4ade80,#16a34a);color:#06280f;border:2px solid #0c5f24;
+  border-radius:6px;padding:1px 10px;font-family:var(--f-display);font-weight:900;font-size:14px;
+  box-shadow:0 2px 0 rgba(0,0,0,.4);white-space:nowrap;}
+#s-shop .shop-item .si-cost.cant{background:linear-gradient(180deg,#f87171,#dc2626);color:#fff;border-color:#7f1d1d;}
+#s-shop .shop-item .si-kind{position:absolute;top:100%;left:-30px;right:-30px;padding-top:21px;z-index:4;
+  font-family:var(--f-zh);font-size:11px;color:rgba(255,255,255,.9);text-align:center;letter-spacing:1px;
+  text-shadow:0 2px 0 rgba(0,0,0,.85);pointer-events:none;white-space:nowrap;}
+/* 稀有度/类型边框色 */
+#s-shop .shop-item.joker.r0{border-color:#6b6580;}
+#s-shop .shop-item.joker.r1{border-color:#0284c7;}
+#s-shop .shop-item.joker.r2{border-color:#9333ea;}
+#s-shop .shop-item.joker.r3{border-color:#e11d48;}
+#s-shop .shop-item.tarot{border-color:#7e22ce;}
+#s-shop .shop-item.planet{border-color:#15803d;}
+#s-shop .shop-item.spectral{border-color:#0e7490;}
+#s-shop .shop-item.voucher{border-color:#0891b2;}
+#s-shop .shop-item.pack{border-color:#1a1020;background:#1a1020;}
+/* 悬浮伪 3D：与手牌完全一致（硬边粉框投影 + 上浮放大，无模糊） */
+#s-shop .shop-item:hover{transform:translateY(-26px) scale(1.22)!important;z-index:20;animation-play-state:paused!important;
+  box-shadow:6px 6px 0 rgba(0,0,0,.55),-3px -3px 0 rgba(255,107,157,.6),0 0 0 3px rgba(255,107,157,.9)!important;}
+.owned-joker:hover{transform:translateY(-8px) scale(1.12);border-color:#ff6b9d;
+  box-shadow:5px 5px 0 rgba(0,0,0,.5),-2px -2px 0 rgba(255,107,157,.55),0 0 0 2px rgba(255,107,157,.85)!important;}
+/* 左下牌组堆 */
+.shop-deckpile{position:absolute;left:clamp(14px,2.8vw,46px);bottom:clamp(14px,3.4vh,38px);z-index:5;
+  background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0;}
+.dp-stack{position:relative;display:block;width:70px;height:84px;transition:transform .15s;}
+.dp-card{position:absolute;left:8px;top:2px;width:54px;height:76px;border-radius:8px;
+  background:repeating-linear-gradient(45deg,var(--dc2,#c03030) 0 8px,var(--dc1,#8b1a1a) 8px 16px);
+  border:2px solid #fde68a;box-shadow:0 4px 12px rgba(0,0,0,.55);}
+.dp-card:nth-child(1){transform:translate(-9px,7px) rotate(-9deg);}
+.dp-card:nth-child(2){transform:translate(-2px,2px) rotate(-2deg);}
+.dp-card.dp-top{transform:translate(7px,-3px) rotate(7deg);display:flex;align-items:center;justify-content:center;
+  font-size:26px;color:#fde68a;}
+.dp-label{font-family:var(--f-zh);color:#fff;font-size:12px;letter-spacing:3px;
+  background:rgba(0,0,0,.45);padding:3px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.15);}
+.shop-deckpile:hover .dp-stack{transform:translateY(-5px);}
+.shop-deckpile:active .dp-stack{transform:translateY(1px);}
+/* 右下角主菜单小钮 */
+.shop-corner-btn{position:absolute;right:14px;bottom:12px;z-index:6;background:rgba(0,0,0,.4);
+  color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.22);border-radius:8px;
+  padding:6px 14px;font-family:var(--f-zh);font-size:12px;cursor:pointer;letter-spacing:2px;}
+.shop-corner-btn:hover{color:#fff;border-color:#fff;background:rgba(0,0,0,.6);}
+/* 窄屏：牌桌布局改为可滚动竖排 */
+@media(max-width:960px){
+  .shop-table{display:flex;flex-direction:column;align-items:center;gap:12px;overflow-y:auto;padding:74px 10px 96px;}
+  .shop-money-bar{position:static;transform:none;order:0;}
+  .rail-left{order:1;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px;}
+  .shop-main{position:static;transform:none;order:2;width:100%;max-height:none;}
+  .rail-right{order:3;position:static;transform:none;}
+  .shop-deckpile{position:static;order:4;}
+  .shop-corner-btn{position:static;order:5;}
+  .rail-vlabel{display:none;}
+}
 
 /* CRT 效果 */
 #crt{position:fixed;inset:0;pointer-events:none;z-index:9999;
@@ -107,12 +245,22 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 @keyframes cardBob2{0%,100%{transform:translateY(0) rotate(3deg);}30%{transform:translateY(-12px) rotate(-2deg);}60%{transform:translateY(-6px) rotate(5deg);}}
 @keyframes cardBob3{0%,100%{transform:translateY(0) rotate(-2deg);}20%{transform:translateY(-7px) rotate(4deg);}50%{transform:translateY(-16px) rotate(-4deg);}80%{transform:translateY(-5px) rotate(2deg);}}
 @keyframes cardBob4{0%,100%{transform:translateY(0) rotate(4deg);}35%{transform:translateY(-13px) rotate(-1deg);}70%{transform:translateY(-6px) rotate(-5deg);}}
-/* 转场动画 */
-#transition-overlay{transition:opacity .25s ease-out;}
+/* 转场动画：原版全屏横扫——多排牌背扇形从左侧扫入铺满，再向右侧扫出 */
+#transition-overlay{opacity:0;pointer-events:none;transition:opacity .15s ease-out;perspective:1000px;overflow:hidden;}
 #transition-overlay.show{opacity:1;pointer-events:auto;}
-#transition-overlay .t-card{width:50px;height:72px;border-radius:6px;background:linear-gradient(160deg,#fdf8ec,#e9dfc2);border:2px solid #2a2140;box-shadow:0 4px 12px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;}
-@keyframes transCardIn{0%{transform:translateX(-200px) rotate(-30deg);opacity:0;}100%{transform:translateX(0) rotate(0);opacity:1;}}
-@keyframes transCardOut{0%{transform:translateX(0) rotate(0);opacity:1;}100%{transform:translateX(200px) rotate(30deg);opacity:0;}}
+#transition-cards{position:absolute;inset:0;}
+#transition-overlay .t-card{position:absolute;width:88px;height:126px;
+  background:repeating-linear-gradient(45deg,var(--dc2,#c03030) 0 10px,var(--dc1,#8b1a1a) 10px 20px);
+  border:2px solid #fde68a;box-shadow:0 8px 22px rgba(0,0,0,.65);will-change:transform;border-radius:6px;}
+#transition-overlay .t-card::after{content:'';position:absolute;inset:8px;border:1px solid rgba(253,230,138,.55);border-radius:4px;
+  background:radial-gradient(circle at 50% 50%,rgba(253,230,138,.3),transparent 60%);}
+@keyframes transSweepIn{0%{transform:translateX(-140vw) rotate(-26deg);opacity:0;}
+  55%{opacity:1;}
+  100%{transform:translateX(0) rotate(var(--r,0deg));opacity:1;}}
+@keyframes transSweepOut{0%{transform:translateX(0) rotate(var(--r,0deg));opacity:1;}
+  100%{transform:translateX(140vw) rotate(26deg);opacity:1;}}
+@keyframes transTextPop{0%{transform:scale(.4);opacity:0;}60%{transform:scale(1.12);opacity:1;}100%{transform:scale(1);opacity:1;}}
+#transition-text{animation:transTextPop .3s cubic-bezier(.34,1.56,.64,1) .18s both!important;}
 @keyframes burnIn{0%{opacity:0;transform:scale(1.2);filter:brightness(2) blur(10px);}30%{opacity:1;filter:brightness(1.8) blur(5px);}100%{opacity:1;transform:scale(1);filter:brightness(1) blur(0);}}
 @keyframes transBgIn{0%{transform:scaleX(0);transform-origin:left;}100%{transform:scaleX(1);transform-origin:left;}}
 @keyframes transBgOut{0%{transform:scaleX(1);transform-origin:right;}100%{transform:scaleX(0);transform-origin:right;}}
@@ -205,9 +353,9 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 @keyframes blindCardIn{0%{opacity:0;transform:translateY(30px) scale(.9);}100%{opacity:1;transform:translateY(0) scale(1);}}
 @keyframes blindWobble{0%,100%{transform:translateY(0) rotate(0);}33%{transform:translateY(-4px) rotate(.8deg);}66%{transform:translateY(2px) rotate(-.5deg);}}
 .blind-card:hover{transform:translateY(-12px) scale(1.1)!important;z-index:10;}
-.blind-card.small:hover{box-shadow:0 8px 30px rgba(59,130,246,.4);}
-.blind-card.big:hover{box-shadow:0 8px 30px rgba(232,69,69,.4);}
-.blind-card.boss:hover{box-shadow:0 8px 30px rgba(168,85,247,.5);}
+.blind-card.small:hover{box-shadow:inset 3px 3px 0 rgba(255,255,255,.1),inset -4px -4px 0 rgba(0,0,0,.4),0 10px 0 rgba(0,0,0,.45),0 0 0 3px var(--blue)!important;}
+.blind-card.big:hover{box-shadow:inset 3px 3px 0 rgba(255,255,255,.1),inset -4px -4px 0 rgba(0,0,0,.4),0 10px 0 rgba(0,0,0,.45),0 0 0 3px var(--red)!important;}
+.blind-card.boss:hover{box-shadow:inset 3px 3px 0 rgba(255,255,255,.1),inset -4px -4px 0 rgba(0,0,0,.4),0 10px 0 rgba(0,0,0,.45),0 0 0 3px var(--purple)!important;}
 .blind-card.small{border-color:var(--blue);box-shadow:0 0 20px rgba(59,130,246,.2);}
 .blind-card.big{border-color:var(--red);box-shadow:0 0 20px rgba(232,69,69,.2);}
 .blind-card.boss{border-color:var(--purple);box-shadow:0 0 20px rgba(168,85,247,.3);}
@@ -235,11 +383,19 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .skip-tag-ic{font-size:18px;}
 /* ==================== 难度选择（问题1） ==================== */
 #s-stake{align-items:center;justify-content:center;padding:20px;flex-direction:column;}
+/* 界面标题：像素逐字弹跳入位 + 持续轻微浮动 */
+.px-title{display:inline-block;animation:pxTitleIn .5s cubic-bezier(.34,1.8,.64,1) both,pxTitleBob 2.4s ease-in-out .6s infinite;
+  text-shadow:3px 3px 0 rgba(0,0,0,.45),0 0 18px rgba(245,197,66,.25);}
+@keyframes pxTitleIn{0%{opacity:0;transform:translateY(-26px) scale(.7) rotate(-4deg);}
+  60%{opacity:1;transform:translateY(4px) scale(1.08) rotate(1.5deg);}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(0);}}
+@keyframes pxTitleBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
 .stake-cards{display:flex;flex-direction:column;gap:24px;align-items:center;justify-content:center;position:relative;z-index:2;max-width:680px;width:100%;}
-.stake-bar{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
-.stake-chip{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;
-  background:linear-gradient(180deg,var(--panel2),var(--panel));border:3px solid var(--stk-color,#555);
-  transition:transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,opacity .2s;
+.stake-bar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.stake-chip{width:54px;height:54px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  background:var(--panel2);border:3px solid var(--stk-color,#555);
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.12),inset -3px -3px 0 rgba(0,0,0,.4),4px 4px 0 rgba(0,0,0,.5);
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .15s,opacity .2s;
   animation:stakeIn .4s ease-out backwards;}
 .stake-chip:nth-child(1){animation-delay:.04s;}
 .stake-chip:nth-child(2){animation-delay:.08s;}
@@ -249,27 +405,35 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .stake-chip:nth-child(6){animation-delay:.24s;}
 .stake-chip:nth-child(7){animation-delay:.28s;}
 .stake-chip:nth-child(8){animation-delay:.32s;}
-@keyframes stakeIn{0%{opacity:0;transform:translateY(20px) scale(.8);}100%{opacity:1;transform:translateY(0) scale(1);}}
-.stake-chip:hover{transform:translateY(-4px) scale(1.1);}
-.stake-chip.selected{transform:translateY(-6px) scale(1.15);box-shadow:0 0 0 3px rgba(255,255,255,.4),0 0 24px var(--stk-color,#fbbf24);border-color:var(--stk-color,#fbbf24);}
+@keyframes stakeIn{0%{opacity:0;transform:translateY(-24px) scale(.6) rotate(-6deg);}
+  60%{opacity:1;transform:translateY(3px) scale(1.08) rotate(1deg);}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(0);}}
+.stake-chip:hover{transform:translateY(-6px) scale(1.12) rotate(-2deg);box-shadow:inset 2px 2px 0 rgba(255,255,255,.15),inset -3px -3px 0 rgba(0,0,0,.4),4px 8px 0 rgba(0,0,0,.55);}
+.stake-chip.selected{transform:translateY(-8px) scale(1.18);
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.2),inset -3px -3px 0 rgba(0,0,0,.4),0 0 0 3px #fff,0 0 0 6px var(--stk-color,#fbbf24),6px 8px 0 rgba(0,0,0,.5);
+  border-color:#fff;}
 .stake-chip.locked{opacity:.4;filter:grayscale(.9);cursor:not-allowed;}
 .stake-chip.locked:hover{transform:none;}
 .stake-chip-ic{font-size:24px;line-height:1;}
-.stake-detail{background:linear-gradient(160deg,var(--panel2),var(--panel));border:2px solid var(--line);border-radius:14px;
+.stake-detail{background:var(--panel);border:3px solid var(--line);border-radius:4px;
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.07),inset -4px -4px 0 rgba(0,0,0,.4),6px 6px 0 rgba(0,0,0,.5);
   padding:22px 24px;text-align:center;width:min(420px,90vw);animation:stakeIn .3s ease-out;}
-.stake-detail-ic{font-size:40px;line-height:1;margin-bottom:8px;}
+.stake-detail-ic{font-size:40px;line-height:1;margin-bottom:8px;animation:stakeIcBob 1.6s ease-in-out infinite;}
+@keyframes stakeIcBob{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-6px) rotate(3deg);}}
 .stake-detail-name{font-family:var(--f-zh);font-size:22px;color:#fff;letter-spacing:2px;margin-bottom:10px;}
-.stake-detail-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:12px;text-align:left;background:rgba(0,0,0,.25);padding:10px 12px;border-radius:8px;}
+.stake-detail-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:12px;text-align:left;background:rgba(0,0,0,.35);padding:10px 12px;border:2px solid rgba(0,0,0,.4);}
 .stake-detail-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
-.stake-tag{font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.1);color:#fbbf24;letter-spacing:1px;}
+.stake-tag{font-size:11px;padding:3px 8px;border-radius:3px;background:rgba(0,0,0,.4);border:2px solid rgba(255,255,255,.18);color:#fbbf24;letter-spacing:1px;}
 
 /* ==================== 牌组选择（轮播） ==================== */
 #s-deck{align-items:center;justify-content:center;padding:20px;flex-direction:column;}
 .deck-carousel{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:4px;width:100%;max-width:860px;margin:0 auto;}
-.deck-arrow{flex:none;width:56px;height:56px;border-radius:50%;background:linear-gradient(180deg,#3a3a4e,#24243a);
+.deck-arrow{flex:none;width:56px;height:56px;border-radius:4px;background:#2a2a40;
   border:2px solid var(--line);color:var(--gold);display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s,color .18s;box-shadow:0 4px 0 rgba(0,0,0,.35);user-select:none;z-index:4;}
-.deck-arrow:hover{transform:translateY(-3px);border-color:var(--gold);color:#ffd86b;box-shadow:0 4px 0 rgba(0,0,0,.35),0 0 18px rgba(245,197,66,.4);}
+  cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s,color .15s;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.1),inset -3px -3px 0 rgba(0,0,0,.4),4px 4px 0 rgba(0,0,0,.5);
+  user-select:none;z-index:4;}
+.deck-arrow:hover{transform:translateY(-3px);border-color:var(--gold);color:#ffd86b;box-shadow:inset 2px 2px 0 rgba(255,255,255,.15),inset -3px -3px 0 rgba(0,0,0,.4),4px 7px 0 rgba(0,0,0,.55);}
 .deck-arrow:active{transform:translateY(1px) scale(.94);}
 .deck-stage{position:relative;flex:1;max-width:720px;height:440px;min-height:440px;animation:deckFadeIn .45s ease-out backwards;}
 @keyframes deckFadeIn{0%{opacity:0;transform:translateY(20px) scale(.96);}100%{opacity:1;transform:translateY(0) scale(1);}}
@@ -331,6 +495,10 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 /* 问题6：积分数字变化弹跳（打字机式反馈） */
 @keyframes numBump{0%{transform:scale(1);}30%{transform:scale(1.18);filter:brightness(1.6);}60%{transform:scale(.96);}100%{transform:scale(1);filter:brightness(1);}}
 .sb-chips.num-bump,.sb-mult.num-bump{animation:numBump .28s ease-out;}
+/* 高分着火：数字火光呼吸 + 微颤 */
+@keyframes fireGlow{0%,100%{text-shadow:0 0 6px rgba(255,180,46,.9),0 0 16px rgba(255,106,31,.7);filter:brightness(1.15) saturate(1.3);}
+  50%{text-shadow:0 0 12px rgba(255,225,77,1),0 0 28px rgba(255,60,20,.9),0 2px 0 rgba(0,0,0,.3);filter:brightness(1.45) saturate(1.5);}}
+.sb-chips.on-fire,.sb-mult.on-fire{animation:fireGlow .36s ease-in-out infinite;}
 /* 问题8：单张牌计分的低频厚重震动（作用于计分区，幅度大、频率低） */
 @keyframes lowFreqShake{0%,100%{transform:translate(0,0);}10%{transform:translate(-3px,2px);}25%{transform:translate(3px,-2px);}
   40%{transform:translate(-2px,-1px);}55%{transform:translate(2px,2px);}70%{transform:translate(-2px,1px);}85%{transform:translate(1px,-1px);}}
@@ -367,6 +535,28 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 #play-area .fluid-green .blob:nth-child(1){width:40vw;height:40vw;background:#1a5a3a;top:-10%;left:20%;animation-delay:0s;}
 #play-area .fluid-green .blob:nth-child(2){width:35vw;height:35vw;background:#0f3a28;bottom:-10%;right:10%;animation-delay:-5s;}
 #play-area .fluid-green .blob:nth-child(3){width:25vw;height:25vw;background:#2a6a4a;top:40%;left:-5%;animation-delay:-9s;opacity:.3;}
+/* 战斗牌桌：原版螺旋漩涡动态呢绒纹理（双层反向旋转，径向淡出） */
+.table-swirl{position:absolute;inset:-24%;z-index:1;pointer-events:none;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 46%,
+      rgba(255,255,255,.10) 0deg .7deg,
+      rgba(0,0,0,.12) .7deg 1.6deg,
+      rgba(255,255,255,.06) 1.6deg 2.4deg,
+      rgba(0,0,0,.10) 2.4deg 3.8deg);
+  -webkit-mask-image:radial-gradient(ellipse 62% 72% at 50% 46%,#000 0%,rgba(0,0,0,.75) 48%,rgba(0,0,0,.25) 68%,transparent 82%);
+  mask-image:radial-gradient(ellipse 62% 72% at 50% 46%,#000 0%,rgba(0,0,0,.75) 48%,rgba(0,0,0,.25) 68%,transparent 82%);
+  animation:tableSwirl 90s linear infinite;}
+.table-swirl::after{content:'';position:absolute;inset:0;
+  background:
+    repeating-conic-gradient(from 180deg at 50% 46%,
+      rgba(255,255,255,.07) 0deg 1.4deg,
+      rgba(0,0,0,.09) 1.4deg 3.2deg,
+      transparent 3.2deg 7deg);
+  -webkit-mask-image:radial-gradient(ellipse 62% 72% at 50% 46%,#000 0%,rgba(0,0,0,.6) 50%,transparent 80%);
+  mask-image:radial-gradient(ellipse 62% 72% at 50% 46%,#000 0%,rgba(0,0,0,.6) 50%,transparent 80%);
+  animation:tableSwirlRev 150s linear infinite;}
+@keyframes tableSwirl{to{transform:rotate(360deg);}}
+@keyframes tableSwirlRev{to{transform:rotate(-360deg);}}
 
 /* 顶部小丑区和消耗品区 */
 #top-zones{display:flex;justify-content:space-between;padding:calc(10px + var(--pad-t)) 16px 10px;gap:12px;position:relative;z-index:2;flex:0 0 auto;}
@@ -439,17 +629,30 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
   -webkit-text-stroke:1.5px rgba(0,0,0,.85);paint-order:stroke fill;opacity:0;transition:opacity .3s;}
 #hand-type-name.show{opacity:1;}
 #scoring-cards{display:flex;gap:14px;min-height:110px;align-items:center;justify-content:center;flex-wrap:wrap;z-index:15;position:relative;}
-.score-card{width:68px;height:98px;border-radius:8px;background:linear-gradient(160deg,#fdf8ec,#e9dfc2);
-  border:2px solid #2a2140;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-size:18px;font-weight:900;color:#1a1a2a;position:relative;
-  animation:scoreCardIn .5s ease-out;box-shadow:0 4px 0 rgba(0,0,0,.4);}
-@keyframes scoreCardIn{0%{transform:translateY(-100px) scale(.5);opacity:0;}100%{transform:translateY(0) scale(1);opacity:1;}}
-.score-card .sc-sym{font-size:26px;}
-.score-card .sc-chip{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-family:var(--f-display),var(--f-pixel-zh);
-  font-size:14px;color:var(--blue);background:rgba(0,0,0,.8);padding:3px 8px;border-radius:6px;white-space:nowrap;
-  animation:chipPop .6s ease-out;}
+/* 桌上的计分牌：与手牌完全同构的缩小牌面（--cw 驱动角标/花色字号），大牌缩小落桌无跳变 */
+.score-card{width:68px;height:98px;position:relative;--cw:68px;flex:0 0 auto;
+  transform:translateY(0) scale(1);transition:transform .26s cubic-bezier(.34,1.56,.64,1),filter .26s;}
+.score-card .card-inner{width:100%;height:100%;border-radius:8px;background:linear-gradient(160deg,#fdf8ec,#e9dfc2);
+  border:2px solid #2a2140;box-shadow:0 4px 0 rgba(0,0,0,.4);position:relative;overflow:hidden;
+  transition:box-shadow .26s,border-color .26s;}
+.score-card .card-corner{font-size:calc(var(--cw)*.17);}
+.score-card .card-corner span{font-size:calc(var(--cw)*.12);}
+.score-card .card-center.face{font-size:calc(var(--cw)*.2);}
+.score-card .enh-tag{width:16px;height:16px;font-size:8px;top:-5px;right:-5px;line-height:16px;}
+/* 牌落在牌桌上：轻微落桌弹动 */
+.score-card.on-table{animation:scoreCardLand .3s cubic-bezier(.34,1.4,.64,1);}
+@keyframes scoreCardLand{0%{transform:translateY(-8px) scale(.94);}60%{transform:translateY(2px) scale(1.03);}100%{transform:translateY(0) scale(1);}}
+/* 算分时该牌悬浮抬起、放大、金光（原版手感） */
+.score-card.lifting{transform:translateY(-22px) scale(1.24);z-index:30;}
+.score-card.lifting .card-inner{border-color:var(--gold);
+  box-shadow:0 14px 26px rgba(0,0,0,.5),0 0 26px rgba(245,197,66,.9),inset 0 0 10px rgba(255,255,255,.5);}
+.score-card .sc-chip{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-family:var(--f-display),var(--f-pixel-zh);
+  white-space:nowrap;font-size:9px;letter-spacing:0;line-height:1.2;padding:2px 5px;border-radius:3px;
+  background:rgba(15,12,30,.92);color:#7dd3fc;border:2px solid rgba(0,0,0,.55);
+  text-shadow:0 1px 0 #000;box-shadow:2px 2px 0 rgba(0,0,0,.45);pointer-events:none;z-index:30;max-width:150%;overflow:visible;}
 @keyframes chipPop{0%{transform:translateX(-50%) translateY(10px);opacity:0;}100%{transform:translateX(-50%) translateY(0);opacity:1;}}
 #final-score{font-family:var(--f-display);font-size:clamp(28px,5vw,56px);color:var(--gold);margin-top:16px;
+  position:relative;z-index:40;
   text-shadow:-3px -3px 0 #000,3px -3px 0 #000,-3px 3px 0 #000,3px 3px 0 #000,0 0 16px rgba(0,0,0,.9),0 0 34px rgba(245,197,66,.7);
   -webkit-text-stroke:1.5px rgba(0,0,0,.85);paint-order:stroke fill;opacity:0;transition:opacity .3s;}
 #final-score.show{opacity:1;animation:scorePulse .5s ease-out;}
@@ -474,12 +677,27 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .hand-card:nth-child(6) .card-inner{animation-delay:2s;}
 .hand-card:nth-child(7) .card-inner{animation-delay:2.4s;}
 .hand-card:nth-child(8) .card-inner{animation-delay:2.8s;}
-.hand-card:hover:not(.selected):not(.dragging){transform:translateY(-24px) scale(1.15) rotate(var(--fan,0deg));z-index:40;}
-.hand-card:hover:not(.selected):not(.dragging) .card-inner{box-shadow:0 14px 32px rgba(0,0,0,.5),0 0 28px rgba(255,107,157,.6),0 0 10px rgba(255,255,255,.3) inset;animation-play-state:paused;}
-.hand-card.selected{transform:translateY(-36px) scale(1.15) rotate(var(--fan,0deg));z-index:50;}
-.hand-card.selected .card-inner{border-color:var(--gold);box-shadow:0 10px 24px rgba(0,0,0,.5),0 0 24px rgba(245,197,66,.8),0 0 10px rgba(255,255,255,.3) inset;animation-play-state:paused;}
+.hand-card:hover:not(.selected):not(.dragging){transform:translateY(-30px) scale(1.22) rotate(var(--fan,0deg));z-index:40;}
+.hand-card:hover:not(.selected):not(.dragging) .card-inner{box-shadow:6px 6px 0 rgba(0,0,0,.55),-3px -3px 0 rgba(255,107,157,.6),0 0 0 3px rgba(255,107,157,.9);animation:none;}
+/* 相邻牌扇形让位（原版手感：悬停牌两侧的牌向外让开） */
+.hand-card:hover + .hand-card:not(.selected):not(.dragging){
+  transform:translateX(16px) translateY(6px) rotate(calc(var(--fan,0deg) + 7deg)) scale(1.05);z-index:39;}
+.hand-card:has(+ .hand-card:hover):not(.selected):not(.dragging){
+  transform:translateX(-16px) translateY(6px) rotate(calc(var(--fan,0deg) - 7deg)) scale(1.05);z-index:39;}
+.hand-card.selected{transform:translateY(-38px) scale(1.18) rotate(var(--fan,0deg));z-index:50;}
+.hand-card.selected .card-inner{border-color:var(--gold);box-shadow:0 12px 28px rgba(0,0,0,.5),0 0 28px rgba(245,197,66,.85),0 0 12px rgba(255,255,255,.35) inset;animation:none;}
+/* 选中牌两侧也微微让位 */
+.hand-card.selected + .hand-card:not(.selected):not(.dragging){transform:translateX(8px) rotate(calc(var(--fan,0deg) + 4deg));}
+.hand-card:has(+ .hand-card.selected):not(.selected):not(.dragging){transform:translateX(-8px) rotate(calc(var(--fan,0deg) - 4deg));}
 .hand-card.dragging{z-index:100;transition:none;}
 .hand-card.dragging .card-inner{animation-play-state:paused;box-shadow:0 16px 40px rgba(0,0,0,.6),0 0 30px rgba(255,107,157,.6);}
+/* 发牌飞行中：显示牌组色牌背，落位翻转成正面（原版手感） */
+.hand-card.dealing::after{content:'';position:absolute;inset:0;border-radius:8px;z-index:6;
+  background:repeating-linear-gradient(45deg,var(--dc2,#c03030) 0 8px,var(--dc1,#8b1a1a) 8px 16px);
+  border:2px solid #2a2140;box-shadow:inset 0 0 0 4px var(--dc3,#5a0a0a),inset 0 0 0 6px rgba(255,255,255,.18),4px 4px 0 rgba(0,0,0,.4);}
+.hand-card.dealing .card-inner{visibility:hidden;}
+.hand-card.deal-flip .card-inner{animation:dealFlip .45s cubic-bezier(.34,1.4,.64,1);}
+@keyframes dealFlip{0%{transform:rotateY(180deg);}100%{transform:rotateY(0);}}
 .hand-card.debuffed .card-inner{filter:grayscale(1) brightness(.55);}
 /* 牌面内容 */
 .card-corner{position:absolute;top:6px;left:8px;font-weight:900;font-size:calc(var(--cw)*.155);line-height:1;
@@ -664,8 +882,18 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
   50%{transform:translateY(4px) scale(1.3) rotate(4deg);}75%{transform:translateY(-3px) scale(1.18) rotate(-2deg);}}
 .cons-card.shake{animation:consTriggerKf .8s ease-out !important;z-index:30;}
 /* 卡牌溶解消散特效（消耗品使用 / 商店卖卡） */
-@keyframes cardDissolveKf{0%{transform:scale(1);opacity:1;filter:blur(0);}25%{transform:scale(1.08);opacity:1;}100%{transform:scale(.35) translateY(14px) rotate(10deg);opacity:0;filter:blur(6px) brightness(1.6);}}
-.dissolving{animation:cardDissolveKf .38s ease-in forwards !important;pointer-events:none;}
+/* 卡牌燃烧消散（出售小丑/使用消耗品）：泛金光→白炽→焦化收缩成烬，像素闪烁 */
+@keyframes cardBurnKf{
+  0%{transform:scale(1) rotate(0deg);opacity:1;filter:none;}
+  12%{transform:scale(1.12) rotate(-2deg);opacity:1;filter:brightness(1.8) saturate(1.6);}
+  26%{transform:scale(1.16) rotate(3deg);opacity:1;filter:brightness(2.4) saturate(2.2) hue-rotate(-12deg);}
+  38%{transform:scale(1.12) rotate(-3deg);opacity:1;filter:brightness(1.6) sepia(.7) saturate(4) hue-rotate(-22deg);}
+  50%{transform:scale(1.1) rotate(2deg);opacity:.96;filter:brightness(2.0) sepia(.9) saturate(5) hue-rotate(-26deg) blur(.4px);}
+  62%{transform:scale(1.02) rotate(-3deg);opacity:.9;filter:brightness(1.5) sepia(.8) saturate(4) hue-rotate(-20deg) blur(.8px);}
+  74%{transform:scale(.86) translateY(6px) rotate(4deg);opacity:.8;filter:brightness(1.2) sepia(.6) saturate(3) blur(1.5px);}
+  86%{transform:scale(.6) translateY(12px) rotate(-3deg);opacity:.5;filter:brightness(.9) saturate(2) blur(2.5px);}
+  100%{transform:scale(.28) translateY(20px) rotate(6deg);opacity:0;filter:brightness(1.4) blur(4px);}}
+.dissolving{animation:cardBurnKf .58s steps(2,end) forwards !important;pointer-events:none;}
 /* 盲注卡上的标签提示 */
 .blind-tag-chip{position:absolute;top:-12px;right:-12px;width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,#3a3a4e,#1a1a2e);
   border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;z-index:6;box-shadow:0 3px 10px rgba(0,0,0,.5);
@@ -675,6 +903,7 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 
 /* 积分界面运行中的 筹码×倍率 提示 */
 #score-run{font-family:var(--f-display),var(--f-pixel-zh);font-size:clamp(16px,2.6vw,28px);color:#fff;margin-bottom:10px;min-height:1em;
+  position:relative;z-index:40;
   text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 0 14px rgba(0,0,0,.8);letter-spacing:1px;}
 
 /* ===== 商店悬停详情浮窗（修复1/5） ===== */
@@ -703,36 +932,87 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 
 
 
-/* ==================== 开卡包 ==================== */
+/* ==================== 开卡包（原版式纸包 + 全息镭射） ==================== */
 #s-pack{align-items:center;justify-content:center;}
 .pack-stage{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.pack-visual{width:140px;height:200px;position:relative;cursor:pointer;}
-.pack-wrap{width:100%;height:100%;border-radius:12px;position:relative;overflow:hidden;
-  box-shadow:0 8px 30px rgba(0,0,0,.6);transition:transform .3s;}
-.pack-wrap.shake{animation:packShake .5s ease-in-out;}
-@keyframes packShake{0%,100%{transform:translateX(0) rotate(0);}20%{transform:translateX(-8px) rotate(-3deg);}
-  40%{transform:translateX(8px) rotate(3deg);}60%{transform:translateX(-6px) rotate(-2deg);}80%{transform:translateX(6px) rotate(2deg);}}
-.pack-wrap.open{animation:packOpen .8s ease-out forwards;}
-@keyframes packOpen{0%{transform:scale(1);}30%{transform:scale(1.15);}60%{transform:scale(1.3) rotate(5deg);opacity:1;}
-  100%{transform:scale(2.2) rotate(12deg);opacity:0;}}
-.pack-joker .pack-wrap{background:linear-gradient(160deg,#c084fc,#7c3aed);border:3px solid #581c87;}
-.pack-standard .pack-wrap{background:linear-gradient(160deg,#ff6b9d,#db2777);border:3px solid #831843;}
-.pack-celestial .pack-wrap{background:linear-gradient(160deg,#38bdf8,#0284c7);border:3px solid #075985;}
-.pack-spectral .pack-wrap{background:linear-gradient(160deg,#a855f7,#6b21a8);border:3px solid #3b0764;}
-.pack-label{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-family:var(--f-zh);font-size:16px;color:#fff;
-  text-shadow:0 2px 4px rgba(0,0,0,.5);letter-spacing:2px;}
-.pack-ic{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:48px;}
+.pack-visual{width:168px;height:248px;position:relative;cursor:pointer;perspective:700px;}
+/* 开包瞬间从包内爆出的强光 */
+.pack-glow{position:absolute;inset:-40%;background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,240,180,.5) 30%,transparent 65%);
+  opacity:0;pointer-events:none;z-index:0;}
+.pack-visual.tear .pack-glow{animation:packGlow .7s ease-out forwards;}
+@keyframes packGlow{0%{opacity:0;transform:scale(.3);}30%{opacity:1;transform:scale(1.15);}100%{opacity:0;transform:scale(1.7);}}
+.pack-wrap{width:100%;height:100%;border-radius:6px;position:relative;overflow:hidden;
+  border:3px solid #1a1020;transform-style:preserve-3d;
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.25),inset -4px -4px 0 rgba(0,0,0,.35),6px 6px 0 rgba(0,0,0,.55);
+  transition:transform .3s;}
+.pack-wrap.shake{animation:packShake .42s ease-in-out infinite;}
+@keyframes packShake{0%,100%{transform:translate(0,0) rotate(0) scale(1);}
+  20%{transform:translate(-7px,2px) rotate(-4deg) scale(1.03);}
+  40%{transform:translate(7px,-3px) rotate(4deg) scale(1.05);}
+  60%{transform:translate(-6px,-2px) rotate(-3deg) scale(1.07);}
+  80%{transform:translate(6px,3px) rotate(3deg) scale(1.09);}}
+.pack-wrap.shake-hard{animation:packShakeHard .16s ease-in-out infinite;}
+@keyframes packShakeHard{0%,100%{transform:translate(0,0) rotate(0) scale(1.1);}
+  25%{transform:translate(-11px,3px) rotate(-7deg) scale(1.13);}
+  75%{transform:translate(11px,-3px) rotate(7deg) scale(1.13);}}
+/* 撕开后包体下沉缩小淡出，给卡片让位 */
+.pack-visual.tear .pack-wrap{animation:packSink .9s ease-in .45s forwards;}
+@keyframes packSink{0%{transform:translateY(0) scale(1);opacity:1;}
+  100%{transform:translateY(60px) scale(.7);opacity:0;}}
+/* 全息镭射层：彩虹色带流动 + 斜向高光扫过（Holo 版质感） */
+.pack-holo{position:absolute;inset:0;z-index:4;pointer-events:none;mix-blend-mode:screen;opacity:.85;
+  background:linear-gradient(115deg,rgba(255,0,90,.45) 0%,rgba(255,140,0,.45) 18%,rgba(220,255,0,.45) 36%,rgba(0,255,170,.45) 54%,rgba(0,140,255,.45) 72%,rgba(160,0,255,.45) 90%);
+  background-size:280% 280%;animation:holoFlow 2.6s linear infinite;}
+.pack-holo::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.75) 48%,rgba(255,255,255,.95) 50%,rgba(255,255,255,.75) 52%,transparent 60%);
+  background-size:320% 320%;animation:holoShine 3.2s linear infinite;}
+@keyframes holoFlow{0%{background-position:0% 50%;}100%{background-position:280% 50%;}}
+@keyframes holoShine{0%{background-position:-120% 0;}100%{background-position:220% 0;}}
+/* 顶部封口盖（撕开前盖住包口） */
+.pack-flap{position:absolute;top:0;left:0;right:0;height:26%;z-index:6;transform-origin:top center;
+  background:inherit;filter:brightness(.82);
+  border-bottom:3px dashed rgba(0,0,0,.55);
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.18),inset -3px 6px 6px rgba(0,0,0,.3);}
+.pack-flap::before{content:'';position:absolute;left:0;right:0;bottom:-3px;height:10px;
+  background:repeating-linear-gradient(135deg,#1a1020 0 6px,transparent 6px 12px);opacity:.5;}
+.pack-visual.tear .pack-flap{animation:flapTear .55s cubic-bezier(.5,-.2,.6,1) forwards;}
+@keyframes flapTear{0%{transform:rotateX(0);}100%{transform:rotateX(-135deg) translateY(-6px);opacity:.9;}}
+/* 撕裂缝线（蓄力时微微发亮） */
+.pack-tear-line{position:absolute;top:26%;left:0;right:0;height:4px;z-index:5;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.5) 0 8px,transparent 8px 14px);opacity:.6;}
+.pack-wrap.shake .pack-tear-line,.pack-wrap.shake-hard .pack-tear-line{opacity:1;background:repeating-linear-gradient(90deg,rgba(255,240,180,.9) 0 8px,transparent 8px 14px);}
+/* 包面内容 */
+.pack-ic{position:absolute;top:34%;left:0;right:0;text-align:center;font-size:52px;z-index:3;
+  filter:drop-shadow(3px 3px 0 rgba(0,0,0,.45));}
+.pack-packname{position:absolute;top:60%;left:0;right:0;text-align:center;z-index:3;
+  font-family:var(--f-display);font-size:15px;letter-spacing:2px;color:#fff;
+  text-shadow:2px 2px 0 rgba(0,0,0,.6);padding:0 8px;}
+.pack-label{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-family:var(--f-zh);font-size:14px;color:#fff;
+  text-shadow:2px 2px 0 rgba(0,0,0,.6);letter-spacing:2px;z-index:3;}
+/* 各类型包主题色（纯色硬边，不再大渐变） */
+.pack-joker .pack-wrap{background:#6d28d9;}
+.pack-joker .pack-flap{background:#5b21b6;}
+.pack-standard .pack-wrap{background:#be185d;}
+.pack-standard .pack-flap{background:#9d174d;}
+.pack-celestial .pack-wrap{background:#0369a1;}
+.pack-celestial .pack-flap{background:#075985;}
+.pack-spectral .pack-wrap{background:#7e22ce;}
+.pack-spectral .pack-flap{background:#6b21a8;}
 .pack-particles{position:absolute;inset:0;pointer-events:none;}
-.pack-reveal{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:34px;flex-wrap:wrap;padding:24px;}
+.pack-reveal{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:34px;flex-wrap:wrap;padding:24px;z-index:8;}
 .reveal-card{width:158px;height:228px;border-radius:14px;position:relative;opacity:0;transform:translateY(40px) scale(.5);
   animation:revealIn .5s cubic-bezier(.34,1.56,.64,1) forwards,revealIdle 3.4s ease-in-out infinite;box-shadow:0 8px 26px rgba(0,0,0,.55);cursor:pointer;
   transition:transform .25s cubic-bezier(.34,1.8,.64,1),box-shadow .25s;}
 .reveal-card:nth-child(1){animation-delay:0s,.5s;}
 .reveal-card:nth-child(2){animation-delay:.35s,1s;}
 .reveal-card:nth-child(3){animation-delay:.7s,1.5s;}
-.reveal-card:hover{transform:translateY(-30px) scale(1.9)!important;box-shadow:0 34px 90px rgba(0,0,0,.75),0 0 70px rgba(255,255,255,.5);z-index:20;}
+.reveal-card:hover{transform:translateY(-30px) scale(1.22)!important;z-index:20;
+  box-shadow:6px 6px 0 rgba(0,0,0,.55),-3px -3px 0 rgba(255,107,157,.6),0 0 0 3px rgba(255,107,157,.9)!important;}
 .reveal-card.selected{border-color:#fbbf24!important;box-shadow:0 0 0 3px #fbbf24,0 0 40px rgba(251,191,36,.7)!important;transform:translateY(-14px) scale(1.08);}
-@keyframes revealIn{to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes revealIn{0%{opacity:0;transform:translateY(-170px) scale(.12) rotate(-280deg);}
+  55%{opacity:1;transform:translateY(12px) scale(1.1) rotate(9deg);}
+  75%{transform:translateY(-6px) scale(.98) rotate(-3deg);}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(0);}}
 @keyframes revealIdle{0%,100%{transform:translateY(0) rotate(-.6deg);}50%{transform:translateY(-9px) rotate(.6deg);}}
 .reveal-card.joker{background:linear-gradient(160deg,#4a4a5a,#353545);border:2px solid #8b83a8;}
 .reveal-card.joker.r1{background:linear-gradient(160deg,#2a4a6a,#1a3a5a);border-color:#38bdf8;}
@@ -743,6 +1023,48 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .reveal-card .rc-art{width:96px;height:96px;image-rendering:pixelated;border-radius:10px;}
 .reveal-card .rc-name{font-family:var(--f-zh);font-size:15px;font-weight:900;color:#fff;text-align:center;margin-top:8px;padding:0 6px;}
 .reveal-card .rc-desc{font-size:11px;color:rgba(255,255,255,.7);text-align:center;padding:6px 10px;line-height:1.4;}
+/* 标准包：真正的扑克牌牌面（白底牌面+角标+增强色） */
+.reveal-card.card{background:linear-gradient(160deg,#fdf8ec,#e9dfc2);border:3px solid #d8ccb0;padding:0;
+  box-shadow:0 8px 26px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.5);}
+.reveal-card.card .rc-face{position:absolute;left:8px;right:8px;top:8px;height:calc(100% - 66px);border-radius:6px;
+  background:linear-gradient(160deg,#fdf8ec,#eee4ca);border:2px solid #d8ccb0;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);}
+.reveal-card.card .rc-name{color:#1a1a2e;font-size:13px;margin-top:0;position:absolute;left:4px;right:4px;bottom:30px;text-shadow:0 1px 0 rgba(255,255,255,.7);}
+.reveal-card.card .rc-desc{color:#4a4438;font-size:10px;position:absolute;left:4px;right:4px;bottom:5px;padding:0 6px;line-height:1.3;}
+.reveal-card.card.enh-m{border-color:#a855f7;box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 22px rgba(168,85,247,.65),inset 0 0 0 2px rgba(255,255,255,.5);}
+.reveal-card.card.enh-h{border-color:#ec4899;box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 22px rgba(236,72,153,.65),inset 0 0 0 2px rgba(255,255,255,.5);}
+.reveal-card.card.enh-l{border-color:#4ade80;box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 22px rgba(74,222,128,.6),inset 0 0 0 2px rgba(255,255,255,.5);}
+.reveal-card.card.enh-s{border-color:#94a3b8;box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 22px rgba(148,163,184,.6),inset 0 0 0 2px rgba(255,255,255,.5);}
+.reveal-card.card.enh-g{border-color:#67e8f9;box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 22px rgba(103,232,249,.7),inset 0 0 0 2px rgba(255,255,255,.5);}
+.reveal-card.card.enh-o{border-color:#f5c542;box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 22px rgba(245,197,66,.65),inset 0 0 0 2px rgba(255,255,255,.5);}
+.reveal-card.card.enh-w{border:0;border:3px solid transparent;background:linear-gradient(160deg,#fdf8ec,#e9dfc2) padding-box,repeating-linear-gradient(45deg,#ef4444,#ef4444 6px,#3b82f6 6px,#3b82f6 12px,#4ade80 12px,#4ade80 18px,#f5c542 18px,#f5c542 24px) border-box;}
+.reveal-card.card.enh-t{border-color:#78716c;box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 22px rgba(120,113,108,.6),inset 0 0 0 2px rgba(255,255,255,.5);}
+/* 商店里的迷你镭射卡包：与开包动画同色同款（锯齿封口 + 全息流动 + 白色标签条，无表情图） */
+.pack-mini{position:relative;width:62px;height:86px;border-radius:6px;overflow:hidden;border:3px solid #1a1020;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.25),inset -2px -2px 0 rgba(0,0,0,.35),4px 4px 0 rgba(0,0,0,.5);}
+#s-shop .si-art .pack-mini{width:88%;height:auto;aspect-ratio:62/86;}
+.pack-mini .pm-holo{position:absolute;inset:0;z-index:3;mix-blend-mode:screen;pointer-events:none;opacity:.85;
+  background:linear-gradient(115deg,rgba(255,0,90,.45) 0%,rgba(255,140,0,.45) 18%,rgba(220,255,0,.45) 36%,rgba(0,255,170,.45) 54%,rgba(0,140,255,.45) 72%,rgba(160,0,255,.45) 90%);
+  background-size:280% 280%;animation:holoFlow 2.6s linear infinite;}
+.pack-mini .pm-holo::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.7) 48%,rgba(255,255,255,.9) 50%,rgba(255,255,255,.7) 52%,transparent 60%);
+  background-size:320% 320%;animation:holoShine 3.2s linear infinite;}
+.pack-mini .pm-flap{position:absolute;top:0;left:0;right:0;height:26%;z-index:4;
+  border-bottom:3px dashed rgba(0,0,0,.55);
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.18),inset -2px 4px 5px rgba(0,0,0,.3);}
+.pack-mini .pm-flap::after{content:'';position:absolute;left:0;right:0;bottom:-3px;height:8px;
+  background:repeating-linear-gradient(135deg,#1a1020 0 5px,transparent 5px 10px);opacity:.5;}
+.pack-mini .pm-label{position:absolute;left:10%;right:10%;bottom:9%;height:24%;z-index:4;
+  background:rgba(253,248,236,.94);border:1px solid rgba(0,0,0,.4);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-zh);font-size:10px;font-weight:900;color:#1a1020;letter-spacing:1px;}
+.pack-mini.pm-joker{background:#6d28d9;}
+.pack-mini.pm-joker .pm-flap{background:#5b21b6;}
+.pack-mini.pm-standard{background:#be185d;}
+.pack-mini.pm-standard .pm-flap{background:#9d174d;}
+.pack-mini.pm-celestial{background:#0369a1;}
+.pack-mini.pm-celestial .pm-flap{background:#075985;}
+.pack-mini.pm-spectral{background:#7e22ce;}
+.pack-mini.pm-spectral .pm-flap{background:#6b21a8;}
 .pack-bottom{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:center;gap:12px;z-index:10;}
 .pack-btn{padding:10px 24px;border-radius:10px;font-family:var(--f-zh);font-size:16px;color:#fff;
   background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);box-shadow:0 3px 0 rgba(0,0,0,.4);}
@@ -804,7 +1126,7 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .hr-mc{background:linear-gradient(160deg,#fdf8ec,#e6dac0);border:2px solid #2a2140;border-radius:5px;position:relative;
   display:flex;flex-direction:column;box-shadow:0 3px 0 rgba(0,0,0,.25);overflow:hidden;}
 .hr-mc.big{width:54px;height:76px;}
-.hr-mc.small{width:34px;height:48px;opacity:.9;}
+.hr-mc.small{width:34px;height:48px;opacity:.55;filter:saturate(.3);}
 .hr-mc .mc-corner{position:absolute;top:2px;left:3px;font-weight:900;line-height:1;display:flex;flex-direction:column;align-items:center;}
 .hr-mc.big .mc-corner{font-size:12px;}
 .hr-mc.small .mc-corner{font-size:9px;}
@@ -1681,6 +2003,98 @@ html{background:#0a0a12;}
   #btn-del-save{padding:14px 14px!important;}
 }
 
+/* ==================== 像素风强化（硬边方块角 / 实体像素阴影 / 阶梯动画） ==================== */
+/* 所有图片/画布按像素硬边渲染 */
+img,canvas,.jc-art,.si-art img{image-rendering:pixelated;image-rendering:crisp-edges;}
+/* 像素字体关闭抗锯齿模糊，保留颗粒感 */
+body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
+
+/* 方块硬角：卡片/面板/按钮/弹窗统一收成像素小方角（圆形图标按钮保持圆形） */
+.menu-btn,.blind-card,.stake-detail,.stake-detail-desc,.stake-tag,.deck-card,.deck-btn,.deck-logo,
+.deck-lock,.joker-card,.cons-card,.shop-item,.score-card,.info-panel,.info-tab,.dex-tab,
+.codex-item,.codex-back,.info-back,.voucher-info-card,.reveal-card,.hand-card .card-inner,
+.action-btn,.pack-btn,.pack-wrap,.skip-btn,.hand-row,.blind-info-row,#modal-box,#toast,
+.buff-tag,.blind-tag-pop,.si-buy-btn,.si-price,.joker-badge,.sc-chip,.sb-pill,.confirm-btn{
+  border-radius:4px!important;
+}
+/* 手牌角标/点数等小块更硬 */
+.hand-card .card-inner,.joker-card,.cons-card{border-radius:6px!important;}
+
+/* 像素 3D 硬边阴影：外层实体投影 + 内高光 + 内暗边（无模糊） */
+.menu-btn,.deck-btn,.action-btn,.pack-btn,.skip-btn,.codex-back,.info-back,.stake-detail,.deck-card,
+.blind-card,.info-panel,.joker-card,.cons-card,.shop-item,.score-card,.reveal-card,.voucher-info-card,
+.hand-row,#modal-box{
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.10),inset -3px -3px 0 rgba(0,0,0,.32),0 5px 0 rgba(0,0,0,.45)!important;
+}
+.menu-btn:active,.deck-btn:active,.action-btn:active,.pack-btn:active,.skip-btn:active,
+.codex-back:active,.info-back:active{
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.08),inset -3px -3px 0 rgba(0,0,0,.30),0 1px 0 rgba(0,0,0,.45)!important;
+}
+/* 悬停时投影加高，保留弹性质感 */
+.menu-btn:hover,.deck-btn:hover,.action-btn:hover,.pack-btn:hover,.skip-btn:hover{
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.14),inset -3px -3px 0 rgba(0,0,0,.32),0 7px 0 rgba(0,0,0,.5),0 0 22px rgba(245,197,66,.25)!important;
+}
+/* 中心牌组/选中盲注卡片的金色光晕改为硬边像素光 */
+.deck-card.pos-center{box-shadow:inset 3px 3px 0 rgba(255,255,255,.12),inset -3px -3px 0 rgba(0,0,0,.32),0 6px 0 rgba(0,0,0,.45),0 0 0 3px var(--gold),0 0 0 6px rgba(245,197,66,.25)!important;}
+.blind-card.selected{box-shadow:inset 3px 3px 0 rgba(255,255,255,.12),inset -3px -3px 0 rgba(0,0,0,.32),0 6px 0 rgba(0,0,0,.45),0 0 0 3px var(--gold),0 0 0 6px rgba(245,197,66,.25)!important;}
+
+/* 入场动画改成阶梯式，像素跳帧感 */
+@keyframes stakeIn{0%{opacity:0;transform:translateY(24px) scale(.7);}
+  40%{opacity:1;transform:translateY(24px) scale(.7);}
+  70%{transform:translateY(-4px) scale(1.06);}
+  100%{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes deckFadeIn{0%{opacity:0;transform:translateY(24px) scale(.92);}
+  50%{opacity:1;transform:translateY(8px) scale(.97);}
+  100%{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes scoreCardIn{0%{transform:translateY(-80px) scale(.4);opacity:0;}
+  30%{opacity:1;transform:translateY(-80px) scale(.4);}
+  65%{transform:translateY(6px) scale(1.08);}
+  100%{transform:translateY(0) scale(1);opacity:1;}}
+/* 选项卡按钮像素化 */
+.info-tab,.dex-tab{box-shadow:inset 2px 2px 0 rgba(255,255,255,.10),inset -2px -2px 0 rgba(0,0,0,.30),0 3px 0 rgba(0,0,0,.4)!important;}
+.info-tab.active,.dex-tab.active{box-shadow:inset 2px 2px 0 rgba(255,255,255,.18),inset -2px -2px 0 rgba(0,0,0,.30),0 3px 0 rgba(0,0,0,.45),0 0 14px rgba(245,197,66,.35)!important;}
+/* 标签/徽章/筹码提示硬边化 */
+.buff-tag,.stake-tag,.deck-lock,.sc-chip,.joker-badge,.si-price{border:2px solid rgba(0,0,0,.55)!important;}
+/* 牌组卡背像素化 */
+.deck-logo{border-radius:4px!important;box-shadow:inset 0 0 0 2px rgba(255,255,255,.18),0 5px 0 rgba(0,0,0,.45)!important;}
+
+/* ==================== 新手教程：游戏内引导 ==================== */
+#tut-in-game{position:fixed;inset:0;z-index:9990;pointer-events:none;display:none;}
+#tut-in-game.active{display:block;}
+#tut-overlay{position:absolute;inset:0;box-shadow:0 0 0 9999px rgba(0,0,0,.5);transition:all .25s ease-out;}
+#tut-spotlight{position:absolute;border:3px solid #fbbf24;border-radius:6px;
+  box-shadow:0 0 12px 4px rgba(251,191,36,.6),inset 0 0 8px rgba(251,191,36,.3);
+  animation:tutPulse 1.4s ease-in-out infinite;transition:all .25s ease-out;}
+@keyframes tutPulse{0%,100%{box-shadow:0 0 12px 4px rgba(251,191,36,.6),inset 0 0 8px rgba(251,191,36,.3);}
+  50%{box-shadow:0 0 20px 8px rgba(251,191,36,.85),inset 0 0 12px rgba(251,191,36,.5);}}
+#tut-jj-in-game{position:absolute;bottom:20px;left:20px;width:72px;height:84px;z-index:9992;
+  animation:tutJJBob 2.5s ease-in-out infinite;}
+@keyframes tutJJBob{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-5px) rotate(1deg);}}
+#tut-bubble-in-game{position:absolute;bottom:40px;left:100px;max-width:min(340px,55vw);z-index:9992;
+  background:linear-gradient(180deg,#fffbeb,#fef3c7);border:3px solid #1a1a2e;border-radius:8px;
+  padding:10px 14px;font-family:var(--f-zh);font-size:14px;line-height:1.7;color:#1a1a2e;
+  box-shadow:4px 4px 0 rgba(0,0,0,.5);pointer-events:none;
+  animation:tutBubbleIn .3s ease-out both;}
+#tut-bubble-in-game::after{content:'';position:absolute;left:-14px;bottom:16px;
+  border:8px solid transparent;border-right-color:#1a1a2e;border-left:0;}
+#tut-bubble-in-game::before{content:'';position:absolute;left:-10px;bottom:16px;
+  border:7px solid transparent;border-right-color:#fef3c7;border-left:0;z-index:1;}
+@keyframes tutBubbleIn{from{opacity:0;transform:translateX(-10px) scale(.9);}to{opacity:1;transform:translateX(0) scale(1);}}
+#tut-skip-btn{position:fixed;top:16px;right:20px;z-index:9993;pointer-events:auto;
+  background:linear-gradient(180deg,#ef4444,#b91c1c);border:2px solid #7f1d1d;
+  border-radius:6px;padding:8px 18px;color:#fff;font-family:var(--f-zh);font-size:13px;
+  cursor:pointer;box-shadow:0 3px 0 #7f1d1d;letter-spacing:1px;transition:transform .15s;}
+#tut-skip-btn:hover{transform:translateY(-2px);}
+#tut-hint-bubble{position:fixed;bottom:20px;left:100px;max-width:min(320px,50vw);z-index:9991;
+  background:linear-gradient(180deg,#fffbeb,#fef3c7);border:3px solid #1a1a2e;border-radius:8px;
+  padding:8px 12px;font-family:var(--f-zh);font-size:13px;line-height:1.6;color:#1a1a2e;
+  box-shadow:4px 4px 0 rgba(0,0,0,.5);pointer-events:none;opacity:0;transition:opacity .3s;}
+#tut-hint-bubble.show{opacity:1;}
+@media(max-width:600px){
+  #tut-jj-in-game{width:56px;height:66px;}
+  #tut-bubble-in-game{font-size:12px;max-width:62vw;left:84px;padding:8px 10px;}
+  #tut-hint-bubble{font-size:12px;max-width:62vw;left:84px;}
+}
 </style>
 </head>
 <body>
@@ -1696,9 +2110,9 @@ html{background:#0a0a12;}
 <div id="crt"></div>
 <div id="crt-vignette" style="display:none;"></div>
 <div id="drag-tooltip"></div>
-<div id="transition-overlay" style="position:fixed;inset:0;z-index:9999;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;">
+<div id="transition-overlay" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;">
   <div id="transition-bg" style="position:absolute;inset:0;background:linear-gradient(135deg,#1a0a2e,#2d1b4e,#1a0a2e);"></div>
-  <div id="transition-cards" style="position:relative;z-index:2;display:flex;gap:12px;"></div>
+  <div id="transition-cards" style="position:absolute;inset:0;z-index:2;overflow:hidden;"></div>
   <div id="transition-text" style="position:relative;z-index:3;font-family:var(--f-display);font-size:clamp(24px,5vw,48px;color:#fff;text-shadow:0 0 20px rgba(255,255,255,.5);letter-spacing:4px;"></div>
 </div>
 <div id="hover-tooltip" style="display:none;position:fixed;z-index:9998;background:rgba(20,18,30,.92);border:2px solid #4a9eff;
@@ -1740,6 +2154,8 @@ html{background:#0a0a12;}
   <div class="start-footer" id="start-stats" style="display:none"></div>
   <!-- 关于按钮 -->
   <button id="btn-about" style="position:absolute;bottom:16px;right:20px;z-index:10;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 16px;color:rgba(255,255,255,.6);font-family:var(--f-zh);font-size:14px;cursor:pointer;transition:all .2s;letter-spacing:2px;">关于</button>
+  <!-- 退出游戏：回到游戏库门户 -->
+  <button id="btn-exit-game" style="position:absolute;bottom:16px;left:20px;z-index:10;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.35);border-radius:4px;padding:8px 16px;color:#fff;font-family:var(--f-zh);font-size:14px;cursor:pointer;letter-spacing:2px;box-shadow:3px 3px 0 rgba(0,0,0,.5);">← 退出游戏</button>
   <!-- 啾啾：藏在左侧屏幕旁 -->
   <div id="jiujiu-peek" class="jj-peek">
     <div class="jj-cat-wrap">
@@ -1880,7 +2296,7 @@ html{background:#0a0a12;}
 <section class="screen" id="s-blind">
   <div class="fluid-bg fluid-green"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
   <div style="position:relative;z-index:2;text-align:center;margin-bottom:20px;">
-    <div style="font-family:var(--f-zh);font-size:28px;color:var(--ink);margin-bottom:4px;">选择下一个盲注</div>
+    <div class="px-title" style="font-family:var(--f-zh);font-size:28px;color:var(--ink);margin-bottom:4px;">选择下一个盲注</div>
     <div style="font-size:13px;color:var(--dim);" id="blind-ante-info">底注 1</div>
   </div>
   <div class="blind-cards" id="blind-cards"></div>
@@ -1891,7 +2307,7 @@ html{background:#0a0a12;}
 <section class="screen" id="s-deck">
   <div class="fluid-bg fluid-purple"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
   <div style="position:relative;z-index:2;text-align:center;margin-bottom:20px;">
-    <div style="font-family:var(--f-zh);font-size:28px;color:var(--ink);margin-bottom:6px;">选择牌组</div>
+    <div class="px-title" style="font-family:var(--f-zh);font-size:28px;color:var(--ink);margin-bottom:6px;">选择牌组</div>
     <div style="font-size:13px;color:var(--dim);">共 8 个底注（24 个盲注）· 小/大盲注可跳过并获得标签</div>
   </div>
   <div class="deck-carousel">
@@ -1909,7 +2325,7 @@ html{background:#0a0a12;}
 <section class="screen" id="s-stake">
   <div class="fluid-bg fluid-purple"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
   <div style="position:relative;z-index:2;text-align:center;margin-bottom:20px;">
-    <div style="font-family:var(--f-zh);font-size:28px;color:var(--ink);margin-bottom:6px;">选择难度</div>
+    <div class="px-title" style="font-family:var(--f-zh);font-size:28px;color:var(--ink);margin-bottom:6px;">选择难度</div>
     <div style="font-size:13px;color:var(--dim);" id="stake-deck-info">当前牌组</div>
   </div>
   <div class="stake-cards" id="stake-cards"></div>
@@ -1960,6 +2376,8 @@ html{background:#0a0a12;}
   </div>
   <div id="play-area">
     <div class="fluid-bg fluid-green"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
+    <!-- 战斗牌桌：原版螺旋漩涡动态呢绒纹理（双层反向旋转，径向淡出） -->
+    <div class="table-swirl"></div>
     <div id="top-zones">
       <div class="joker-zone" id="joker-zone"></div>
       <div class="cons-zone" id="cons-zone"></div>
@@ -2065,39 +2483,48 @@ html{background:#0a0a12;}
   </div>
 </section>
 
-<!-- ==================== 商店 ==================== -->
+<!-- ==================== 商店（原版 Balatro 布局：就在牌桌上） ==================== -->
 <section class="screen" id="s-shop">
   <div class="fluid-bg fluid-green"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
-  <div style="position:relative;z-index:2;">
-    <div class="shop-header">
-      <div class="shop-sign">SHOP</div>
-      <div style="text-align:right;">
-        <div class="shop-money" id="shop-money">$4</div>
-        <div style="font-size:12px;color:var(--dim);" id="shop-round">底注 1</div>
+  <div class="shop-table">
+    <!-- 顶部居中金钱 -->
+    <div class="shop-money-bar">
+      <span class="smb-coin">$</span><span class="smb-val" id="shop-money">$4</span>
+      <span class="smb-round" id="shop-round">底注 1</span>
+    </div>
+    <!-- 左栏：重掷 + 代金券槽 -->
+    <div class="shop-rail rail-left">
+      <button class="rail-reroll" id="btn-reroll"><span class="rr-name">重掷</span><span class="rr-cost" id="reroll-cost">$5</span></button>
+      <div class="rail-vouchers" id="shop-voucher-slots"></div>
+      <div class="rail-vlabel">代金券</div>
+    </div>
+    <!-- 中央：已拥有小丑 → 商品 → 已拥有消耗品（分组带文字标注） -->
+    <div class="shop-main">
+      <div class="sm-owned"><div class="owned-row-label">小丑牌</div><div class="owned-jokers" id="owned-jokers"></div></div>
+      <div class="sm-goods">
+        <div class="goods-row">
+          <div class="shop-col"><div class="shop-row-label">小丑牌</div><div class="shop-grid" id="shop-jokers"></div></div>
+          <div class="shop-col"><div class="shop-row-label">消耗品</div><div class="shop-grid" id="shop-consumables"></div></div>
+        </div>
+        <div class="goods-row"><div class="shop-col"><div class="shop-row-label">卡包 · 代金券</div><div class="shop-grid" id="shop-extras"></div></div></div>
       </div>
+      <div class="sm-consowned"><div class="owned-row-label">消耗品</div><div class="owned-jokers" id="shop-owned-cons"></div></div>
     </div>
-    <div class="shop-section">
-      <div class="shop-section-title">小丑牌</div>
-      <div class="shop-grid" id="shop-jokers"></div>
+    <!-- 右栏：下一盲注大圆钮 -->
+    <div class="shop-rail rail-right">
+      <button class="rail-next t0" id="btn-next-blind">
+        <span class="rn-disc"><span class="rn-ic" id="nb-ic">SB</span></span>
+        <span class="rn-label" id="nb-label">下一盲注</span>
+      </button>
     </div>
-    <div class="shop-section">
-      <div class="shop-section-title">消耗品</div>
-      <div class="shop-grid" id="shop-consumables"></div>
-    </div>
-    <div class="shop-section">
-      <div class="shop-section-title">优惠券 & 卡包</div>
-      <div class="shop-grid" id="shop-extras"></div>
-    </div>
-    <div class="shop-section">
-      <div class="shop-section-title">已拥有小丑牌（点击查看/出售）</div>
-      <div class="owned-jokers" id="owned-jokers"></div>
-    </div>
-    <div class="shop-actions">
-      <button class="shop-action-btn reroll" id="btn-reroll">重掷 $5</button>
-      <button class="shop-action-btn dev-entry" id="shop-dev" style="display:none;background:linear-gradient(180deg,#111,#333);box-shadow:0 4px 0 #000;border:1px dashed #f472b6;color:#f472b6;">调试</button>
-      <button class="shop-action-btn" id="btn-shop-menu" style="background:linear-gradient(180deg,#6b7280,#4b5563);box-shadow:0 4px 0 #374151;">返回主菜单</button>
-      <button class="shop-action-btn next" id="btn-next-blind">下一个盲注</button>
-    </div>
+    <!-- 左下：牌组堆（点击查看牌库） -->
+    <button class="shop-deckpile" id="btn-shop-deck">
+      <span class="dp-stack"><span class="dp-card"></span><span class="dp-card"></span><span class="dp-card dp-top">🂠</span></span>
+      <span class="dp-label">牌组</span>
+    </button>
+    <!-- 角落 -->
+    <button class="shop-corner-btn" id="btn-shop-menu">主菜单</button>
+    <button class="shop-action-btn dev-entry" id="shop-dev" style="display:none;position:fixed;top:10px;right:14px;bottom:auto;left:auto;z-index:20;background:linear-gradient(180deg,#111,#333);box-shadow:0 4px 0 #000;border:1px dashed #f472b6;color:#f472b6;">调试</button>
   </div>
 </section>
 
@@ -2106,8 +2533,13 @@ html{background:#0a0a12;}
   <div class="fluid-bg fluid-red"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
   <div class="pack-stage" id="pack-stage">
     <div class="pack-visual pack-joker" id="pack-visual">
+      <div class="pack-glow" id="pack-glow"></div>
       <div class="pack-wrap" id="pack-wrap">
+        <div class="pack-holo"></div>
+        <div class="pack-flap" id="pack-flap"></div>
+        <div class="pack-tear-line"></div>
         <div class="pack-ic">🎴</div>
+        <div class="pack-packname" id="pack-packname">JOKER PACK</div>
         <div class="pack-label" id="pack-label">小丑礼包</div>
       </div>
     </div>
@@ -2244,6 +2676,39 @@ html{background:#0a0a12;}
     <button class="settings-back" id="settings-back">返回</button>
   </div>
 </section>
+
+<!-- 新手教程：游戏内引导浮层 -->
+<div id="tut-in-game">
+  <div id="tut-overlay"><div id="tut-spotlight"></div></div>
+  <div id="tut-jj-in-game">
+    <svg viewBox="0 0 100 100" shape-rendering="crispEdges" style="width:100%;height:100%;">
+      <rect x="20" y="18" width="60" height="48" rx="12" fill="#faf0e6"/>
+      <rect x="24" y="22" width="52" height="40" rx="10" fill="#f5e6d3"/>
+      <rect x="18" y="8" width="16" height="20" rx="4" fill="#faf0e6"/>
+      <rect x="21" y="12" width="10" height="12" rx="3" fill="#ffb6c1"/>
+      <rect x="66" y="8" width="16" height="20" rx="4" fill="#faf0e6"/>
+      <rect x="69" y="12" width="10" height="12" rx="3" fill="#ffb6c1"/>
+      <rect x="32" y="34" width="10" height="12" rx="4" fill="#fff"/>
+      <rect x="34" y="36" width="6" height="8" rx="3" fill="#4a9eff"/>
+      <rect x="35" y="37" width="2" height="2" rx="1" fill="#fff"/>
+      <rect x="58" y="34" width="10" height="12" rx="4" fill="#fff"/>
+      <rect x="60" y="36" width="6" height="8" rx="3" fill="#4a9eff"/>
+      <rect x="61" y="37" width="2" height="2" rx="1" fill="#fff"/>
+      <rect x="46" y="48" width="8" height="5" rx="2" fill="#ff9999"/>
+      <rect x="44" y="53" width="4" height="3" rx="1" fill="#cc8888"/>
+      <rect x="52" y="53" width="4" height="3" rx="1" fill="#cc8888"/>
+      <rect x="14" y="44" width="10" height="1.5" rx="1" fill="#d4c4b0"/>
+      <rect x="14" y="48" width="10" height="1.5" rx="1" fill="#d4c4b0"/>
+      <rect x="76" y="44" width="10" height="1.5" rx="1" fill="#d4c4b0"/>
+      <rect x="76" y="48" width="10" height="1.5" rx="1" fill="#d4c4b0"/>
+      <rect x="30" y="64" width="40" height="20" rx="8" fill="#faf0e6"/>
+      <rect x="34" y="68" width="32" height="14" rx="6" fill="#f5e6d3"/>
+    </svg>
+  </div>
+  <div id="tut-bubble-in-game"><span id="tut-bubble-text"></span></div>
+  <button id="tut-skip-btn">跳过教程</button>
+</div>
+<div id="tut-hint-bubble"></div>
 
 <script>
 'use strict';
@@ -2574,6 +3039,7 @@ function unlockNextStake(deckId,idx){
 function showStakeSelect(){
   if(!isStakeUnlocked(PENDING_DECK,STAKES.findIndex(x=>x.id===PENDING_STAKE)))PENDING_STAKE='white';
   showScreen('s-stake');renderStakes();playSound('click');
+  if(!hasPlayedTutorial())setTimeout(()=>tutHint('选择难度！白色注码最适合新手。'),500);
 }
 function renderStakes(){
   const wrap=document.getElementById('stake-cards');if(!wrap)return;
@@ -2905,20 +3371,25 @@ function _shopHoverEl(){
 }
 function openShopHover(anchor,html){
   if(isCoarse())return; // 触屏设备改用点按详情弹窗
-  const pop=_shopHoverEl();
-  pop.innerHTML=html;
-  pop.style.display='block';
-  const r=anchor.getBoundingClientRect();
-  const pw=pop.offsetWidth||240,ph=pop.offsetHeight||200;
-  let x=r.right+10;
-  if(x+pw>window.innerWidth-8)x=r.left-pw-10;
-  if(x<8)x=8;
-  let y=r.top-30;
-  if(y<8)y=r.top+8;
-  if(y+ph>window.innerHeight-8)y=window.innerHeight-ph-8;
-  pop.style.left=x+'px';pop.style.top=y+'px';
+  try{
+    const pop=_shopHoverEl();
+    pop.innerHTML=html;
+    pop.style.display='block';
+    const r=anchor.getBoundingClientRect();
+    const pw=pop.offsetWidth||240,ph=pop.offsetHeight||200;
+    let x=r.right+10;
+    if(x+pw>window.innerWidth-8)x=r.left-pw-10;
+    if(x<8)x=8;
+    let y=r.top-30;
+    if(y<8)y=r.top+8;
+    if(y+ph>window.innerHeight-8)y=window.innerHeight-ph-8;
+    pop.style.left=x+'px';pop.style.top=y+'px';
+  }catch(e){
+    console.warn('openShopHover 失败:',e);
+    closeShopHover();
+  }
 }
-function closeShopHover(){const el=document.getElementById('shop-hover-pop');if(el)el.style.display='none';}
+function closeShopHover(){const el=document.getElementById('shop-hover-pop');if(el){el.style.display='none';el.innerHTML='';}}
 // 小丑牌计分贡献徽标（弹出在小丑牌下方，跟随原版计分逻辑）
 function jokerFlash(jokerId,text,type){
   const el=document.querySelector('[data-joker-id="'+jokerId+'"]');
@@ -2943,6 +3414,35 @@ function jokerResultText(tr){
   if(tr.mult)parts.push('+'+tr.mult+'倍');
   if(tr.xmult)parts.push('×'+tr.xmult);
   return parts.join(' ');
+}
+// 构建桌上的计分牌：与手牌完全同构的缩小牌面（角标+花色点/人头像素画+增强角标）
+function buildScoreCardEl(card){
+  const el=document.createElement('div');
+  el.className='score-card';
+  el.dataset.cid=card.id;
+  const isFace=card.enh!=='t'&&['J','Q','K'].includes(card.rank);
+  let centerHtml;
+  if(card.enh==='t'){
+    centerHtml=`<div class="card-center" style="display:flex;align-items:center;justify-content:center;font-size:20px;">🪨</div>`;
+  }else if(isFace){
+    centerHtml=`<div class="card-center face" style="padding:2px 0;">${getFaceCardSVG(card.rank,card.suit)}</div>`;
+  }else{
+    centerHtml=`<div class="card-center pips" style="position:absolute;inset:14% 12%;">${getCardPips(card.rank,card.suit,SUITS[card.suit].color)}</div>`;
+  }
+  let enhHtml='';
+  if(card.enh){
+    const enhNames={m:'奖',h:'倍',l:'幸',s:'钢',g:'玻',t:'石',o:'金',w:'万'};
+    enhHtml=`<div class="enh-tag ${card.enh}">${enhNames[card.enh]||'?'}</div>`;
+  }
+  const cornerColor=card.enh==='t'?'#888':(SUITS[card.suit]?.color||'#1a1a2a');
+  const cornerText=card.enh==='t'?'':`${card.rank}<span>${suitGlyph(card.suit)}</span>`;
+  el.innerHTML=`<div class="card-inner">
+    <div class="card-corner" style="color:${cornerColor}">${cornerText}</div>
+    ${centerHtml}
+    <div class="card-corner br" style="color:${cornerColor}">${cornerText}</div>
+  </div>${enhHtml}`;
+  if(isDebuffed(card))el.style.filter='grayscale(1) brightness(.55)';
+  return el;
 }
 function jokerResultType(tr){
   if(tr.xmult)return 'xmult';
@@ -2969,37 +3469,39 @@ async function scorePlayedCards(playedCards,handType){
   const htn=document.getElementById('hand-type-name');
   htn.textContent=`${handType.name} Lv.${level}`;
   htn.classList.add('show');
+  {const r=htn.getBoundingClientRect();spawnParticles(r.left+r.width/2,r.top+r.height/2,30);}
   await sleep(680*animSpeed());
 
   // 确定计分牌（Balatro规则：部分牌型只有特定牌计分）
   G._photoUsed=false; // 照片小丑：每手首张人头牌
   const scoringCards=getScoringCards(playedCards,handType);
   const sc=document.getElementById('scoring-cards');
-  sc.innerHTML='';
+  // 桌上的牌在出牌时已摆好（playCards 预建）；此处兜底：若缺失则补齐
+  if(!sc.querySelector('.score-card[data-cid]')){
+    sc.innerHTML='';
+    playedCards.forEach(card=>{
+      const el=buildScoreCardEl(card);
+      el.classList.add('on-table');
+      sc.appendChild(el);
+    });
+  }
   _lastDispChips=null;_lastDispMult=null;
   let totalXMult=1;
   // 每个小丑的贡献（牌阶段+手牌阶段汇总，统一在小丑阶段逐张展示）
   const jokerContrib={};
 
-  // ========== 阶段1：从左往右逐张计分牌（基础筹码 + 增强效果） ==========
+  // ========== 阶段1：桌上的牌从左往右逐张悬浮计分（基础筹码 + 增强效果） ==========
   for(let i=0;i<scoringCards.length;i++){
     const card=scoringCards[i];
     const debuffed=isDebuffed(card);
-    // 创建计分卡牌
-    const el=document.createElement('div');
-    el.className='score-card';
-    el.style.animationDelay=`${i*0.05}s`;
-    if(card.enh==='t'){
-      el.innerHTML=`<div style="font-size:18px;line-height:1">🪨</div>`;
-    }else{
-      const sym=SUITS[card.suit].sym;
-      el.innerHTML=`<div style="font-size:12px;font-weight:900;color:${SUITS[card.suit].color}">${card.rank}</div>
-        <div class="sc-sym" style="color:${SUITS[card.suit].color}">${sym}</div>`;
-    }
-    if(debuffed){el.style.filter='grayscale(1) brightness(.5)';el.style.opacity='.5';}
-    sc.appendChild(el);
-
+    // 找到桌上的牌
+    let el=null;
+    try{el=sc.querySelector(`.score-card[data-cid="${CSS.escape(card.id)}"]`);}catch(e){el=null;}
+    if(!el){el=buildScoreCardEl(card);sc.appendChild(el);}
+    // 上一张计分完落回桌面，当前这张悬浮抬起
+    sc.querySelectorAll('.score-card.lifting').forEach(x=>x.classList.remove('lifting'));
     if(!debuffed){
+      el.classList.add('lifting');
       // 牌基础筹码/倍率/×倍率（含增强）
       const cc=cardChips(card);
       const cm=cardMult(card);
@@ -3055,6 +3557,7 @@ async function scorePlayedCards(playedCards,handType){
         pa.classList.remove('low-shake');void pa.offsetWidth;pa.classList.add('low-shake');setTimeout(()=>pa.classList.remove('low-shake'),440);shakeBossBar();}
       playSound('chip');
       updateScoreDisplay(chips,mult*totalXMult);
+      {const r=el.getBoundingClientRect();spawnParticles(r.left+r.width/2,r.top+r.height/2,14);}
       await sleep(800*animSpeed());
     }
   }
@@ -3065,8 +3568,8 @@ async function scorePlayedCards(playedCards,handType){
   if(steelInHand>0){
     const sx=Math.pow(1.5,steelInHand);
     totalXMult*=sx;
-    const se=document.createElement('div');se.className='score-card';
-    se.innerHTML=`<div style="font-size:18px;line-height:1">🔩</div><div class="sc-chip" style="color:#94a3b8">×${sx.toFixed(2).replace(/\.?0+$/,'')}</div>`;
+    const se=document.createElement('div');se.className='score-card on-table';
+    se.innerHTML=`<div class="card-inner" style="display:flex;align-items:center;justify-content:center;font-size:24px;">🔩</div><div class="sc-chip" style="color:#94a3b8">×${sx.toFixed(2).replace(/\.?0+$/,'')}</div>`;
     sc.appendChild(se);
     updateScoreDisplay(chips,Math.round(mult*totalXMult));
     playSound('mult');
@@ -3103,8 +3606,9 @@ async function scorePlayedCards(playedCards,handType){
   if(G.settings.shake){const pa=document.getElementById('score-display');pa.classList.add('big-shake');setTimeout(()=>{pa.classList.remove('big-shake');pa.style.transform='';},420);shakeBossBar();}
   playSound('score');
   spawnParticles(window.innerWidth/2,window.innerHeight/2,30);
-  await sleep(1000*animSpeed());
-
+  await sleep(700*animSpeed());
+  // 最终得分飞向左上角总分板（落袋后由调用方更新总分）
+  await flyScoreToTotal(fs,'+'+finalScore.toLocaleString());
   return finalScore;
 }
 // 汇总某个小丑的触发结果（chips/mult/xmult 累加；money/生成消耗品立即生效）
@@ -3448,6 +3952,16 @@ function getCardArtURL(def,kind){
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  // 防御：切屏时强制收起所有可能残留并挡点击的浮层
+  try{
+    closeShopHover();
+    const tip=document.getElementById('hover-tooltip');if(tip)tip.style.display='none';
+    const ov=document.getElementById('transition-overlay');
+    // 转场进行中（切屏回调阶段）不能关遮罩——否则横扫扫出动画会被掐掉
+    if(ov&&ov.classList.contains('show')&&!_isTransitioning){ov.classList.remove('show');ov.style.pointerEvents='none';}
+    if(typeof dragState!=='undefined'&&dragState){try{onCardPointerCancel&&onCardPointerCancel();}catch(_){}dragState=null;}
+    window.scrollTo(0,0);
+  }catch(_){}
   try{updateDevEntries();}catch(_){}
   try{syncDynBg(id);}catch(_){}
 }
@@ -3460,6 +3974,7 @@ function updateScoreDisplay(chips,mult){
   if(m!==_lastDispMult){me.textContent=m;bumpNum(me);playSound('tick');_lastDispMult=m;}
   const sr=document.getElementById('score-run');
   if(sr)sr.textContent=(c===0&&m===0)?'':`${c} 筹码 × ${m} 倍率`;
+  try{updateFireFx(c,m);}catch(_){}
 }
 function updateSidebar(){
   document.getElementById('sb-round-score').textContent=G.score.toLocaleString();
@@ -3509,7 +4024,14 @@ function currentBlindTarget(){
   return t;
 }
 // 数字牌多点花色排列（标准扑克牌布局）
-function getCardPips(rank,sym,color){
+// 像素花色：黑桃/梅花在像素字体里缺字会回退成平滑字体，改用像素方块 SVG（红桃/方块保留字体像素字形）
+function suitGlyph(suit){
+  if(suit==='S')return `<svg viewBox="0 0 12 12" width="1em" height="1em" style="shape-rendering:crispEdges;display:inline-block;vertical-align:-.08em;overflow:visible"><g fill="currentColor"><rect x="5" y="0" width="2" height="1"/><rect x="4" y="1" width="4" height="1"/><rect x="3" y="2" width="6" height="2"/><rect x="1" y="4" width="10" height="2"/><rect x="0" y="6" width="12" height="1"/><rect x="3" y="7" width="6" height="1"/><rect x="5" y="7" width="2" height="3"/><rect x="3" y="10" width="6" height="1"/><rect x="2" y="11" width="8" height="1"/></g></svg>`;
+  if(suit==='C')return `<svg viewBox="0 0 12 12" width="1em" height="1em" style="shape-rendering:crispEdges;display:inline-block;vertical-align:-.08em;overflow:visible"><g fill="currentColor"><rect x="5" y="0" width="2" height="1"/><rect x="4" y="1" width="4" height="2"/><rect x="2" y="3" width="3" height="3"/><rect x="7" y="3" width="3" height="3"/><rect x="4" y="6" width="4" height="1"/><rect x="5" y="7" width="2" height="3"/><rect x="3" y="10" width="6" height="1"/><rect x="2" y="11" width="8" height="1"/></g></svg>`;
+  return SUITS[suit]?.sym||'';
+}
+function getCardPips(rank,suit,color){
+  const sym=suitGlyph(suit);
   const layouts={
     'A':[[50,50,3.2]],
     '2':[[50,22,1.4],[50,78,1.4]],
@@ -3695,7 +4217,7 @@ function renderHand(){
         const px=(e.clientX-rect.left)/rect.width-0.5;
         const py=(e.clientY-rect.top)/rect.height-0.5;
         const inner=this.querySelector('.card-inner');
-        if(inner)inner.style.transform=`translateY(-5px) rotateY(${px*12}deg) rotateX(${-py*10}deg)`;
+        if(inner)inner.style.transform=`translateY(-10px) rotateY(${px*26}deg) rotateX(${-py*22}deg) translateZ(18px)`;
         // 牌侧提示
         const tip=document.getElementById('hover-tooltip');
         const rankNames={A:'A',2:'2',3:'3',4:'4',5:'5',6:'6',7:'7',8:'8',9:'9',10:'10',J:'JACK',Q:'QUEEN',K:'KING'};
@@ -3727,7 +4249,7 @@ function renderHand(){
       centerHtml=`<div class="card-center face" style="padding:2px 0;">${getFaceCardSVG(card.rank,card.suit)}</div>`;
     }else{
       // 数字牌：多点花色排列（数量=牌面数字）
-      centerHtml=`<div class="card-center pips" style="position:absolute;inset:14% 12%;">${getCardPips(card.rank,sym,SUITS[card.suit].color)}</div>`;
+      centerHtml=`<div class="card-center pips" style="position:absolute;inset:14% 12%;">${getCardPips(card.rank,card.suit,SUITS[card.suit].color)}</div>`;
     }
     let enhHtml='';
     if(card.enh){
@@ -3735,7 +4257,7 @@ function renderHand(){
       enhHtml=`<div class="enh-tag ${card.enh}">${enhNames[card.enh]||'?'}</div>`;
     }
     const cornerColor=card.enh==='t'?'#888':SUITS[card.suit]?.color||'#fff';
-    const cornerText=card.enh==='t'?'':`${card.rank}<span>${sym}</span>`;
+    const cornerText=card.enh==='t'?'':`${card.rank}<span>${suitGlyph(card.suit)}</span>`;
     el.innerHTML=`<div class="card-inner">
       <div class="card-corner" style="color:${cornerColor}">${cornerText}</div>
       ${centerHtml}
@@ -4029,6 +4551,7 @@ function toggleSelect(id){
   renderHand();
   updateSidebar();
   updatePreview();
+  tutUpdate('select',G.selected.size);
 }
 function updatePreview(){
   const selectedCards=[...G.hand].filter(c=>G.selected.has(c.id));
@@ -4072,12 +4595,14 @@ function hideDragTooltip(){
 // ==================== 游戏流程 ====================
 // 右下角牌堆颜色跟随所选牌组
 function applyDeckColor(){
-  const el=document.querySelector('#deck-display .deck-back');
-  if(!el)return;
   const d=DECKS.find(x=>x.id===G.deckId)||DECKS[0];
-  el.style.setProperty('--dc1',d.b1||'#8b1a1a');
-  el.style.setProperty('--dc2',d.b2||'#c03030');
-  el.style.setProperty('--dc3',d.b3||'#5a0a0a');
+  const c1=d.b1||'#8b1a1a',c2=d.b2||'#c03030',c3=d.b3||'#5a0a0a';
+  // 全局挂到 body：牌堆、发牌飞行牌背、转场牌背共用
+  document.body.style.setProperty('--dc1',c1);
+  document.body.style.setProperty('--dc2',c2);
+  document.body.style.setProperty('--dc3',c3);
+  const el=document.querySelector('#deck-display .deck-back');
+  if(el){el.style.setProperty('--dc1',c1);el.style.setProperty('--dc2',c2);el.style.setProperty('--dc3',c3);}
 }
 // Boss debuff 生效时，计分阶段左侧 Boss 栏位同步震动（时间动画参考其他计分震动）
 function shakeBossBar(){
@@ -4137,7 +4662,8 @@ function beginRound(){
   // 标记所有手牌待飞入，渲染时即隐藏，再统一飞入，彻底避免闪现
   _dealHiddenIds=new Set(G.hand.map(c=>c.id));
   renderAll();
-  requestAnimationFrame(()=>requestAnimationFrame(()=>animateDeal()));
+  const hc0=document.getElementById('hand-container');if(hc0)hc0.style.visibility='';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{animateDeal();tutUpdate('beginRound');}));
 }
 function animateDeal(onlyIds){
   let cards=document.querySelectorAll('.hand-card');
@@ -4161,18 +4687,32 @@ function animateDeal(onlyIds){
     const cardRect=card.getBoundingClientRect();
     const dx=deckX-(cardRect.left+cardRect.width/2);
     const dy=deckY-(cardRect.top+cardRect.height/2);
-    // 初始位置：在牌堆处
+    const tx=cardRect.left+cardRect.width/2,ty=cardRect.top+cardRect.height/2;
+    // 初始位置：在牌堆处（飞行中显示牌背）
+    card.classList.add('dealing');
     card.style.transition='none';
     card.style.transform=`translate(${dx}px,${dy}px) scale(0.5) rotate(${(i-totalCards/2)*10}deg)`;
     card.style.opacity='0';
-    card.style.zIndex=100+i;
-    // 延迟后飞到目标位置 + 逐张卡牌音效
+    card.style.zIndex=900+i; // 飞行补牌必须压在所有手牌之上，避免落位瞬间被相邻牌挡住
+    card.style.pointerEvents='none';
+    // 延迟后飞到目标位置 + 逐张卡牌音效；接近落位时翻成正面
     setTimeout(()=>{
       playSound('cardDraw');
       card.style.transition=`transform ${(0.5*_as).toFixed(2)}s cubic-bezier(.34,1.4,.64,1), opacity ${(0.3*_as).toFixed(2)}s`;
       card.style.transform='';
       card.style.opacity='1';
     },(30+i*80)*_as);
+    setTimeout(()=>{
+      card.classList.remove('dealing');
+      card.classList.add('deal-flip');
+      // 落位瞬间：层级回归手牌索引，自然插入扇形叠压（不再全程压在最上层）
+      const cid=card.getAttribute('data-id');
+      const idx=G.hand.findIndex(c=>String(c.id)===String(cid));
+      card.style.zIndex=(idx>=0?idx:i);
+      setTimeout(()=>card.classList.remove('deal-flip'),500);
+    },(30+i*80+300)*_as);
+    // 落位像素粒子
+    setTimeout(()=>spawnParticles(tx,ty,7),(30+i*80+420)*_as);
   });
   // 所有动画结束后，强制完整清理所有inline样式并重排，防止残留挡住其他牌
   const maxAnimTime=(30+(totalCards-1)*80+550)*_as;
@@ -4182,6 +4722,7 @@ function animateDeal(onlyIds){
       card.style.transform='';
       card.style.opacity='';
       card.style.zIndex='';
+      card.style.pointerEvents='';
     });
     _dealHiddenIds.clear();
     // 重排手牌确保位置正确
@@ -4284,6 +4825,8 @@ function renderAll(){
   renderConsumables();
   renderBuffs();
   updateSidebar();
+  // 商店内使用消耗品/触发效果后同步商店 UI
+  try{const ss=document.getElementById('s-shop');if(ss&&ss.classList.contains('active')&&typeof renderShop==='function')renderShop();}catch(e){}
 }
 // 战斗啾啾吐槽
 const JJ_HIGH=['不可能！！','我没看错吧？','这也能行？？','你开挂了吧！','这分数...不科学！','你还是人吗？！','哇...哇啊啊啊！'];
@@ -4315,6 +4858,19 @@ function battleJJReact(score){
   clearTimeout(jj._bubbleTimer);
   jj._bubbleTimer=setTimeout(()=>bubble.classList.remove('show'),3000);
 }
+// 计分过程若抛错：强制复位 isScoring，避免界面永久卡死
+function _scoreErrReset(err){
+  try{
+    if(G&&G.isScoring){
+      console.warn('[watchdog] score error force reset',err&&err.message);
+      G.isScoring=false;
+      const sc=document.getElementById('scoring-cards'),fc=document.getElementById('final-score');
+      if(sc)sc.innerHTML='';
+      if(fc){fc.style.display='none';fc.style.opacity='';fc.style.transition='';}
+      if(typeof renderAll==='function')renderAll();
+    }
+  }catch(e2){}
+}
 async function playCards(){
   if(G.isScoring||G.selected.size===0||G.hands<=0)return;
   // Boss: 必须出5张
@@ -4330,6 +4886,12 @@ async function playCards(){
     }
   }
   G.isScoring=true;
+  // 看门狗：计分流程若因异常中断，20秒后强制复位，防止按钮永久卡死
+  if(window._scoreWatch)clearTimeout(window._scoreWatch);
+  window._scoreWatch=setTimeout(()=>{
+    if(G&&G.isScoring){console.warn('isScoring 看门狗强制复位');G.isScoring=false;renderAll&&renderAll();}
+  },20000);
+  window.addEventListener('error',_scoreErrReset,{once:true});
   G.hands--;
   G.stats.handsPlayed++;
   // 绿色小丑：每出 1 手 +1 倍率
@@ -4345,32 +4907,75 @@ async function playCards(){
     }
     if(!G._mouthType)G._mouthType=handType.type;
   }
-  // 出牌飞行动画
+  // 出牌：先把牌"摆到牌桌上"（与手牌同构的小牌面），手牌克隆体飞到各自槽位，落位后无缝接管
   const scoringArea=document.getElementById('scoring-cards');
+  scoringArea.innerHTML='';
+  playedCards.forEach(card=>{
+    const tc=buildScoreCardEl(card);
+    tc.style.visibility='hidden'; // 等克隆牌飞抵落位再显现，避免目的地提前出现
+    scoringArea.appendChild(tc);
+  });
   const saRect=scoringArea.getBoundingClientRect();
   const targetX=saRect.left+saRect.width/2;
   const targetY=saRect.top+saRect.height/2;
   const cardEls=[...document.querySelectorAll('.hand-card.selected')];
+  // 克隆体固定在屏幕上飞行：每张牌直飞它在牌桌上的槽位（大牌→小牌连续缩放，一次到位）
+  window._flyClones={};
   for(let i=0;i<cardEls.length;i++){
     const el=cardEls[i];
     const rect=el.getBoundingClientRect();
-    const dx=targetX-(rect.left+rect.width/2);
-    const dy=targetY-(rect.top+rect.height/2);
-    el.style.transition='transform .4s cubic-bezier(.4,0,.2,1)';
-    el.style.transform=`translate(${dx}px,${dy}px) scale(0.8) rotate(${(i-cardEls.length/2)*15}deg)`;
-    el.style.opacity='0.8';
-    el.style.zIndex=200;
+    const clone=el.cloneNode(true);
+    clone.classList.remove('selected','dragging','dealing','deal-flip');
+    clone.style.cssText=`position:fixed;left:${rect.left}px;top:${rect.top}px;bottom:auto;
+      width:${rect.width}px!important;height:${rect.height}px!important;margin:0;z-index:600;
+      pointer-events:none;transform:none;transition:transform .46s cubic-bezier(.5,-0.2,.4,1.3);`;
+    document.body.appendChild(clone);
+    const ci=clone.querySelector('.card-inner');if(ci)ci.style.transform='';
+    el.style.visibility='hidden';
+    const cid=el.dataset.id;
+    window._flyClones[cid]=clone;
+    setTimeout(()=>clone.remove(),6000); // 兜底清理
+    // 双 rAF + 强制 reflow，确保大牌→小牌的缩放过渡一定触发
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      let slot=null;
+      try{slot=scoringArea.querySelector(`.score-card[data-cid="${CSS.escape(cid)}"]`);}catch(e){slot=null;}
+      let dx,dy,sc;
+      if(slot){
+        const tr=slot.getBoundingClientRect();
+        dx=tr.left+tr.width/2-(rect.left+rect.width/2);
+        dy=tr.top+tr.height/2-(rect.top+rect.height/2);
+        sc=tr.width/Math.max(rect.width,1);
+      }else{
+        dx=targetX-(rect.left+rect.width/2);
+        dy=targetY-(rect.top+rect.height/2);
+        sc=68/Math.max(rect.width,1);
+      }
+      void clone.offsetWidth;
+      clone.style.transform=`translate(${dx}px,${dy}px) scale(${sc})`;
+    }));
   }
   playSound('deal');
-  await sleep(550*animSpeed());
+  spawnParticles(targetX,targetY,22);
+  await sleep(520*animSpeed());
+  // 落位完成：移除克隆体，桌上小牌在同位置显现并轻弹落桌（大牌→小牌无缝衔接）
+  Object.values(window._flyClones||{}).forEach(c=>{if(c&&c.isConnected)c.remove();});
+  window._flyClones={};
+  scoringArea.querySelectorAll('.score-card').forEach(tc=>{
+    tc.style.visibility='';
+    tc.classList.remove('on-table');void tc.offsetWidth;tc.classList.add('on-table');
+  });
   // 从手牌移除
   G.hand=G.hand.filter(c=>!G.selected.has(c.id));
   G.selected.clear();
   renderHand();
   updateSidebar();
-  // 计分
+  // 计分（桌上的牌逐张悬浮计分）
   const score=await scorePlayedCards(playedCards,handType);
   G.score+=score;
+  tutUpdate('scored');
+  // 分数落袋：刷新总分板并弹跳
+  updateSidebar();
+  bumpNum(document.getElementById('sb-round-score'));
   G.lastHand=handType.type;
   // 冰淇淋：每出 1 手 -5 筹码，归零销毁
   G.jokers.forEach(j=>{
@@ -4410,10 +5015,14 @@ async function playCards(){
   // 玻璃小丑：每摧毁1张玻璃牌 ×0.75
   if(glassN>0)G.jokers.forEach(j=>{if(j.id==='glass_joker')j.accum=(j.accum||0)+0.75*glassN;});
   await sleep(500*animSpeed());
-  // 清计分区
+  // 清计分区（桌上牌收走）
   document.getElementById('hand-type-name').classList.remove('show');
-  document.getElementById('scoring-cards').innerHTML='';
-  document.getElementById('final-score').classList.remove('show');
+  const _sc=document.getElementById('scoring-cards');
+  _sc.style.transition='opacity .25s';_sc.style.opacity='0';
+  await sleep(180);
+  _sc.innerHTML='';_sc.style.opacity='';
+  const _fs=document.getElementById('final-score');
+  _fs.classList.remove('show');_fs.style.opacity='';_fs.style.transition='';
   updateScoreDisplay(0,0);
   G.isScoring=false;
   // 钩子 Boss：出牌后随机弃掉2张手牌
@@ -4476,6 +5085,7 @@ async function discardCards(){
     el.style.zIndex=200;
   }
   playSound('discard');
+  setTimeout(()=>{spawnParticles(targetX,targetY,20);playSound('cardDraw');},300);
   await sleep(350*animSpeed());
   G.hand=G.hand.filter(c=>!G.selected.has(c.id));
   G.discardPile.push(...discarded);
@@ -4528,6 +5138,7 @@ async function discardCards(){
   }
 }
 function roundWin(){
+  tutUpdate('roundWin');
   const blindType=G.blind%3;
   let reward=BLIND_REWARDS[blindType];
   // 红注：小盲注无金钱奖励
@@ -4568,6 +5179,7 @@ function roundWin(){
   showResult(true,reward,handBonus,interest);
 }
 function roundLose(){
+  if(IN_TUTORIAL)_tutEnd();
   showResult(false,0,0,0);
 }
 function showResult(win,reward,handBonus,interest){
@@ -4644,9 +5256,9 @@ function showResult(win,reward,handBonus,interest){
     showModal('返回主菜单', win?'对局将自动保存，可在主菜单“继续游戏”回到商店。':'本局已结束，返回主菜单。',[
       {text:'取消',cls:'ghost',action:()=>hideModal()},
       {text:win?'保存并返回':'确定返回',cls:win?'primary':'danger',action:()=>{
-        hideModal();stopBGM();
+        hideModal();
         if(win)saveGame();else clearSave();
-        G={};showScreen('s-start');updateStartStats();
+        switchBGM('main');G={};showScreen('s-start');updateStartStats();
       }}
     ]);
   };
@@ -4670,6 +5282,7 @@ function openShop(){
     generateShop();
     renderShop();
     saveGame();
+    tutUpdate('openShop');
   });
 }
 function generateShop(){
@@ -4769,12 +5382,9 @@ function renderShop(){
     else if(j.edition==='holo'){cost+=3;edTag='<span class="ed-tag" style="background:linear-gradient(90deg,#4ec0ff,#c0e0ff);color:#113">全息</span>';edLabel=' · 全息 +$3';}
     else if(j.edition==='poly'){cost+=5;edTag='<span class="ed-tag" style="background:linear-gradient(90deg,#ff6b6b,#ffd93d,#6bcf7f,#4ec0ff,#c084fc);color:#111">彩虹</span>';edLabel=' · 彩虹 +$5';}
     if(j.eternal){edTag='<span class="ed-tag" style="background:linear-gradient(90deg,#1e293b,#475569);color:#94a3b8;letter-spacing:2px">永恒</span>'+edTag;edLabel=' · 永恒'+edLabel;}
-    el.innerHTML=`<div class="si-corner tl" style="color:${['#9b94b8','#38bdf8','#c084fc','#f43f5e'][j.rarity||0]}">${j.ic}</div>
-      <div class="si-corner br" style="color:${['#9b94b8','#38bdf8','#c084fc','#f43f5e'][j.rarity||0]}">${j.ic}</div>
-      <div class="si-art">${edTag}<img class="si-art-img" src="${getCardArtURL(j,'joker')}"></div>
-      <div class="si-body"><div class="si-name">${j.name}</div>
-      <div class="si-desc">${j.desc}</div>
-      <div class="si-cost ${G.money<cost?'cant':''}">$${cost}</div></div>`;
+    el.innerHTML=`<div class="si-art">${edTag}<img class="si-art-img" src="${getCardArtURL(j,'joker')}" alt=""></div>
+      <div class="si-cost ${G.money<cost?'cant':''}">$${cost}</div>
+      <div class="si-kind">小丑牌</div>`;
     if(!j.sold)el.addEventListener('click',()=>{
       if(isCoarse()){shopCardDetailModal({art:getCardArtURL(j,'joker'),name:j.name,cost:cost,
         type:`小丑牌 · ${['普通','罕见','稀有','传奇'][j.rarity||0]}${edLabel} · 售价 $${cost}`,desc:j.desc||''},()=>buyJoker(i));}
@@ -4797,14 +5407,11 @@ function renderShop(){
     const el=document.createElement('div');
     el.className='shop-item '+(c.type||'tarot')+(c.sold?' sold':'');
     const cost=c.cost-(G.vouchers.clearance?1:0);
-    const consColor={tarot:'#a855f7',planet:'#22c55e',spectral:'#06b6d4'}[c.type||'tarot']||'#a855f7';
     const consEdTag=c.eternal?'<span class="ed-tag" style="background:linear-gradient(90deg,#1e293b,#475569);color:#94a3b8;letter-spacing:2px">永恒</span>':'';
-    el.innerHTML=`<div class="si-corner tl" style="color:${consColor}">${c.ic||'🃏'}</div>
-      <div class="si-corner br" style="color:${consColor}">${c.ic||'🃏'}</div>
-      <div class="si-art">${consEdTag}<img class="si-art-img" src="${getCardArtURL(c,c.type||'tarot')}"></div>
-      <div class="si-body"><div class="si-name">${c.name}</div>
-      <div class="si-desc">${c.desc||`升级${HANDS[c.hand]?.name||''}等级`}</div>
-      <div class="si-cost ${G.money<cost?'cant':''}">$${cost}</div></div>`;
+    const kindName={tarot:'塔罗牌',planet:'星球牌',spectral:'幻灵牌'}[c.type||'tarot']||'消耗品';
+    el.innerHTML=`<div class="si-art">${consEdTag}<img class="si-art-img" src="${getCardArtURL(c,c.type||'tarot')}" alt=""></div>
+      <div class="si-cost ${G.money<cost?'cant':''}">$${cost}</div>
+      <div class="si-kind">${kindName}</div>`;
     if(!c.sold)el.addEventListener('click',()=>{
       if(isCoarse()){const enhKeys0=c.type==='tarot'?tarotEnhancements(c.id):[];const descText0=c.desc||(c.hand?`升级${HANDS[c.hand]?.name||''}等级`:'');const tn0={tarot:'塔罗牌',planet:'星球牌',spectral:'幻灵牌'};
         shopCardDetailModal({art:getCardArtURL(c,c.type||'tarot'),name:c.name,cost:cost,
@@ -4833,12 +5440,9 @@ function renderShop(){
     const cost=v.cost-(G.vouchers.clearance?1:0);
     const el=document.createElement('div');
     el.className='shop-item voucher';
-    el.innerHTML=`<div class="si-corner tl" style="color:#22d3ee">🎫</div>
-      <div class="si-corner br" style="color:#22d3ee">🎫</div>
-      <div class="si-art">${v.ic}</div>
-      <div class="si-body"><div class="si-name">${v.name}</div>
-      <div class="si-desc">${v.desc}</div>
-      <div class="si-cost ${G.money<cost?'cant':''}">$${cost}</div></div>`;
+    el.innerHTML=`<div class="si-art">${v.ic||'🎫'}</div>
+      <div class="si-cost ${G.money<cost?'cant':''}">$${cost}</div>
+      <div class="si-kind">代金券</div>`;
     el.addEventListener('click',()=>{
       if(isCoarse()){shopCardDetailModal({art:'',name:v.name,cost:cost,type:`优惠券 · 售价 $${cost}`,desc:v.desc,extra:'<div style="text-align:center;font-size:34px;margin:4px 0;">🎫</div>'},()=>buyVoucher());}
       else buyVoucher();
@@ -4849,14 +5453,14 @@ function renderShop(){
     if(p.sold)return;
     const el=document.createElement('div');
     el.className='shop-item pack';
-    el.innerHTML=`<div class="si-corner tl" style="color:#fb923c">${p.ic}</div>
-      <div class="si-corner br" style="color:#fb923c">${p.ic}</div>
-      <div class="si-art">${p.ic}</div>
-      <div class="si-body"><div class="si-name">${p.name}</div>
-      <div class="si-desc">打开获得随机物品</div>
-      <div class="si-cost ${G.money<p.cost?'cant':''}">$${p.cost}</div></div>`;
+    const pmType=['joker','standard','celestial','spectral'].includes(p.type)?p.type:'standard';
+    const packShort={joker:'小丑包',standard:'标准包',celestial:'天体包',spectral:'幻灵包'}[pmType]||'卡包';
+    const packMini=`<div class="pack-mini pm-${pmType}"><div class="pm-holo"></div><div class="pm-flap"></div><div class="pm-label">${packShort}</div></div>`;
+    el.innerHTML=`<div class="si-art">${packMini}</div>
+      <div class="si-cost ${G.money<p.cost?'cant':''}">$${p.cost}</div>
+      <div class="si-kind">${p.name}</div>`;
     el.addEventListener('click',()=>{
-      if(isCoarse()){shopCardDetailModal({art:'',name:p.name,cost:p.cost,type:`卡包 · 售价 $${p.cost}`,desc:'打开获得随机物品',extra:`<div style="text-align:center;font-size:40px;margin:4px 0;">${p.ic}</div>`},()=>buyPack(i));}
+      if(isCoarse()){shopCardDetailModal({art:'',name:p.name,cost:p.cost,type:`卡包 · 售价 $${p.cost}`,desc:'打开获得随机物品',extra:`<div style="text-align:center;margin:4px 0;display:flex;justify-content:center;">${packMini}</div>`},()=>buyPack(i));}
       else buyPack(i);
     });
     ec.appendChild(el);
@@ -4885,9 +5489,64 @@ function renderShop(){
     el.addEventListener('mouseleave',closeShopHover);
     oj.appendChild(el);
   });
+  // 已拥有消耗品（商店内可直接使用：星球升级、幻影/焚化等无需手牌的效果均可用）
+  const oc2=document.getElementById('shop-owned-cons');
+  if(oc2){
+    oc2.innerHTML='';
+    const typeNames0={tarot:'塔罗牌',planet:'星球牌',spectral:'幻灵牌'};
+    if(G.consumables.length===0){
+      oc2.innerHTML='<span style="font-size:12px;color:var(--dim);padding:6px 2px;">暂无消耗品</span>';
+    }
+    G.consumables.forEach((c,i)=>{
+      const def=findConsumable(c);
+      const el=document.createElement('div');
+      el.className='owned-joker';
+      el.innerHTML=`<img class="oj-img" src="${getCardArtURL(def,c.type||'tarot')}" alt="" style="image-rendering:pixelated;"><span>${def?.name||c.id}</span><span class="oj-sell">使用</span>`;
+      el.addEventListener('click',()=>{playSound('click');showConsumableDetail(i);});
+      el.addEventListener('mouseenter',()=>{
+        playSound('hover');
+        openShopHover(el,`<div class="shp-art"><img src="${getCardArtURL(def,c.type||'tarot')}" alt=""></div>
+          <div class="shp-name">${def?.ic||''} ${def?.name||c.id}</div>
+          <div class="shp-type">${typeNames0[c.type||'tarot']||'消耗品'} · 已拥有，点击使用</div>
+          <div class="shp-desc">${def?.desc||''}</div>`);
+      });
+      el.addEventListener('mouseleave',closeShopHover);
+      oc2.appendChild(el);
+    });
+  }
   // 重掷按钮（费用每次累计，有上限）
   const rerollCost=rerollCostNow();
-  document.getElementById('btn-reroll').textContent=rerollCost===0?'重掷 免费':`重掷 $${rerollCost}`;
+  const rcEl=document.getElementById('reroll-cost');
+  if(rcEl)rcEl.textContent=rerollCost===0?'免费':`$${rerollCost}`;
+  // 代金券槽（已拥有的代金券显示在左栏 2×2 槽内，点击查看说明）
+  const vs=document.getElementById('shop-voucher-slots');
+  if(vs){
+    vs.innerHTML='';
+    const owned=VOUCHERS.filter(v=>G.vouchers&&G.vouchers[v.id]);
+    for(let i=0;i<4;i++){
+      const v=owned[i];
+      const slot=document.createElement('div');
+      slot.className='vs-slot'+(v?' owned':'');
+      if(v){
+        slot.textContent=v.ic||'🎫';
+        slot.title=v.name+'：'+v.desc;
+        slot.addEventListener('click',()=>{playSound('tab');
+          showModal(v.name,`<div style="text-align:center;font-size:40px;margin:10px 0;">${v.ic||'🎫'}</div><p style="text-align:center;color:#ccc;line-height:1.6;">${v.desc}</p>`,
+          [{text:'确定',cls:'primary',action:hideModal}]);});
+      }else slot.innerHTML='<span class="vs-empty">🎫</span>';
+      vs.appendChild(slot);
+    }
+  }
+  // 下一盲注圆钮：颜色/图标随盲注类型（小=蓝 / 大=绿 / Boss=红）
+  const nbBtn=document.getElementById('btn-next-blind');
+  if(nbBtn){
+    const nextType=(G.blind+1)%3;
+    nbBtn.className='rail-next t'+nextType;
+    const nbIc=document.getElementById('nb-ic');
+    if(nbIc)nbIc.textContent=nextType===2?'☠':(nextType===0?'SB':'BB');
+    const nbLabel=document.getElementById('nb-label');
+    if(nbLabel)nbLabel.textContent=BLIND_NAMES[nextType]||'下一盲注';
+  }
   saveGameThrottled(); // 商店购买/重掷后自动存档
 }
 // 是否触屏（无 hover / 粗指针）——移动端点按优先看详情
@@ -4939,6 +5598,7 @@ function buyJoker(i){
   renderShop();
   showToast(`购买了 ${j.name}！`);
   if(dexOwn('joker',j.id))dexUnlockToast('joker',j);
+  tutUpdate('buy');
 }
 function buyConsumable(i){
   const c=G.shop.consumables[i];
@@ -4953,6 +5613,7 @@ function buyConsumable(i){
   renderShop();
   showToast(`购买了 ${c.name}！`);
   if(dexOwn(c.type,c.id))dexUnlockToast(c.type,c);
+  tutUpdate('buy');
 }
 function buyVoucher(){
   const v=G.shop.voucher;
@@ -4993,13 +5654,18 @@ function sellJokerDo(i){
   const def=JOKERS.find(x=>x.id===j.id)||j;
   const price=Math.max(1,Math.floor((def.cost||4)/2)+(j.sellBonus||0));
   const el=document.querySelectorAll('#owned-jokers .owned-joker')[i]||null;
-  if(el)el.classList.add('dissolving');
+  if(el){
+    el.classList.add('dissolving');
+    const r=el.getBoundingClientRect();
+    setTimeout(()=>burnParticles(r.left+r.width/2,r.top+r.height/2,28),120);
+    setTimeout(()=>burnParticles(r.left+r.width/2,r.top+r.height/2,20),280);
+  }
   playSound('sell');
   setTimeout(()=>{
     G.money+=price;
     G.jokers.forEach(k=>{if(k.id==='campfire')k.accum=(k.accum||0)+0.25;});
     G.jokers.splice(i,1);renderShop();showToast(`出售获得 $${price}`);
-  },el?380:0);
+  },el?480:0);
 }
 // 重掷费用：本商店每次重掷 +$1，上限 $20；优惠券/标签/混沌小丑可免费
 function rerollCostNow(){
@@ -5037,6 +5703,7 @@ function openPack(pack){
   stopBGM();
   const visual=document.getElementById('pack-visual');
   visual.className='pack-visual pack-'+pack.type;
+  visual.style.display='';
   document.getElementById('pack-label').textContent=pack.name;
   document.getElementById('pack-wrap').classList.remove('open','shake');
   document.getElementById('pack-reveal').classList.add('hidden');
@@ -5060,11 +5727,15 @@ function openPack(pack){
     claimPack();
   };
   document.getElementById('pack-claim').onclick=()=>claimPack();
-  // 仪式感时序：700ms后蓄力音效+开始晃动(蓄力1.3s)，2000ms时爆发打开
+  // 仪式感时序：700ms后蓄力音效+开始晃动，1500ms剧烈抖动，2000ms时爆发撕开
   setTimeout(()=>{
     playSound('charge');
     document.getElementById('pack-wrap').classList.add('shake');
   },700);
+  setTimeout(()=>{
+    const w=document.getElementById('pack-wrap');
+    w.classList.remove('shake');w.classList.add('shake-hard');
+  },1500);
   setTimeout(doOpen,2000);
   // 记录开包前BGM状态，claim后恢复
   G._packBgmWasPlaying=wasPlaying;
@@ -5097,15 +5768,41 @@ function generatePackContent(type){
   }
   return content;
 }
+// 标准包 reveal：构建完整扑克牌牌面（角标+花色点/人头像素画+增强标记+增强名与效果）
+function buildMiniCardHTML(item){
+  const enh=item.enh||null;
+  const isStone=enh==='t';
+  const isFace=!isStone&&['J','Q','K'].includes(item.rank);
+  let center;
+  if(isStone)center=`<div class="card-center" style="display:flex;align-items:center;justify-content:center;font-size:30px;">🪨</div>`;
+  else if(isFace)center=`<div class="card-center face" style="padding:2px 0;">${getFaceCardSVG(item.rank,item.suit)}</div>`;
+  else center=`<div class="card-center pips" style="position:absolute;inset:14% 12%;">${getCardPips(item.rank,item.suit,SUITS[item.suit].color)}</div>`;
+  const enhNames={m:'奖',h:'倍',l:'幸',s:'钢',g:'玻',t:'石',o:'金',w:'万'};
+  const enhTag=enh?`<div class="enh-tag ${enh}">${enhNames[enh]||'?'}</div>`:'';
+  const cornerColor=isStone?'#888':SUITS[item.suit]?.color||'#1a1a2a';
+  const cornerText=isStone?'':`${item.rank}<span>${suitGlyph(item.suit)}</span>`;
+  const face=`<div class="rc-face">
+      <div class="card-corner" style="color:${cornerColor}">${cornerText}</div>
+      ${center}
+      <div class="card-corner br" style="color:${cornerColor}">${cornerText}</div>
+      ${enhTag}
+    </div>`;
+  const cardLabel=isStone?'石头牌':`${item.rank}${SUITS[item.suit]?.sym||''}`;
+  const name=enh&&ENH_INFO[enh]?ENH_INFO[enh].name:'普通牌';
+  const desc=enh&&ENH_INFO[enh]?`${cardLabel} · ${ENH_INFO[enh].ic} ${ENH_INFO[enh].desc}`:`${cardLabel} · 普通扑克牌，加入牌库`;
+  return {face,name,desc,cls:'card'+(enh?' enh-'+enh:'')};
+}
 function animatePackOpen(){
+  const visual=document.getElementById('pack-visual');
   const wrap=document.getElementById('pack-wrap');
-  wrap.classList.remove('shake');
+  wrap.classList.remove('shake','shake-hard');
   wrap.classList.add('open');
+  visual.classList.add('tear'); // 封口盖翻开 + 内光爆发 + 包体稍后下沉
   // 大量粒子爆发
   const cx=window.innerWidth/2,cy=window.innerHeight/2;
-  spawnParticles(cx,cy,80);
-  setTimeout(()=>spawnParticles(cx-100,cy-50,40),100);
-  setTimeout(()=>spawnParticles(cx+100,cy+50,40),200);
+  spawnParticles(cx,cy,90);
+  setTimeout(()=>spawnParticles(cx-100,cy-50,45),100);
+  setTimeout(()=>spawnParticles(cx+100,cy+50,45),200);
   // 屏幕闪光
   const flash=document.createElement('div');
   flash.style.cssText='position:fixed;inset:0;background:rgba(255,255,255,.8);z-index:9998;pointer-events:none;';
@@ -5123,18 +5820,21 @@ function animatePackOpen(){
     reveal.classList.remove('hidden');
     G.packContent.forEach((item,i)=>{
       const el=document.createElement('div');
-      el.className='reveal-card '+(item.kind==='joker'?'joker r'+(item.rarity||0):(item.kind==='playing_card'?'card':'cons'));
+      let extraCls='',iconHTML='',name=item.name,desc=item.desc||(item.hand?`升级${HANDS[item.hand]?.name}等级`:'');
+      if(item.kind==='joker')extraCls='joker r'+(item.rarity||0);
+      else if(item.kind==='playing_card'){
+        const mc=buildMiniCardHTML(item);
+        extraCls=mc.cls;iconHTML=mc.face;name=mc.name;desc=mc.desc;
+        el.style.setProperty('--cw','150px');
+      }else extraCls='cons';
+      el.className='reveal-card '+extraCls;
       el.style.animationDelay=`${i*0.35}s`;
-      let iconHTML='';
-      if(item.kind==='playing_card'){
-        const col=SUITS[item.suit]?.color||'#fff';
-        iconHTML=`<div class="rc-ic" style="display:flex;align-items:center;justify-content:center;font-size:36px;color:${col};font-weight:900;">${item.rank}${SUITS[item.suit]?.sym||''}</div>`;
-      }else{
+      if(item.kind!=='playing_card'){
         iconHTML=`<div class="rc-ic"><img class="rc-art" src="${getCardArtURL(item,item.kind==='joker'?'joker':(item.type||'tarot'))}"></div>`;
       }
       el.innerHTML=`${iconHTML}
-        <div class="rc-name">${item.name}</div>
-        <div class="rc-desc">${item.desc||(item.hand?`升级${HANDS[item.hand]?.name}等级`:'')}</div>`;
+        <div class="rc-name">${name}</div>
+        <div class="rc-desc">${desc||''}</div>`;
       el.addEventListener('click',()=>{
         playSound('click');
         // 取消其他选中
@@ -5205,15 +5905,38 @@ function showConsumableDetail(i){
     {text:'使用',cls:'primary',action:()=>{hideModal();setTimeout(()=>useConsumable(i),100);}}
   ]);
 }
+// 商店里（还没发牌）只有不依赖手牌的消耗品才能使用：星球牌升级、以及部分直接生效的塔罗/幻灵
+function consumableShopUsable(c){
+  if(c.type==='planet')return true;
+  if(c.type==='tarot'){
+    const needHand=['magician','priestess','empress','hierophant','lovers','chariot','justice','strength','death','tower','devil','star','moon','sun','world'];
+    return !needHand.includes(c.id);
+  }
+  if(c.type==='spectral')return ['wraith','phantom','black_hole'].includes(c.id);
+  return false;
+}
 function useConsumable(i){
   const c=G.consumables[i];
   const def=findConsumable(c);
   if(!def)return;
-  // 消耗品溶解消散特效：先播放溶解动画，再执行实际效果
-  const els=document.querySelectorAll('#cons-zone .cons-card');
+  const inShop=document.getElementById('s-shop')?.classList.contains('active');
+  // 商店未发牌：需要手牌的消耗品禁止使用，避免空发/误销毁
+  if(inShop&&!consumableShopUsable(c)){
+    playSound('tab');
+    showToast('还没发牌：进入盲注后才能使用这张消耗品');
+    return;
+  }
+  // 燃烧消散特效：先播放燃烧动画，再执行实际效果（商店/战斗两个位置取对应当前可见容器）
+  const els=inShop?document.querySelectorAll('#shop-owned-cons .owned-joker'):document.querySelectorAll('#cons-zone .cons-card');
   const el=els[i]||null;
-  if(el)el.classList.add('dissolving');
-  setTimeout(()=>useConsumableInner(i), el?400:0);
+  if(el){
+    el.classList.add('dissolving');
+    const r=el.getBoundingClientRect();
+    setTimeout(()=>burnParticles(r.left+r.width/2,r.top+r.height/2,26),120);
+    setTimeout(()=>burnParticles(r.left+r.width/2,r.top+r.height/2,18),260);
+    playSound('sell');
+  }
+  setTimeout(()=>useConsumableInner(i), el?480:0);
 }
 function useConsumableInner(i){
   const c=G.consumables[i];
@@ -5320,7 +6043,7 @@ function useConsumableInner(i){
     return;
   }
   // 塔罗牌 - 需要选择
-  if(['magician','priestess','empress','hierophant','lovers','chariot','justice','hermit','strength','death','tower','devil','star','moon','sun','world'].includes(c.id)){
+  if(['magician','priestess','empress','hierophant','lovers','chariot','justice','strength','death','tower','devil','star','moon','sun','world'].includes(c.id)){
     if(G.hand.length===0){showToast('手牌为空！');return;}
     showConsumablePicker(def,c.id,i);
   }else{
@@ -5568,6 +6291,7 @@ function nextBlind(){
   // 种子钱
   if(G.vouchers.seeded_money)G.money+=1;
   // 镣铐 Boss 影响手牌
+  tutUpdate('nextBlind');
   showBlindSelect();
 }
 function showBlindSelect(){
@@ -5590,8 +6314,12 @@ function showBlindSelect(){
     <div class="blind-reward">奖励 $${BLIND_REWARDS[bt]}</div>
     ${tag?`<div class="blind-tag-name">${tag.ic} ${tag.name}</div>`:''}
     ${isBoss&&boss?`<div class="blind-boss-info"><b>${boss.ic} ${boss.name}</b>：${boss.desc}</div>`:''}`;
-  // 点击进入战斗
-  el.addEventListener('click',()=>{
+  // 进入战斗（小/大盲注点击进入；Boss 不可跳过，1 秒后自动进入，无需再点）
+  let _blindEntered=false;
+  const enterBlind=()=>{
+    if(_blindEntered)return;
+    _blindEntered=true;
+    tutUpdate('enterBlind');
     // 乌合之众：选盲注时生成2张普通/罕见小丑
     if(G.jokers.some(j=>j.id==='riff_raff')){
       for(let k=0;k<2;k++){const pool=JOKERS.filter(j=>(j.rarity||0)<=1&&!G.jokers.some(g=>g.id===j.id));
@@ -5615,13 +6343,17 @@ function showBlindSelect(){
     playSound('roundStart');
     playTransition(BLIND_NAMES[bt],'linear-gradient(135deg,#0a1a2e,#1a3a5e,#0a1a2e)',()=>{
       showScreen('s-round');
+      // 先隐藏手牌区，防止上回合剩余手牌在发牌动画前闪现
+      const hc=document.getElementById('hand-container');if(hc)hc.style.visibility='hidden';
       // 牌堆从屏幕中央飞到右下角，然后发牌
       requestAnimationFrame(()=>requestAnimationFrame(()=>{
         animateDeckFlyIn(()=>beginRound());
       }));
     });
-  });
+  };
+  el.addEventListener('click',enterBlind);
   container.appendChild(el);
+  if(isBoss)setTimeout(()=>{try{enterBlind();}catch(e){console.error('auto enter boss error:',e);}},1000);
   // 跳过按钮：小/大盲注可跳过拿标签，Boss不可跳过
   const skipInfo=document.getElementById('blind-skip-info');
   if(bt!==2&&tag){
@@ -5714,7 +6446,7 @@ function gameWin(){
   const nextBtn=document.getElementById('result-next');
   nextBtn.textContent='再玩一次';
   nextBtn.onclick=()=>{saveBest();startNewGame();};
-  document.getElementById('result-menu').onclick=()=>{saveBest();G={};showScreen('s-start');updateStartStats();};
+  document.getElementById('result-menu').onclick=()=>{saveBest();switchBGM('main');G={};showScreen('s-start');updateStartStats();};
   saveBest();
 }
 function saveBest(){
@@ -5791,10 +6523,120 @@ function tutorialNext(){
   }
 }
 
+// ==================== 游戏内交互式新手教程 ====================
+const TUT_KEY='balatro_tut_done';
+let IN_TUTORIAL=false;
+let _tutStep=-1;
+let _tutRafId=null;
+// 教程步骤：waitFor = 推进所需的游戏事件；target = 高亮的 CSS 选择器（null=不高亮）
+const INGAME_TUT_STEPS=[
+  {bubble:'欢迎来到小丑牌！我是啾啾，让我来教你玩。点击"小盲注"开始第一局！',waitFor:'enterBlind',target:'.blind-card'},
+  {bubble:'这是你的手牌。点击 2~5 张牌来选中它们，组成扑克牌型（试试选2张相同点数的牌）！',waitFor:'beginRound',target:'#hand-container'},
+  {bubble:'选好了！现在点击"出牌"按钮，打出你选的牌。',waitFor:'select',target:'#btn-play',minSelect:1},
+  {bubble:'得分了！你的目标是在用完出牌次数前达到目标分数。继续出牌吧！',waitFor:'scored',target:null},
+  {bubble:'过关了！分数达标，点击继续进入商店看看好东西。',waitFor:'roundWin',target:null},
+  {bubble:'欢迎来到商店！这里可以买小丑牌增强实力。点击一张小丑牌试试！',waitFor:'openShop',target:'#shop-jokers .shop-item'},
+  {bubble:'买到好东西了！点击"下一盲注"继续你的冒险吧。',waitFor:'buy',target:'#btn-next-blind'},
+  {bubble:'教程结束！你已掌握了基本玩法。祝你好运！',waitFor:'nextBlind',target:null,autoEnd:3000}
+];
+function startInGameTutorial(){
+  IN_TUTORIAL=true;
+  _tutStep=0;
+  const wrap=document.getElementById('tut-in-game');
+  if(wrap)wrap.classList.add('active');
+  const skip=document.getElementById('tut-skip-btn');
+  if(skip)skip.style.display='';
+  _tutShowStep();
+}
+function _tutShowStep(){
+  if(!IN_TUTORIAL)return;
+  const step=INGAME_TUT_STEPS[_tutStep];
+  if(!step){_tutEnd();return;}
+  // 气泡文字
+  const txt=document.getElementById('tut-bubble-text');
+  if(txt)txt.innerHTML=step.bubble;
+  // 啾啾说话音效
+  try{initDialogueAudio();const len=step.bubble.replace(/<[^>]*>/g,'').length;
+    const beeps=Math.min(20,Math.ceil(len/3));
+    for(let i=0;i<beeps;i++)setTimeout(()=>jiujiuBeep(),i*60);
+  }catch(e){}
+  // 高亮目标
+  _tutUpdateSpotlight(step.target);
+  // 自动结束步骤
+  if(step.autoEnd){setTimeout(()=>{if(IN_TUTORIAL&&_tutStep===INGAME_TUT_STEPS.indexOf(step))_tutEnd();},step.autoEnd);}
+  // 启动 rAF 循环跟踪目标元素位置
+  if(!_tutRafId)_tutRafId=requestAnimationFrame(_tutRafLoop);
+}
+function _tutUpdateSpotlight(selector){
+  const spot=document.getElementById('tut-spotlight');
+  const ov=document.getElementById('tut-overlay');
+  if(!spot||!ov)return;
+  if(!selector){spot.style.display='none';ov.style.boxShadow='none';return;}
+  const el=document.querySelector(selector);
+  if(!el){spot.style.display='none';ov.style.boxShadow='none';return;}
+  spot.style.display='';
+  ov.style.boxShadow='0 0 0 9999px rgba(0,0,0,.5)';
+  _tutPositionSpot(el);
+}
+function _tutPositionSpot(el){
+  const spot=document.getElementById('tut-spotlight');
+  if(!spot||!el)return;
+  const r=el.getBoundingClientRect();
+  const pad=6;
+  spot.style.left=(r.left-pad)+'px';
+  spot.style.top=(r.top-pad)+'px';
+  spot.style.width=(r.width+pad*2)+'px';
+  spot.style.height=(r.height+pad*2)+'px';
+}
+function _tutRafLoop(){
+  if(!IN_TUTORIAL)return;
+  const step=INGAME_TUT_STEPS[_tutStep];
+  if(step&&step.target){
+    const el=document.querySelector(step.target);
+    if(el)_tutPositionSpot(el);
+  }
+  _tutRafId=requestAnimationFrame(_tutRafLoop);
+}
+function tutUpdate(event,payload){
+  if(!IN_TUTORIAL)return;
+  const step=INGAME_TUT_STEPS[_tutStep];
+  if(!step)return;
+  if(event!==step.waitFor)return;
+  // select 事件需要达到最小选中数
+  if(step.minSelect&&payload<step.minSelect)return;
+  _tutStep++;
+  if(_tutStep>=INGAME_TUT_STEPS.length){_tutEnd();return;}
+  _tutShowStep();
+}
+function _tutEnd(){
+  IN_TUTORIAL=false;
+  try{localStorage.setItem(TUT_KEY,'1');}catch(e){}
+  const wrap=document.getElementById('tut-in-game');
+  if(wrap)wrap.classList.remove('active');
+  const skip=document.getElementById('tut-skip-btn');
+  if(skip)skip.style.display='none';
+  if(_tutRafId){cancelAnimationFrame(_tutRafId);_tutRafId=null;}
+}
+function tutSkip(){
+  _tutEnd();
+}
+function tutHint(text,duration){
+  duration=duration||4000;
+  const el=document.getElementById('tut-hint-bubble');
+  if(!el)return;
+  el.textContent=text;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer=setTimeout(()=>el.classList.remove('show'),duration);
+}
+function hasPlayedTutorial(){
+  try{return localStorage.getItem(TUT_KEY)==='1';}catch(e){return false;}
+}
+
 // ==================== 资讯面板（牌型/盲注/优惠券） ====================
 // 渲染迷你扑克牌：big=算分牌（大），small=不算分牌（小）
 function renderMiniCard(rank,suit,big){
-  const sym=SUITS[suit].sym;
+  const sym=suitGlyph(suit);
   const color=SUITS[suit].color;
   const isFace=['J','Q','K'].includes(rank);
   let center;
@@ -5802,7 +6644,7 @@ function renderMiniCard(rank,suit,big){
     center=`<div class="mc-center">${getFaceCardSVG(rank,suit)}</div>`;
   }else if(big){
     // 数字大牌：复用点数排列，但把内联字号缩小以适配迷你卡
-    let pips=getCardPips(rank,sym,color).replace(/font-size:([\d.]+)em/g,(m,v)=>`font-size:${(parseFloat(v)*0.5).toFixed(3)}em`);
+    let pips=getCardPips(rank,suit,color).replace(/font-size:([\d.]+)em/g,(m,v)=>`font-size:${(parseFloat(v)*0.5).toFixed(3)}em`);
     center=`<div class="mc-center" style="position:relative;width:100%;height:100%;">${pips}</div>`;
   }else{
     center=`<div class="mc-center"><span class="mc-sym" style="color:${color}">${sym}</span></div>`;
@@ -5811,12 +6653,15 @@ function renderMiniCard(rank,suit,big){
     <div class="mc-corner" style="color:${color}">${rank}<span>${sym}</span></div>
     ${center}</div>`;
 }
-// 牌型参考专用简化迷你卡：只保留一个中央花色（颜色区分），无角标、无多点数排列
+// 牌型参考专用简化迷你卡：角标显示点数+花色，中央大花色；大卡=算分牌（亮色），小卡=不算分牌（暗色）
 function renderMiniCardSimple(rank,suit,big){
-  const sym=SUITS[suit].sym;
+  const sym=suitGlyph(suit);
   const color=SUITS[suit].color;
+  const dim='#8a8494';
+  const c=big?color:dim;
   return `<div class="hr-mc ${big?'big':'small'} simple">
-    <div class="mc-center"><span class="mc-sym" style="color:${color};font-size:${big?'1.5em':'1.1em'};">${sym}</span></div></div>`;
+    <div class="mc-corner" style="color:${c}">${rank}<span>${sym}</span></div>
+    <div class="mc-center"><span class="mc-sym" style="color:${c};">${sym}</span></div></div>`;
 }
 function showInfoPanel(from){
   G._infoFrom=from||'s-round';
@@ -5836,6 +6681,7 @@ function renderInfoHands(){
     const level=G.level?.[key]||1;
     const chips=h.chips+(level-1)*(HAND_LEVELUP[key]?.[0]||15);
     const mult=h.mult+(level-1)*(HAND_LEVELUP[key]?.[1]||1);
+    const played=G.handTypeCount?.[key]||0;
     const detail=HAND_DETAILS[key];
     const cardsHtml=detail?detail.cards.map(([r,s,sc])=>renderMiniCardSimple(r,s,!!sc)).join(''):'';
     const row=document.createElement('div');
@@ -6092,8 +6938,20 @@ function initAudio(){
       bgmGain.connect(masterGain);
     }catch(e){}
   }
-  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
 }
+// 音频保活：浏览器在切后台/锁屏后会挂起 AudioContext 与 audio 播放，回前台/再次交互时必须恢复
+function _keepAudioAlive(){
+  try{
+    initAudio();
+    if(dialogueAudioCtx&&dialogueAudioCtx.state==='suspended')dialogueAudioCtx.resume().catch(()=>{});
+    if(bgmPlaying&&_bgmAudio&&_bgmAudio.paused){_bgmAudio.currentTime=_bgmAudio.currentTime||0;_bgmAudio.play().catch(()=>{});}
+  }catch(e){}
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)_keepAudioAlive();});
+document.addEventListener('pointerdown',_keepAudioAlive,true);
+document.addEventListener('touchend',_keepAudioAlive,true);
+window.addEventListener('focus',_keepAudioAlive);
 // 生成一段极短的滤波噪声（模拟纸牌摩擦/拨动）
 function _paperNoise(now,dur,freq,q,vol,dest){
   try{
@@ -6109,7 +6967,8 @@ function _paperNoise(now,dur,freq,q,vol,dest){
   }catch(e){}
 }
 function playSound(type){
-  if(!G.settings?.sound)return;
+ try{
+  if(!G||!G.settings||G.settings.sound===false)return;
   // 节流检查
   const nowMs=Date.now();
   const cd=_soundCooldown[type]||0;
@@ -6245,6 +7104,10 @@ function playSound(type){
       break;}
     case 'deny':osc.type='sawtooth';osc.frequency.setValueAtTime(220,now);osc.frequency.exponentialRampToValueAtTime(140,now+.16);gain.gain.setValueAtTime(.08,now);gain.gain.exponentialRampToValueAtTime(.001,now+.18);osc.start(now);osc.stop(now+.18);break;
   }
+ }catch(e){
+  // 音频任何异常都不能影响交互（否则商店悬停/按钮点击会表现为"卡住"）
+  console.warn('playSound fail:',type,e&&e.message);
+ }
 }
 // 全屏转场动画
 let _isTransitioning=false;
@@ -6266,55 +7129,82 @@ function playTransition(text, bgColor, callback){
       setTimeout(()=>{bg.style.transition='';},500);
     },150);
   }
-  // 生成飞过的卡牌
-  const suits=['♥','♠','♦','♣'];
-  const ranks=['A','K','Q','J','10'];
+  // 全屏牌墙：牌背紧密搭放、铺满并超出屏幕边缘（由屏幕自然裁切），扇形旋转从左扫入
   cardsEl.innerHTML='';
-  for(let i=0;i<5;i++){
-    const card=document.createElement('div');
-    card.className='t-card';
-    const suit=suits[Math.floor(Math.random()*4)];
-    const rank=ranks[Math.floor(Math.random()*5)];
-    const color=suit==='♥'?'#d7263d':suit==='♦'?'#ca8a04':suit==='♣'?'#15803d':'#1a1a2e';
-    card.style.color=color;
-    card.textContent=rank+suit;
-    card.style.animation=`transCardIn .3s ease-out ${i*0.05}s both`;
-    cardsEl.appendChild(card);
+  const vw=window.innerWidth, vh=window.innerHeight;
+  const cw=Math.max(64,Math.min(118,vw/13));
+  const ch=cw*1.42;
+  const stepX=cw*0.74, stepY=ch*0.82;
+  const cols=Math.ceil(vw/stepX)+4;
+  const rows=Math.ceil(vh/stepY)+2;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const card=document.createElement('div');
+      card.className='t-card';
+      card.style.width=cw.toFixed(1)+'px';
+      card.style.height=ch.toFixed(1)+'px';
+      const offset=(r%2)?stepX*0.5:0; // 奇数行错位半格（砖墙搭放）
+      card.style.left=(c*stepX-cw*1.2+offset).toFixed(1)+'px';
+      card.style.top=(r*stepY-ch*0.6).toFixed(1)+'px';
+      // 扇形：中列垂直，越靠两侧越斜；行间轻微角度差，边缘参差
+      const rot=(c-cols/2)*1.1+(r-rows/2)*0.9;
+      card.style.setProperty('--r',rot.toFixed(2)+'deg');
+      card.style.zIndex=10+r;
+      const inDelay=(c*0.012+r*0.025);
+      card.style.animation=`transSweepIn .34s cubic-bezier(.3,.8,.4,1) ${inDelay.toFixed(3)}s both`;
+      card.dataset.outDelay=((cols-1-c)*0.012+r*0.015).toFixed(3);
+      cardsEl.appendChild(card);
+    }
   }
+  // 复位文字状态（上一轮残留）
+  textEl.style.removeProperty('animation');
+  textEl.style.transition='';
+  textEl.style.opacity='';
   textEl.textContent=text||'';
-  textEl.style.animation='transTextIn .3s ease-out .2s both';
   // 显示遮罩
   overlay.classList.add('show');
   bg.style.animation='transBgIn .3s ease-out both';
-  // 0.4秒后执行回调（切换页面）
+  // 铺满时刻 = 最晚一张牌扫入完成（最大延迟 + 动画时长）+ 余量，保证切屏前画面 100% 被牌墙覆盖
+  const maxInMs=((cols-1)*0.012+(rows-1)*0.025+0.34)*1000;
+  const coverTime=Math.min(1200,maxInMs+130);
+  // 扫出完成时刻 = 最晚一张牌扫出完成
+  const maxOutMs=((cols-1)*0.012+(rows-1)*0.015+0.34)*1000;
   setTimeout(()=>{
     try{if(callback)callback();}catch(e){console.error('Transition callback error:',e);}
-    // 卡牌飞出
-    [...cardsEl.children].forEach((c,i)=>{
-      c.style.animation=`transCardOut .3s ease-in ${i*0.03}s both`;
-    });
-    bg.style.animation='transBgOut .3s ease-in .15s both';
-    textEl.style.opacity='0';
-    // 0.5秒后隐藏遮罩（强制确保隐藏）
+    // 等浏览器把新屏幕渲染完，再启动扫出（避免重渲染与扫出动画同帧竞争导致卡顿）
+    setTimeout(()=>{
+      [...cardsEl.children].forEach((cd)=>{
+        cd.style.animation=`transSweepOut .34s cubic-bezier(.5,0,.8,.3) ${cd.dataset.outDelay||0}s both`;
+      });
+      bg.style.animation='transBgOut .3s ease-in .15s both';
+      // 文字必须立刻消失：CSS 动画带 !important 且 fill forwards 会压过内联 opacity，
+      // 必须先用 important 取消动画，再淡出（修复"字体延迟消失"）
+      textEl.style.setProperty('animation','none','important');
+      textEl.style.transition='opacity .15s ease-out';
+      textEl.style.opacity='0';
+    },240);
+    // 扫出完成后淡出遮罩，再清空节点（此时牌都已扫到屏幕外，清 200+ 节点不可见）
     setTimeout(()=>{
       overlay.classList.remove('show');
       overlay.style.pointerEvents='none';
       bg.style.animation='';
-      cardsEl.innerHTML='';
       textEl.textContent='';
+      textEl.style.removeProperty('animation');
+      textEl.style.transition='';
       textEl.style.opacity='';
-      textEl.style.animation='';
       _isTransitioning=false;
-    },500);
-  },400);
-  // 安全兜底：1.2秒后强制隐藏遮罩，防止任何异常导致卡住
+      setTimeout(()=>{cardsEl.innerHTML='';},220);
+    },240+maxOutMs+80);
+  },coverTime);
+  // 安全兜底：4 秒后强制隐藏遮罩，防止任何异常导致卡住
   setTimeout(()=>{
     if(overlay.classList.contains('show')){
       overlay.classList.remove('show');
       overlay.style.pointerEvents='none';
     }
+    textEl.textContent='';
     _isTransitioning=false;
-  },1200);
+  },4000);
 }
 // ==================== BGM 实际MP3音乐 ====================
 let bgmPlaying=false;
@@ -6336,7 +7226,14 @@ function _getBgmAudio(){
     _bgmAudio=document.createElement('audio');
     _bgmAudio.loop=true;
     _bgmAudio.volume=BGM_VOL;
-    _bgmAudio.addEventListener('error',()=>{console.warn('BGM load error:',_currentBgmTrack);});
+    _bgmAudio.addEventListener('error',()=>{
+      console.warn('BGM load error:',_currentBgmTrack);
+      // 加载失败后 1 秒自动重试一次（移动端网络抖动）
+      setTimeout(()=>{if(bgmPlaying&&G.settings?.music){_bgmAudio.load();_bgmAudio.play().catch(()=>{});}},1000);
+    });
+    // 播放中断（stalled/暂停异常）时自动续播
+    _bgmAudio.addEventListener('stalled',()=>{if(bgmPlaying)setTimeout(()=>{if(bgmPlaying&&_bgmAudio.paused)_bgmAudio.play().catch(()=>{});},400);});
+    _bgmAudio.addEventListener('pause',()=>{if(bgmPlaying)setTimeout(()=>{if(bgmPlaying&&_bgmAudio.paused)_bgmAudio.play().catch(()=>{});},300);});
   }
   return _bgmAudio;
 }
@@ -6509,24 +7406,100 @@ resizeFx();
 window.addEventListener('resize',resizeFx);
 function spawnParticles(x,y,count){
   for(let i=0;i<count;i++){
-    particles.push({x,y,vx:(Math.random()-.5)*8,vy:(Math.random()-.5)*8-2,life:1,color:['#f5c542','#ff6b9d','#22d3ee','#a855f7','#4ade80'][Math.floor(Math.random()*5)],size:Math.random()*4+2});
+    particles.push({x,y,vx:(Math.random()-.5)*9,vy:(Math.random()-.5)*9-2.5,life:1,
+      color:['#f5c542','#ff6b9d','#22d3ee','#a855f7','#4ade80','#ffffff'][Math.floor(Math.random()*6)],
+      size:Math.random()*5+2.5,rot:Math.random()*Math.PI,vr:(Math.random()-.5)*.3});
+  }
+}
+// 算分结束：最终得分数字从计分区抛物线飞向左侧「回合分数」，落袋时金光迸发
+function flyScoreToTotal(fromEl,valText){
+  return new Promise(resolve=>{
+    const start=(fromEl||document.getElementById('final-score')).getBoundingClientRect();
+    const totalEl=document.getElementById('sb-round-score');
+    if(!totalEl){resolve();return;}
+    const end=totalEl.getBoundingClientRect();
+    const sx=start.left+start.width/2,sy=start.top+start.height/2;
+    const ex=end.left+end.width/2,ey=end.top+end.height/2;
+    const fly=document.createElement('div');
+    fly.textContent=valText;
+    fly.style.cssText=`position:fixed;left:0;top:0;z-index:700;
+      font-family:var(--f-display);font-size:clamp(28px,4vw,52px);font-weight:900;color:#ffd76a;
+      text-shadow:0 0 14px rgba(255,200,60,.95),0 3px 0 rgba(0,0,0,.5);pointer-events:none;will-change:transform;`;
+    document.body.appendChild(fly);
+    if(fromEl){fromEl.style.transition='opacity .3s';fromEl.style.opacity='0';}
+    playSound('score');
+    // WAAPI 抛物线：起点 → 途中上抛 → 精确落入回合分数框中心
+    const anim=fly.animate([
+      {transform:`translate(${sx}px,${sy}px) translate(-50%,-50%) scale(1) rotate(0deg)`,opacity:1,offset:0},
+      {transform:`translate(${(sx+ex)/2}px,${Math.min(sy,ey)-90}px) translate(-50%,-50%) scale(.72) rotate(-6deg)`,opacity:1,offset:.55},
+      {transform:`translate(${ex}px,${ey}px) translate(-50%,-50%) scale(.36) rotate(6deg)`,opacity:1,offset:1}
+    ],{duration:760,easing:'cubic-bezier(.45,.05,.55,1)'});
+    // 途中火花
+    for(let k=1;k<=3;k++)setTimeout(()=>burnParticles(sx+(ex-sx)*k/3,sy+(ey-sy)*k/3-40,10),k*170);
+    anim.onfinish=()=>{
+      fly.remove();
+      burnParticles(ex,ey,26);
+      resolve();
+    };
+  });
+}
+// 燃烧火焰粒子（卖卡/用消耗品/高分着火）
+function burnParticles(x,y,n){
+  for(let i=0;i<n;i++){
+    particles.push({x:x+(Math.random()-.5)*26,y:y+(Math.random()-.5)*16,
+      vx:(Math.random()-.5)*1.6,vy:-(Math.random()*2.2+1.2),life:.85,fire:true,
+      color:['#ffe14d','#ffb02e','#ff6a1f','#ff3333'][Math.floor(Math.random()*4)],
+      size:Math.random()*5+3,rot:(Math.random()-.5)*.3,vr:(Math.random()-.5)*.08});
   }
 }
 function animLoop(){
   fxCtx.clearRect(0,0,fxCanvas.width,fxCanvas.height);
   particles=particles.filter(p=>p.life>0);
   particles.forEach(p=>{
-    p.x+=p.vx;p.y+=p.vy;p.vy+=0.15;p.life-=0.02;
-    fxCtx.globalAlpha=p.life;
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.fire){p.vy-=0.03;p.vx*=.96;}else{p.vy+=0.18;p.vx*=.985;}
+    p.life-=p.fire?0.03:0.018;p.rot+=p.vr;
+    fxCtx.globalAlpha=Math.max(0,p.life);
     fxCtx.fillStyle=p.color;
-    fxCtx.beginPath();
-    fxCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
-    fxCtx.fill();
+    fxCtx.save();
+    fxCtx.translate(p.x,p.y);fxCtx.rotate(p.rot);
+    const s=p.size*(p.fire?(0.4+p.life*0.9):(0.5+p.life*0.7));
+    fxCtx.fillRect(-s/2,-s/2,s,s); // 像素方块粒子
+    fxCtx.restore();
   });
   fxCtx.globalAlpha=1;
   requestAnimationFrame(animLoop);
 }
 animLoop();
+// 高分时筹码/倍率数字着火（原版：分数越高火苗越旺）
+let _fireTimer=null;
+function updateFireFx(chips,mult){
+  const chipsHot=chips>=120,multHot=mult>=25;
+  const ce=document.getElementById('sb-chips'),me=document.getElementById('sb-mult');
+  if(ce)ce.classList.toggle('on-fire',chipsHot);
+  if(me)me.classList.toggle('on-fire',multHot);
+  if(!chipsHot&&!multHot){if(_fireTimer){clearInterval(_fireTimer);_fireTimer=null;}return;}
+  if(_fireTimer)return;
+  _fireTimer=setInterval(()=>{
+    [['sb-chips',chipsHot],['sb-mult',multHot]].forEach(([id,on])=>{
+      if(!on)return;
+      const el=document.getElementById(id);
+      if(!el||el.offsetParent===null)return;
+      const r=el.getBoundingClientRect();
+      // 底缘一排火：越热越旺
+      const heat=id==='sb-chips'?Math.min(1,chips/400):Math.min(1,mult/60);
+      const n=3+Math.round(heat*3);
+      for(let k=0;k<n;k++){
+        particles.push({x:r.left+4+Math.random()*(r.width-8),y:r.bottom-4-Math.random()*6,
+          vx:(Math.random()-.5)*1.4,vy:-(Math.random()*2.6+2.2+heat*1.5),life:.8,fire:true,
+          color:['#fff7cc','#ffe14d','#ffb02e','#ff6a1f','#ff3333'][Math.floor(Math.random()*5)],
+          size:Math.random()*5+3.5+heat*2,rot:(Math.random()-.5)*.3,vr:(Math.random()-.5)*.08});
+      }
+      // 偶发火星
+      if(Math.random()<0.35)burnParticles(r.left+Math.random()*r.width,r.top+Math.random()*r.height,6);
+    });
+  },55);
+}
 
 // ==================== 工具 ====================
 function showToast(msg){
@@ -6588,6 +7561,7 @@ function openDevPanel(ctx){
       <button class="dev-q" data-act="shop">直接进商店</button>
       <button class="dev-q" data-act="clearj">清空小丑</button>
       <button class="dev-q" data-act="clearc">清空消耗品</button>
+      <button class="dev-q" data-act="unlockall" style="background:linear-gradient(180deg,#0d9488,#115e59);box-shadow:0 2px 0 #134e4a;">解锁全部牌组/难度</button>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;">
       <button class="dev-q pk" data-pk="joker">开小丑包</button>
@@ -6654,6 +7628,16 @@ function openDevPanel(ctx){
       else if(act==='clearj'){G.jokers=[];showToast('已清空小丑');}
       else if(act==='clearc'){G.consumables=[];showToast('已清空消耗品');}
       else if(act==='reroll'){generateShop();renderShop();showToast('商店已强制刷新');}
+      else if(act==='unlockall'){
+        try{
+          localStorage.setItem(DECK_UNLOCK_KEY,'2');
+          const m={};(typeof DECKS!=='undefined'?DECKS:[]).forEach((d)=>{if(d&&d.id)m[d.id]=(typeof STAKES!=='undefined'&&STAKES.length)?STAKES.length:8;});
+          localStorage.setItem(STAKE_UNLOCK_KEY,JSON.stringify(m));
+          showToast('已解锁全部牌组与全部难度');
+        }catch(e){showToast('解锁失败: '+e.message);}
+        try{if(typeof renderDeckSelect==='function')renderDeckSelect();}catch(e){}
+        try{if(typeof renderStakeSelect==='function')renderStakeSelect();}catch(e){}
+      }
       else if(b.dataset.pk){hideModal();openPack({type:b.dataset.pk,name:b.textContent.trim(),ic:'🎴'});return;}
       devRefresh();statEl.textContent=stat();
     }catch(err){showToast('调试操作失败: '+err.message);console.error(err);}
@@ -6704,6 +7688,7 @@ function showJokerInfo(j){
 let deckIdx=0;
 function showDeckSelect(){
   showScreen('s-deck');
+  if(!hasPlayedTutorial())setTimeout(()=>tutHint('选一个牌组开始吧！红牌组适合新手——多1次弃牌。'),500);
   const stage=document.getElementById('deck-stage');
   if(!stage)return;
   if(stage.children.length===0){
@@ -6804,7 +7789,15 @@ function refreshContinueBtn(){
 function startNewGame(){
   clearSave();refreshContinueBtn();
   newGame();
+  // 首次玩家自动进入游戏内教程
+  if(!hasPlayedTutorial()){
+    G._needTutorial=true;
+  }
   showBlindSelect();
+  if(G._needTutorial){
+    G._needTutorial=false;
+    setTimeout(()=>startInGameTutorial(),600);
+  }
 }
 function updateStartStats(){
   try{
@@ -6881,35 +7874,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   // 主界面
   document.getElementById('btn-start').addEventListener('click',()=>{
     initAudio();startBGM();playSound('roundStart');
-    const overlay=document.getElementById('transition-overlay');
-    const bg=document.getElementById('transition-bg');
-    if(overlay&&bg){
-      // 第一阶段：黑屏
-      bg.style.background='#000';
-      bg.style.animation='none';
-      overlay.classList.add('show');
-      // 第二阶段：200ms后燃烧融化效果
-      setTimeout(()=>{
-        bg.style.background='linear-gradient(180deg,#ff6b00,#ff2d00,#8b0000)';
-        bg.style.animation='burnIn .8s ease-out both';
-        // 火焰粒子
-        for(let i=0;i<60;i++){
-          setTimeout(()=>spawnParticles(Math.random()*window.innerWidth,window.innerHeight*0.3+Math.random()*window.innerHeight*0.5,3),i*20);
-        }
-        // 融化效果：屏幕扭曲
-        document.body.style.filter='brightness(1.5) saturate(1.5)';
-        setTimeout(()=>{document.body.style.filter='brightness(1.2) saturate(1.3) blur(2px)';},300);
-      },200);
-      // 第三阶段：1.2秒后进入游戏
-      setTimeout(()=>{
-        document.body.style.filter='';
-        showDeckSelect();
-        overlay.classList.remove('show');
-        bg.style.animation='';
-      },1200);
-    }else{
-      playTransition('选择牌组','linear-gradient(135deg,#2a1a3a,#4a2a6e,#2a1a3a)',()=>showDeckSelect());
-    }
+    playTransition('选择牌组','linear-gradient(135deg,#2a1a3a,#4a2a6e,#2a1a3a)',()=>showDeckSelect());
   });
   document.getElementById('btn-deck-back').addEventListener('click',()=>{
     playSound('click');
@@ -6921,19 +7886,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(!st){showToast('请选择一个难度');return;}
     if(!isStakeUnlocked(PENDING_DECK,STAKES.indexOf(st))){playSound('deny');showToast('该难度尚未解锁');return;}
     playSound('roundStart');
-    const overlay=document.getElementById('transition-overlay');const bg=document.getElementById('transition-bg');
-    if(overlay&&bg){
-      bg.style.background='#000';bg.style.animation='none';overlay.classList.add('show');
-      setTimeout(()=>{
-        bg.style.background='linear-gradient(180deg,#ff6b00,#ff2d00,#8b0000)';bg.style.animation='burnIn .8s ease-out both';
-        for(let i=0;i<60;i++){setTimeout(()=>spawnParticles(Math.random()*window.innerWidth,window.innerHeight*0.3+Math.random()*window.innerHeight*0.5,3),i*20);}
-        document.body.style.filter='brightness(1.5) saturate(1.5)';
-        setTimeout(()=>{document.body.style.filter='brightness(1.2) saturate(1.3) blur(2px)';},300);
-      },200);
-      setTimeout(()=>{document.body.style.filter='';startNewGame();overlay.classList.remove('show');bg.style.animation='';},1200);
-    }else{
-      playTransition('开始游戏','linear-gradient(135deg,#1a0a2e,#4a1a6e,#1a0a2e)',()=>startNewGame());
-    }
+    playTransition('开始游戏','linear-gradient(135deg,#1a0a2e,#4a1a6e,#1a0a2e)',()=>startNewGame());
   });
   document.getElementById('deck-prev').addEventListener('click',()=>deckRotate(-1));
   document.getElementById('deck-next').addEventListener('click',()=>deckRotate(1));
@@ -6947,30 +7900,20 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(!PENDING_DECK){showToast('请先选择一个牌组');return;}
     if(!isDeckUnlocked(PENDING_DECK)){playSound('deny');showToast(`未解锁：${unlockHint(PENDING_DECK)}`);return;}
     playSound('roundStart');
-    const overlay=document.getElementById('transition-overlay');
-    const bg=document.getElementById('transition-bg');
-    if(overlay&&bg){
-      bg.style.background='#000';bg.style.animation='none';overlay.classList.add('show');
-      setTimeout(()=>{
-        bg.style.background='linear-gradient(180deg,#ff6b00,#ff2d00,#8b0000)';
-        bg.style.animation='burnIn .8s ease-out both';
-        for(let i=0;i<60;i++){setTimeout(()=>spawnParticles(Math.random()*window.innerWidth,window.innerHeight*0.3+Math.random()*window.innerHeight*0.5,3),i*20);}
-        document.body.style.filter='brightness(1.5) saturate(1.5)';
-        setTimeout(()=>{document.body.style.filter='brightness(1.2) saturate(1.3) blur(2px)';},300);
-      },200);
-      setTimeout(()=>{
-        document.body.style.filter='';
-        showStakeSelect();
-        overlay.classList.remove('show');
-        bg.style.animation='';
-      },1200);
-    }else{
-      playTransition('选择难度','linear-gradient(135deg,#1a0a2e,#4a1a6e,#1a0a2e)',()=>showStakeSelect());
-    }
+    playTransition('选择难度','linear-gradient(135deg,#1a0a2e,#4a1a6e,#1a0a2e)',()=>showStakeSelect());
   });
   document.getElementById('btn-tutorial-start').addEventListener('click',()=>{initAudio();initDialogueAudio();showTutorial();});
+  document.getElementById('tut-skip-btn').addEventListener('click',()=>{playSound('click');tutSkip();});
   document.getElementById('btn-shop-preview').addEventListener('click',()=>{initAudio();showShopPreview();});
   document.getElementById('btn-settings-start').addEventListener('click',()=>showSettings('s-start'));
+  // 退出游戏：停 BGM 回到游戏库门户页
+  const btnExit=document.getElementById('btn-exit-game');
+  if(btnExit)btnExit.addEventListener('click',()=>{
+    try{playSound('click');}catch(e){}
+    try{if(typeof stopBGM==='function')stopBGM();}catch(e){}
+    try{if(typeof dialogueAudioCtx!=='undefined'&&dialogueAudioCtx&&dialogueAudioCtx.suspend)dialogueAudioCtx.suspend();}catch(e){}
+    setTimeout(()=>{window.location.href='../../index.html';},250);
+  });
   // 关于按钮 - 更新日志
   document.getElementById('btn-about').addEventListener('click',()=>{
     playSound('click');
@@ -7233,18 +8176,35 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   document.getElementById('sb-options').addEventListener('click',()=>{
     playSound('click');
-    playTransition('设置','linear-gradient(135deg,#1a2a4e,#2a4a6e,#1a2a4e)',()=>showSettings('s-round'));
+    showSettings('s-round'); // 战斗内开选项面板：直接切换，不走全屏转场
   });
   // 商店
   document.getElementById('btn-reroll').addEventListener('click',rerollShop);
   document.getElementById('btn-shop-menu').addEventListener('click',()=>{
     playSound('click');
-    showModal('返回主菜单','确定要返回主菜单吗？当前对局进度将丢失。',[
+    showModal('返回主菜单','对局将自动保存，可在主菜单点"继续游戏"回到此处。',[
       {text:'取消',cls:'ghost',action:()=>hideModal()},
-      {text:'确定',cls:'danger',action:()=>{hideModal();switchBGM('main');playTransition('主菜单','linear-gradient(135deg,#1a0a2e,#4a1a6e,#1a0a2e)',()=>{G={};showScreen('s-start');});}}
+      {text:'保存并返回',cls:'primary',action:()=>{hideModal();saveGame();switchBGM('main');playTransition('主菜单','linear-gradient(135deg,#1a0a2e,#4a1a6e,#1a0a2e)',()=>{G={};showScreen('s-start');updateStartStats();});}}
     ]);
   });
   document.getElementById('btn-next-blind').addEventListener('click',()=>nextBlind());
+  // 左下牌组堆：点击查看整副牌库
+  document.getElementById('btn-shop-deck').addEventListener('click',()=>{
+    playSound('tab');
+    const grid=document.createElement('div');
+    grid.style.cssText='display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:58vh;overflow-y:auto;padding:10px 4px;';
+    const order={S:0,H:1,D:2,C:3};
+    const rankOrder={A:14,K:13,Q:12,J:11,'10':10,'9':9,'8':8,'7':7,'6':6,'5':5,'4':4,'3':3,'2':2};
+    [...G.deck].sort((a,b)=>{
+      const so=(order[a.suit]??9)-(order[b.suit]??9);
+      return so!==0?so:(rankOrder[b.rank]??0)-(rankOrder[a.rank]??0);
+    }).forEach(c=>{
+      const el=buildScoreCardEl(c);
+      el.style.flex='0 0 auto';
+      grid.appendChild(el);
+    });
+    showModal(`牌组（${G.deck.length} 张）`,grid,[{text:'关闭',cls:'primary',action:hideModal}]);
+  });
   // 牌型参考
   document.getElementById('codex-back').addEventListener('click',()=>showScreen(G._settingsFrom||'s-start'));
   // 资讯面板：标签切换 + 返回
@@ -7262,7 +8222,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('btn-main-menu').addEventListener('click',()=>{
     showModal('返回主菜单','对局将自动保存，可在主菜单点“继续游戏”回到此处。',[
       {text:'取消',cls:'ghost',action:()=>hideModal()},
-      {text:'保存并返回',cls:'primary',action:()=>{hideModal();saveGame();G={};showScreen('s-start');updateStartStats();playSound('click');}}
+      {text:'保存并返回',cls:'primary',action:()=>{hideModal();saveGame();switchBGM('main');G={};showScreen('s-start');updateStartStats();playSound('click');}}
     ]);
   });
   document.getElementById('btn-continue').addEventListener('click',()=>{
