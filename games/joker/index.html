@@ -319,38 +319,6 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .jj-bubble::after{content:'';position:absolute;left:-8px;top:32px;border:6px solid transparent;border-right-color:#fff;}
 .jj-bubble-text{font-family:var(--f-zh);font-size:14px;color:#2a2140;line-height:1.6;white-space:normal;}
 
-/* ==================== 教程 ==================== */
-#s-tutorial{background:rgba(10,10,18,.92);align-items:center;justify-content:center;padding:20px;z-index:100;}
-.tut-box{background:linear-gradient(160deg,var(--panel2),var(--panel));border:2px solid var(--line);border-radius:16px;
-  padding:24px;max-width:560px;width:100%;position:relative;box-shadow:0 0 40px rgba(168,85,247,.3);}
-.tut-joker{width:120px;height:140px;margin:0 auto 12px;position:relative;animation:tutFloat 3s ease-in-out infinite;}
-@keyframes tutFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-8px) rotate(2deg);}}
-.tut-cat{width:100%;height:100%;image-rendering:pixelated;}
-.tut-cat .cat-eye{transform-origin:center;animation:catBlink 4s ease-in-out infinite;}
-@keyframes catBlink{0%,45%,55%,100%{transform:scaleY(1);}50%{transform:scaleY(0.1);}}
-.tut-cat .cat-tail{transform-origin:bottom left;animation:catTail 1.5s ease-in-out infinite;}
-@keyframes catTail{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(15deg);}}
-.tut-cat .cat-ear-l{transform-origin:bottom right;animation:catEarL 5s ease-in-out infinite;}
-.tut-cat .cat-ear-r{transform-origin:bottom left;animation:catEarR 5s ease-in-out infinite;}
-@keyframes catEarL{0%,90%,100%{transform:rotate(0);}95%{transform:rotate(-10deg);}}
-@keyframes catEarR{0%,85%,100%{transform:rotate(0);}90%{transform:rotate(10deg);}}
-.tut-name{font-family:var(--f-zh);font-size:18px;color:var(--gold);text-align:center;margin-bottom:12px;text-shadow:0 0 10px rgba(245,197,66,.5);letter-spacing:2px;}
-.tut-bubble{background:#fff;color:#1a1a2a;border-radius:12px;padding:14px 18px;font-size:15px;line-height:1.7;
-  position:relative;margin-bottom:16px;}
-.tut-bubble::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);
-  border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:10px solid #fff;}
-.tut-bubble b{color:var(--red2);}
-.tut-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
-.tut-step{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.05);border-radius:10px;padding:10px 14px;}
-.tut-step .num{width:28px;height:28px;border-radius:50%;background:var(--gold);color:#1a1a2a;display:flex;align-items:center;
-  justify-content:center;font-family:var(--f-display);font-size:11px;flex-shrink:0;}
-.tut-step .txt{font-size:13px;line-height:1.6;color:var(--ink);}
-.tut-step .txt b{color:var(--gold);}
-.tut-nav{display:flex;justify-content:space-between;align-items:center;}
-.tut-progress{display:flex;gap:6px;}
-.tut-dot{width:10px;height:10px;border-radius:50%;background:var(--faint);transition:background .2s;}
-.tut-dot.active{background:var(--gold);box-shadow:0 0 8px rgba(245,197,66,.6);}
-
 /* ==================== 盲注选择 ==================== */
 #s-blind{align-items:center;justify-content:center;padding:20px;}
 .blind-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;max-width:900px;position:relative;z-index:2;}
@@ -485,8 +453,6 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .sb-blind-tag.small{background:var(--blue);color:#fff;}
 .sb-blind-tag.big{background:var(--red);color:#fff;}
 .sb-blind-tag.boss{background:var(--purple);color:#fff;}
-.sb-blind-tag-extra{font-size:11px;color:var(--gold);text-align:center;margin-top:4px;line-height:1.5;
-  background:rgba(0,0,0,.4);border-radius:6px;padding:3px 6px;letter-spacing:.5px;}
 .sb-blind-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0;}
 .sb-blind-ic{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;}
 .sb-blind.small .sb-blind-ic{background:radial-gradient(circle,#3b82f6,#1e40af);}
@@ -1234,7 +1200,7 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
   background:linear-gradient(180deg,var(--orange),#ea580c);box-shadow:0 4px 0 #9a3412;letter-spacing:2px;}
 
 /* ==================== 弹窗 ==================== */
-#modal{position:fixed;inset:0;background:rgba(5,5,10,.85);z-index:500;display:none;align-items:center;justify-content:center;
+#modal{position:fixed;inset:0;background:rgba(5,5,10,.85);z-index:10000;display:none;align-items:center;justify-content:center;
   padding:20px;backdrop-filter:blur(4px);}
 #modal.show{display:flex;}
 #modal-box{background:linear-gradient(160deg,var(--panel2),var(--panel));border:2px solid var(--line);border-radius:14px;
@@ -1252,6 +1218,7 @@ body.crt-on::before{content:'';position:fixed;inset:0;pointer-events:none;z-inde
 .modal-btn:active{transform:translateY(2px);}
 .modal-btn.primary{background:linear-gradient(180deg,#4ade80,#16a34a);}
 .modal-btn.danger{background:linear-gradient(180deg,#ef4444,#b91c1c);}
+.modal-btn.green{background:linear-gradient(180deg,#22c55e,#16a34a);box-shadow:0 4px 0 #15803d;}
 .modal-btn.ghost{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);}
 
 /* Toast */
@@ -1337,7 +1304,7 @@ html{background:#0a0a12;}
 
 /* 触屏：菜单类页面内容超高时可上下滚动 */
 @media(hover:none) and (pointer:coarse){
-  #s-shop,#s-blind,#s-settings,#s-info,#s-codex,#s-result,#s-tutorial,#s-shop-preview{overflow-y:auto!important;-webkit-overflow-scrolling:touch;}
+  #s-shop,#s-blind,#s-settings,#s-info,#s-codex,#s-result,#s-shop-preview{overflow-y:auto!important;-webkit-overflow-scrolling:touch;}
   .blind-card{animation:blindCardIn .5s ease-out backwards;}
 }
 
@@ -1452,11 +1419,6 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
   border-radius:6px;padding:8px 18px;color:#fff;font-family:var(--f-zh);font-size:13px;
   cursor:pointer;box-shadow:0 3px 0 #7f1d1d;letter-spacing:1px;transition:transform .15s;}
 #tut-skip-btn:hover{transform:translateY(-2px);}
-#tut-hint-bubble{position:fixed;bottom:20px;left:100px;max-width:min(320px,50vw);z-index:9991;
-  background:linear-gradient(180deg,#fffbeb,#fef3c7);border:3px solid #1a1a2e;border-radius:8px;
-  padding:8px 12px;font-family:var(--f-zh);font-size:13px;line-height:1.6;color:#1a1a2e;
-  box-shadow:4px 4px 0 rgba(0,0,0,.5);pointer-events:none;opacity:0;transition:opacity .3s;}
-#tut-hint-bubble.show{opacity:1;}
 
 /* =======================================================
    ===== 统一断点系统（后置，覆盖所有旧分散 media） =====
@@ -1851,7 +1813,6 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
     <button class="menu-btn blue" id="btn-start">开始游戏</button>
     <button class="menu-btn green" id="btn-continue" style="display:none">继续游戏</button>
     <button class="menu-btn" id="btn-del-save" style="display:none;background:linear-gradient(180deg,#6b7280,#4b5563);box-shadow:0 5px 0 #1f2937;font-size:15px;min-width:auto;padding:16px 18px;">删除存档</button>
-    <button class="menu-btn orange" id="btn-tutorial-start">新手教程</button>
     <button class="menu-btn purple" id="btn-shop-preview" style="background:linear-gradient(180deg,#a855f7,#7c3aed);box-shadow:0 5px 0 #5b21b6;">收藏</button>
     <button class="menu-btn red" id="btn-settings-start">设置</button>
   </div>
@@ -1928,70 +1889,6 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
     </div>
     <div class="jj-bubble" id="jj-bubble">
       <div class="jj-bubble-text" id="jj-bubble-text"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== 教程 ==================== -->
-<section class="screen" id="s-tutorial">
-  <div class="tut-box">
-    <div class="tut-joker">
-      <svg class="tut-cat" viewBox="0 0 100 120" shape-rendering="crispEdges">
-        <!-- 尾巴 -->
-        <g class="cat-tail">
-          <rect x="78" y="60" width="10" height="30" rx="4" fill="#f5e6d3"/>
-          <rect x="80" y="56" width="8" height="8" rx="3" fill="#e8d5c0"/>
-        </g>
-        <!-- 身体 -->
-        <rect x="28" y="55" width="44" height="45" rx="12" fill="#faf0e6"/>
-        <rect x="32" y="60" width="36" height="35" rx="8" fill="#f5e6d3"/>
-        <!-- 肚子 -->
-        <rect x="38" y="68" width="24" height="25" rx="6" fill="#fff8f0"/>
-        <!-- 头 -->
-        <rect x="22" y="25" width="56" height="42" rx="14" fill="#faf0e6"/>
-        <rect x="26" y="29" width="48" height="34" rx="10" fill="#f5e6d3"/>
-        <!-- 左耳 -->
-        <g class="cat-ear-l">
-          <polygon points="24,30 20,12 36,26" fill="#faf0e6"/>
-          <polygon points="25,27 23,17 33,25" fill="#ffb6c1"/>
-        </g>
-        <!-- 右耳 -->
-        <g class="cat-ear-r">
-          <polygon points="76,30 80,12 64,26" fill="#faf0e6"/>
-          <polygon points="75,27 77,17 67,25" fill="#ffb6c1"/>
-        </g>
-        <!-- 眼睛（蓝色，布偶猫特征） -->
-        <g class="cat-eye">
-          <rect x="34" y="40" width="10" height="12" rx="5" fill="#4a9eff"/>
-          <rect x="36" y="42" width="4" height="5" rx="2" fill="#fff"/>
-          <rect x="56" y="40" width="10" height="12" rx="5" fill="#4a9eff"/>
-          <rect x="58" y="42" width="4" height="5" rx="2" fill="#fff"/>
-        </g>
-        <!-- 鼻子 -->
-        <rect x="46" y="52" width="8" height="5" rx="2" fill="#ff9999"/>
-        <!-- 嘴 -->
-        <rect x="44" y="57" width="4" height="3" rx="1" fill="#cc8888"/>
-        <rect x="52" y="57" width="4" height="3" rx="1" fill="#cc8888"/>
-        <!-- 胡须 -->
-        <rect x="14" y="48" width="10" height="2" fill="#d4c4b0"/>
-        <rect x="14" y="53" width="10" height="2" fill="#d4c4b0"/>
-        <rect x="76" y="48" width="10" height="2" fill="#d4c4b0"/>
-        <rect x="76" y="53" width="10" height="2" fill="#d4c4b0"/>
-        <!-- 爪子 -->
-        <rect x="32" y="92" width="12" height="8" rx="4" fill="#faf0e6"/>
-        <rect x="56" y="92" width="12" height="8" rx="4" fill="#faf0e6"/>
-      </svg>
-    </div>
-    <div class="tut-name">啾啾</div>
-    <div class="tut-bubble" id="tut-bubble"></div>
-    <div class="tut-steps" id="tut-steps"></div>
-    <div class="tut-nav">
-      <div class="tut-progress" id="tut-progress"></div>
-      <div style="display:flex;gap:8px;">
-        <button class="menu-btn ghost" id="tut-menu" style="padding:8px 16px;font-size:14px;background:linear-gradient(180deg,#ef4444,#b91c1c);box-shadow:0 3px 0 #7f1d1d;">返回主菜单</button>
-        <button class="menu-btn ghost" id="tut-skip" style="padding:8px 16px;font-size:14px;background:linear-gradient(180deg,#555,#333);">跳过</button>
-        <button class="menu-btn blue" id="tut-next" style="padding:8px 20px;font-size:16px;">下一个</button>
-      </div>
     </div>
   </div>
 </section>
@@ -2412,10 +2309,16 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
   <div id="tut-bubble-in-game"><span id="tut-bubble-text"></span></div>
   <button id="tut-skip-btn">跳过教程</button>
 </div>
-<div id="tut-hint-bubble"></div>
 
 <script>
 'use strict';
+// 防节流 rAF：窗口被遮挡/后台时 rAF 可能永不触发，用 setTimeout 兜底保证游戏流程不卡死
+function safRaf(fn){
+  let _done=false;
+  const run=()=>{if(_done)return;_done=true;fn();};
+  try{requestAnimationFrame(run);}catch(e){run();}
+  setTimeout(run,120);
+}
 // 全局错误捕获，防止异常导致游戏卡死
 window.addEventListener('error',function(e){console.error('Game error:',e.message);});
 window.addEventListener('unhandledrejection',function(e){console.error('Unhandled promise:',e.reason);});
@@ -2743,7 +2646,6 @@ function unlockNextStake(deckId,idx){
 function showStakeSelect(){
   if(!isStakeUnlocked(PENDING_DECK,STAKES.findIndex(x=>x.id===PENDING_STAKE)))PENDING_STAKE='white';
   showScreen('s-stake');renderStakes();playSound('click');
-  if(!hasPlayedTutorial())setTimeout(()=>tutHint('选择难度！白色注码最适合新手。'),500);
 }
 function renderStakes(){
   const wrap=document.getElementById('stake-cards');if(!wrap)return;
@@ -2870,6 +2772,15 @@ function initDeck(){
 }
 function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
 function draw(n){
+  if(IN_TUTORIAL){
+    const got=[];
+    for(let i=0;i<n;i++){
+      const src=TUTORIAL_DECK[_tutDrawIdx++];
+      if(!src)break;
+      got.push(makeTutorCard(src.rank,src.suit));
+    }
+    return got;
+  }
   const got=[];
   for(let i=0;i<n;i++){
     if(G.deck.length===0){
@@ -3066,31 +2977,6 @@ function enhInfoHTML(keys){
   });
   if(!rows)return '';
   return '<div class="shp-enh"><div class="shp-enh-title">效果说明</div>'+rows+'</div>';
-}
-// 版本贴纸效果说明（Foil/Holo/Poly + 永恒/易逝）
-const EDITION_INFO={
-  foil:{name:'闪箔',ic:'✨',desc:'计分时额外 <b>+50 筹码</b>'},
-  holo:{name:'全息',ic:'🔹',desc:'计分时额外 <b>+10 倍率</b>'},
-  poly:{name:'彩虹',ic:'🌈',desc:'计分时额外 <b>×1.5 倍率</b>'},
-  eternal:{name:'永恒',ic:'♾️',desc:'<b>无法出售</b>，橙注每回合销毁效果也会保护它'},
-  ephemeral:{name:'易逝',ic:'⏳',desc:'<b>回合结束自动销毁</b>'}
-};
-function editionInfoHTML(edition,flags){
-  let rows='';
-  if(EDITION_INFO[edition]){
-    const e=EDITION_INFO[edition];
-    rows+='<div class="shp-enh-row">'+e.ic+' <b>'+e.name+'</b>：'+e.desc+'</div>';
-  }
-  if(flags&&flags.eternal){
-    const e=EDITION_INFO.eternal;
-    rows+='<div class="shp-enh-row">'+e.ic+' <b>'+e.name+'</b>：'+e.desc+'</div>';
-  }
-  if(flags&&flags.ephemeral){
-    const e=EDITION_INFO.ephemeral;
-    rows+='<div class="shp-enh-row">'+e.ic+' <b>'+e.name+'</b>：'+e.desc+'</div>';
-  }
-  if(!rows)return '';
-  return '<div class="shp-enh"><div class="shp-enh-title">版本贴纸</div>'+rows+'</div>';
 }
 // 商店悬停详情浮窗
 function _shopHoverEl(){
@@ -3718,26 +3604,6 @@ function updateSidebar(){
   const tag=document.getElementById('sb-blind-tag');
   tag.className='sb-blind-tag '+['small','big','boss'][blindType];
   tag.textContent=BLIND_NAMES[blindType];
-  // 盲注指定花色/点数：城堡/古老小丑指定花色，邮件回扣指定点数
-  const extraInfo=document.querySelector('.sb-blind-tag-extra');
-  const extras=[];
-  if(G.jokers.some(j=>j.id==='castle')&&G._castleSuit){
-    extras.push(`🏰 弃${SUITS[G._castleSuit].name} +3筹码`);
-  }
-  if(G.jokers.some(j=>j.id==='ancient_joker')&&G._ancientSuit){
-    extras.push(`🏺 ${SUITS[G._ancientSuit].name}花色 ×1.5倍率`);
-  }
-  if(G.jokers.some(j=>j.id==='mail_in_rebate')&&G._rebateRank){
-    extras.push(`📧 弃${RANKS[G._rebateRank].name}点数 +$5`);
-  }
-  if(extraInfo)extraInfo.innerHTML=extras.join('<br>');
-  else if(uniqs.length){
-    const t=document.getElementById('sb-blind-tag');
-    const ex=document.createElement('div');
-    ex.className='sb-blind-tag-extra';
-    ex.innerHTML=extras.join('<br>');
-    t.parentNode.insertBefore(ex,t.nextSibling);
-  }
   const target=currentBlindTarget();
   document.getElementById('sb-target').textContent=target.toLocaleString();
   saveGameThrottled(); // 战斗中关键状态自动存档
@@ -4268,8 +4134,7 @@ function animateDeal(cardIds){
       el.style.transform=`translate(${dx}px,${dy}px) scale(0.5) rotate(-15deg)`;
       el.style.opacity='0';
       el.style.zIndex=100;
-      requestAnimationFrame(()=>{
-        requestAnimationFrame(()=>{
+      safRaf(()=>{safRaf(()=>{
           el.style.transition='transform .45s cubic-bezier(.34,1.4,.64,1),opacity .3s';
           el.style.transform='';
           el.style.opacity='1';
@@ -4395,11 +4260,21 @@ function beginRound(){
       }
     }
   }
-  // 发牌
-  const need=handLimit()-G.hand.length;
-  if(need>0){
-    const got=draw(need);
-    G.hand.push(...got);
+  // 发牌（教程模式用固定发牌）
+  if(IN_TUTORIAL){
+    const tutorCards=[];
+    for(let i=0;i<handLimit();i++){
+      const src=TUTORIAL_DECK[_tutDrawIdx++];
+      if(!src)break;
+      tutorCards.push(makeTutorCard(src.rank,src.suit));
+    }
+    G.hand=[...tutorCards];
+  }else{
+    const need=handLimit()-G.hand.length;
+    if(need>0){
+      const got=draw(need);
+      G.hand.push(...got);
+    }
   }
   // 自动理牌
   sortHand('rank');
@@ -4412,7 +4287,7 @@ function beginRound(){
   _dealHiddenIds=new Set(G.hand.map(c=>c.id));
   renderAll();
   const hc0=document.getElementById('hand-container');if(hc0)hc0.style.visibility='';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{animateDeal();tutUpdate('beginRound');}));
+  safRaf(()=>{safRaf(()=>{animateDeal();tutUpdate('beginRound');});});
 }
 function animateDeal(onlyIds){
   let cards=document.querySelectorAll('.hand-card');
@@ -4504,8 +4379,8 @@ function animateDeckFlyIn(callback){
   deck.style.zIndex='200';
   deck.style.opacity='1';
   // 飞到右下角
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
+  safRaf(()=>{
+    safRaf(()=>{
       deck.style.transition='transform .7s cubic-bezier(.34,1.4,.64,1), opacity .3s';
       deck.style.transform='';
       // 落位弹跳
@@ -4685,8 +4560,8 @@ async function playCards(){
     const cid=el.dataset.id;
     window._flyClones[cid]=clone;
     setTimeout(()=>clone.remove(),6000); // 兜底清理
-    // 双 rAF + 强制 reflow，确保大牌→小牌的缩放过渡一定触发
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    // 双 safRaf + 强制 reflow，确保大牌→小牌的缩放过渡一定触发（后台节流也不卡）
+    safRaf(()=>safRaf(()=>{
       let slot=null;
       try{slot=scoringArea.querySelector(`.score-card[data-cid="${CSS.escape(cid)}"]`);}catch(e){slot=null;}
       let dx,dy,sc;
@@ -4786,9 +4661,10 @@ async function playCards(){
     playSound('discard');
     renderHand();
   }
-  // 检查是否达标
+  // 检查是否达标（教程模式强制过关）
   const target=currentBlindTarget();
-  if(G.score>=target){
+  if(G.score>=target||IN_TUTORIAL){
+    if(IN_TUTORIAL){G.score=target;showToast('✨ 教程模式：强制过关！');}
     await sleep(300);
     roundWin();
   }else if(G.hands<=0){
@@ -4990,12 +4866,6 @@ function showResult(win,reward,handBonus,interest){
   if(win){
     nextBtn.textContent='进入商店';
     nextBtn.onclick=()=>openShop();
-    // 3秒后自动进入商店
-    setTimeout(()=>{
-      if(document.getElementById('s-result').classList.contains('active')){
-        openShop();
-      }
-    },3500);
   }else{
     clearSave();refreshContinueBtn(); // 失败：对局结束，清除存档
     nextBtn.textContent='重新开始';
@@ -5137,8 +5007,7 @@ function renderShop(){
       <div class="si-kind">小丑牌</div>`;
     if(!j.sold)el.addEventListener('click',()=>{
       if(isCoarse()){shopCardDetailModal({art:getCardArtURL(j,'joker'),name:j.name,cost:cost,
-        type:`小丑牌 · ${['普通','罕见','稀有','传奇'][j.rarity||0]}${edLabel} · 售价 $${cost}`,desc:j.desc||'',
-        extra:editionInfoHTML(j.edition,{eternal:j.eternal,ephemeral:j.ephemeral})},()=>buyJoker(i));}
+        type:`小丑牌 · ${['普通','罕见','稀有','传奇'][j.rarity||0]}${edLabel} · 售价 $${cost}`,desc:j.desc||''},()=>buyJoker(i));}
       else buyJoker(i);
     });
     el.addEventListener('mouseenter',()=>{
@@ -5146,8 +5015,7 @@ function renderShop(){
       openShopHover(el,`<div class="shp-art">${edTag}<img src="${getCardArtURL(j,'joker')}" alt=""></div>
         <div class="shp-name">${j.name}</div>
         <div class="shp-type">小丑牌 · ${['普通','罕见','稀有','传奇'][j.rarity||0]}${edLabel} · 售价 $${cost}</div>
-        <div class="shp-desc">${j.desc||''}</div>
-        ${editionInfoHTML(j.edition,{eternal:j.eternal,ephemeral:j.ephemeral})}`);
+        <div class="shp-desc">${j.desc||''}</div>`);
     });
     el.addEventListener('mouseleave',closeShopHover);
     jc.appendChild(el);
@@ -6097,10 +5965,10 @@ function showBlindSelect(){
       showScreen('s-round');
       // 先隐藏手牌区，防止上回合剩余手牌在发牌动画前闪现
       const hc=document.getElementById('hand-container');if(hc)hc.style.visibility='hidden';
-      // 牌堆从屏幕中央飞到右下角，然后发牌
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      // 牌堆从屏幕中央飞到右下角，然后发牌（safRaf 防后台节流卡死）
+      safRaf(()=>{safRaf(()=>{
         animateDeckFlyIn(()=>beginRound());
-      }));
+      });});
     });
   };
   el.addEventListener('click',enterBlind);
@@ -6210,91 +6078,43 @@ function saveBest(){
   }catch(e){}
 }
 
-// ==================== 教程 ====================
-const TUTORIAL_STEPS=[
-  {bubble:'您好！我是啾啾，一只布偶猫，让我来帮您了解游玩的方式！',steps:[
-    {num:1,txt:'<b>小丑牌</b>是一款扑克+roguelike的卡牌游戏，目标是通过8个底注的盲注挑战。'},
-    {num:2,txt:'每回合你有<b>4次出牌机会</b>和<b>3次弃牌机会</b>，累计分数达到目标即可过关。'}
-  ]},
-  {bubble:'首先来了解最核心的<b>得分机制</b>！',steps:[
-    {num:1,txt:'打出的牌会形成<b>牌型</b>（对子、顺子、同花等），牌型决定基础<b>筹码</b>和<b>倍率</b>。'},
-    {num:2,txt:'最终得分 = <b>筹码 × 倍率</b>。每张打出的牌会按点数增加筹码，小丑牌会增加筹码或倍率。'},
-    {num:3,txt:'计分是<b>一张一张</b>进行的，每张牌结算时都会有震动和音效！'}
-  ]},
-  {bubble:'接下来了解<b>牌型</b>和<b>小丑牌</b>！',steps:[
-    {num:1,txt:'牌型从低到高：高牌→对子→两对→三条→顺子→同花→葫芦→四条→同花顺→皇家同花顺。'},
-    {num:2,txt:'<b>小丑牌</b>是核心加成来源，最多携带5张。+倍率小丑放左边，×倍率小丑放右边收益更高！'},
-    {num:3,txt:'过关后进入<b>商店</b>，可以购买小丑牌、塔罗牌、星球牌和卡包。'}
-  ]},
-  {bubble:'最后是<b>操作提示</b>！',steps:[
-    {num:1,txt:'<b>点击</b>手牌可选中/取消，最多选5张。<b>拖拽</b>牌到出牌/弃牌按钮可直接操作。'},
-    {num:2,txt:'拖动牌时会显示<b>小简介</b>，告诉你这是什么花色的什么牌。'},
-    {num:3,txt:'点击<b>理牌</b>按钮可自动整理手牌，按点数或花色排序。准备好了吗？开始游戏吧！'}
-  ]}
-];
-let tutStep=0;
-function showTutorial(){
-  tutStep=0;
-  showScreen('s-tutorial');
-  renderTutorial();
-}
-function renderTutorial(){
-  const step=TUTORIAL_STEPS[tutStep];
-  const bubbleEl=document.getElementById('tut-bubble');
-  bubbleEl.innerHTML=step.bubble;
-  // 啾啾说话电子音
-  initDialogueAudio();
-  const textLen=step.bubble.replace(/<[^>]*>/g,'').length;
-  const beepCount=Math.min(20,Math.ceil(textLen/3));
-  for(let i=0;i<beepCount;i++){
-    setTimeout(()=>jiujiuBeep(),i*60);
-  }
-  const stepsEl=document.getElementById('tut-steps');
-  stepsEl.innerHTML='';
-  step.steps.forEach(s=>{
-    const el=document.createElement('div');
-    el.className='tut-step';
-    el.innerHTML=`<div class="num">${s.num}</div><div class="txt">${s.txt}</div>`;
-    stepsEl.appendChild(el);
-  });
-  const prog=document.getElementById('tut-progress');
-  prog.innerHTML='';
-  TUTORIAL_STEPS.forEach((_,i)=>{
-    const d=document.createElement('div');
-    d.className='tut-dot'+(i===tutStep?' active':'');
-    prog.appendChild(d);
-  });
-  document.getElementById('tut-next').textContent=tutStep===TUTORIAL_STEPS.length-1?'开始游戏':'下一个';
-}
-function tutorialNext(){
-  tutStep++;
-  if(tutStep>=TUTORIAL_STEPS.length){
-    // 静态简介完成 → 直接开始游戏，并触发游戏内交互式教程
-    startNewGame(true);
-  }else{
-    renderTutorial();
-  }
-}
-
 // ==================== 游戏内交互式新手教程 ====================
 const TUT_KEY='balatro_tut_done';
 let IN_TUTORIAL=false;
+let WANT_TUTORIAL=false;
 let _tutStep=-1;
 let _tutRafId=null;
-// 教程步骤：waitFor = 推进所需的游戏事件；target = 高亮的 CSS 选择器（null=不高亮）
+let _tutDrawIdx=0;
+// 教程专用固定发牌（让玩家照着走）
+const TUTORIAL_DECK=[
+  {rank:'6',suit:'s'},{rank:'6',suit:'h'},{rank:'J',suit:'s'},{rank:'J',suit:'h'},
+  {rank:'A',suit:'s'},{rank:'A',suit:'h'},{rank:'2',suit:'d'},{rank:'3',suit:'c'},
+  {rank:'9',suit:'d'},{rank:'A',suit:'c'},
+];
+function makeTutorCard(r,s){
+  const up=(s||'').toUpperCase();
+  return {id:`tut_${r}${up}_${Math.random().toString(36).slice(2,8)}`,rank:r,suit:up,enh:null,seal:null};
+}
+// 步骤：waitFor=推进事件；target=高亮选择器；minSelect=select最少选中数
 const INGAME_TUT_STEPS=[
-  {bubble:'欢迎来到<b>战斗</b>！点击这张"小盲注"卡片开始第一局！',waitFor:'enterBlind',target:'.blind-card'},
-  {bubble:'这是你的<b>手牌</b>区。点击 2~5 张牌来<b>选中</b>它们（试试选 2 张相同点数的牌组"对子"）！',waitFor:'beginRound',target:'#hand-container'},
-  {bubble:'好，选中牌后，点击这颗<b>"出牌"</b>按钮把它们打出去！',waitFor:'select',target:'#btn-play',minSelect:2},
-  {bubble:'💥 出牌完成！<b>筹码</b>（蓝）×<b>倍率</b>（红）= 最终得分。继续选出牌或弃牌吧！',waitFor:'scored',target:'#sb-round-score'},
-  {bubble:'✅ 过关了！分数达标，点击"继续"按钮进入<b>商店</b>！',waitFor:'roundWin',target:'#btn-next-blind'},
-  {bubble:'🏪 商店到了！这里可以买<b>小丑牌</b>增强实力。悬停查看详情，点一张试试！',waitFor:'openShop',target:'#shop-jokers .shop-item'},
-  {bubble:'买好了？不买也没关系，点击右下角这颗<b>"下一盲注"</b>大按钮继续冒险！',waitFor:'nextBlind',target:'#btn-next-blind'},
-  {bubble:'🎉 教程结束！你已掌握了基本玩法。祝你好运，啾啾会一直陪着你的！',waitFor:'nextBlind',target:null,autoEnd:4000}
+  {bubble:'👋 嗨！我是<b>啾啾</b>，来教你玩 <b>小丑牌</b>！先点这张小盲注卡～',waitFor:'enterBlind',target:'.blind-card'},
+  {bubble:'📖 记住！左下角「<b>资讯</b>」按钮随时可以查看<b>所有牌型</b>、盲注效果和优惠券，忘了就去看～',waitFor:'beginRound',target:'#sb-match-info',autoNext:3400},
+  {bubble:'🎴 手牌区到了！先点 <b>6♠ 6♥</b> 组一个<b>对子</b>！',waitFor:'select',target:'#hand-container',minSelect:2},
+  {bubble:'✅ 好！再点 <b>J♠ J♥</b> 组第二对！两对一起出分数更高～',waitFor:'select',target:'#hand-container',minSelect:4},
+  {bubble:'🎯 选好了！点这颗 <b>"出牌"</b> 按钮！',waitFor:'play',target:'#btn-play'},
+  {bubble:'💥 出牌完成！<b>筹码</b>(蓝) × <b>倍率</b>(红) = 最终得分，一张一张结算！',waitFor:'scored',target:'#final-score'},
+  {bubble:'🏁 过关了！点 <b>"进入商店"</b> 继续～',waitFor:'roundWin',target:'#result-next'},
+  {bubble:'🏪 商店到了！悬停商品看<b>详细描述</b>，买小丑牌让牌组变强～',waitFor:'openShop',target:'#shop-jokers .shop-item'},
+  {bubble:'🎉 点右下大按钮进入<b>下一盲注</b>，教程到此结束！',waitFor:'nextBlind',target:'#btn-next-blind'},
+  {bubble:'🎉 教程结束！你已经会玩了，祝你好运～',waitFor:'nextBlind',target:null,autoEnd:3000}
 ];
 function startInGameTutorial(){
   IN_TUTORIAL=true;
   _tutStep=0;
+  _tutDrawIdx=0;
+  // 隐藏战斗页右上角啾啾（教程有自己的啾啾气泡，冲突）
+  document.querySelectorAll('.battle-jj').forEach(x=>x.style.display='none');
+  document.querySelectorAll('.battle-jj-bubble').forEach(x=>x.style.display='none');
   const wrap=document.getElementById('tut-in-game');
   if(wrap)wrap.classList.add('active');
   const skip=document.getElementById('tut-skip-btn');
@@ -6315,7 +6135,13 @@ function _tutShowStep(){
   }catch(e){}
   // 高亮目标
   _tutUpdateSpotlight(step.target);
-  // 自动结束步骤
+  // 自动结束步骤 / 自动进入下一步
+  if(step.autoNext){setTimeout(()=>{
+    if(IN_TUTORIAL&&_tutStep===INGAME_TUT_STEPS.indexOf(step)){
+      _tutStep++;
+      if(_tutStep>=INGAME_TUT_STEPS.length)_tutEnd();else _tutShowStep();
+    }
+  },step.autoNext);}
   if(step.autoEnd){setTimeout(()=>{if(IN_TUTORIAL&&_tutStep===INGAME_TUT_STEPS.indexOf(step))_tutEnd();},step.autoEnd);}
   // 启动 rAF 循环跟踪目标元素位置
   if(!_tutRafId)_tutRafId=requestAnimationFrame(_tutRafLoop);
@@ -6364,6 +6190,9 @@ function tutUpdate(event,payload){
 function _tutEnd(){
   IN_TUTORIAL=false;
   try{localStorage.setItem(TUT_KEY,'1');}catch(e){}
+  // 恢复战斗页啾啾
+  document.querySelectorAll('.battle-jj').forEach(x=>x.style.display='');
+  document.querySelectorAll('.battle-jj-bubble').forEach(x=>x.style.display='');
   const wrap=document.getElementById('tut-in-game');
   if(wrap)wrap.classList.remove('active');
   const skip=document.getElementById('tut-skip-btn');
@@ -6372,15 +6201,14 @@ function _tutEnd(){
 }
 function tutSkip(){
   _tutEnd();
-}
-function tutHint(text,duration){
-  duration=duration||4000;
-  const el=document.getElementById('tut-hint-bubble');
-  if(!el)return;
-  el.textContent=text;
-  el.classList.add('show');
-  clearTimeout(el._timer);
-  el._timer=setTimeout(()=>el.classList.remove('show'),duration);
+  // 跳过教程 → 直接进正式盲注1（重置状态，自动点第一张盲注）
+  G.score=0;G.hands=4;G.discards=3;G.jokers=[];
+  G.hand=[];G.played=[];G.deck=[];G.discardPile=[];
+  showBlindSelect();
+  setTimeout(()=>{
+    const firstBlind=document.querySelector('.blind-card');
+    if(firstBlind)firstBlind.click();
+  },500);
 }
 function hasPlayedTutorial(){
   try{return localStorage.getItem(TUT_KEY)==='1';}catch(e){return false;}
@@ -7189,11 +7017,16 @@ function flyScoreToTotal(fromEl,valText){
     ],{duration:760,easing:'cubic-bezier(.45,.05,.55,1)'});
     // 途中火花
     for(let k=1;k<=3;k++)setTimeout(()=>burnParticles(sx+(ex-sx)*k/3,sy+(ey-sy)*k/3-40,10),k*170);
-    anim.onfinish=()=>{
-      fly.remove();
-      burnParticles(ex,ey,26);
+    // WAAPI 在窗口被遮挡/后台节流时 onfinish 可能永不触发，用 setTimeout 兜底 resolve，防止计分流程卡死
+    let _flying=false;
+    const _finishFly=()=>{
+      if(_flying)return;_flying=true;
+      try{fly.remove();}catch(e){}
+      try{burnParticles(ex,ey,26);}catch(e){}
       resolve();
     };
+    anim.onfinish=_finishFly;
+    setTimeout(_finishFly,900);
   });
 }
 // 燃烧火焰粒子（卖卡/用消耗品/高分着火）
@@ -7441,7 +7274,6 @@ function showJokerInfo(j){
 let deckIdx=0;
 function showDeckSelect(){
   showScreen('s-deck');
-  if(!hasPlayedTutorial())setTimeout(()=>tutHint('选一个牌组开始吧！红牌组适合新手——多1次弃牌。'),500);
   const stage=document.getElementById('deck-stage');
   if(!stage)return;
   if(stage.children.length===0){
@@ -7511,7 +7343,7 @@ function saveGame(){
 function saveGameThrottled(){if(_saveTimer)return;_saveTimer=setTimeout(()=>{_saveTimer=null;saveGame();},700);}
 function readSave(){try{const d=localStorage.getItem(SAVE_KEY);return d?JSON.parse(d):null;}catch(e){return null;}}
 function hasSave(){return !!readSave();}
-function clearSave(){try{localStorage.removeItem(SAVE_KEY);}catch(e){}}
+function clearSave(){try{localStorage.removeItem(SAVE_KEY);localStorage.removeItem(TUT_KEY);}catch(e){}}
 function continueGame(){
   const d=readSave();
   if(!d){showToast('没有可继续的存档');refreshContinueBtn();return;}
@@ -7539,19 +7371,13 @@ function refreshContinueBtn(){
     if(del)del.style.display='';
   }else{btn.style.display='none';if(del)del.style.display='none';}
 }
-function startNewGame(skipIntro){
+function startNewGame(){
   clearSave();refreshContinueBtn();
+  // 非教程局视为已引导过，之后不再询问
+  if(!WANT_TUTORIAL){try{localStorage.setItem(TUT_KEY,'1');}catch(e){}}
   newGame();
-  // 首次玩家 → 先显示静态文字简介，完成后自动进入游戏内交互式教程
-  // 非首次玩家从菜单点"开始游戏"直接走盲注选择，不显示任何教程
-  if(!skipIntro&&!hasPlayedTutorial()){
-    showTutorial();return;
-  }
   showBlindSelect();
-  if(!skipIntro&&G._needTutorial){
-    G._needTutorial=false;
-    setTimeout(()=>startInGameTutorial(),600);
-  }
+  if(WANT_TUTORIAL){WANT_TUTORIAL=false;setTimeout(()=>startInGameTutorial(),600);}
 }
 function updateStartStats(){
   try{
@@ -7628,7 +7454,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   // 主界面
   document.getElementById('btn-start').addEventListener('click',()=>{
     initAudio();startBGM();playSound('roundStart');
-    playTransition('选择牌组','linear-gradient(135deg,#2a1a3a,#4a2a6e,#2a1a3a)',()=>showDeckSelect());
+    const go=()=>playTransition('选择牌组','linear-gradient(135deg,#2a1a3a,#4a2a6e,#2a1a3a)',()=>showDeckSelect());
+    if(!hasPlayedTutorial()){
+      showModal('🎴 小丑牌',
+        '这是你第一次玩，需要<b>新手教程</b>吗？<br>教程会带你走完<b>第一关 → 商店</b>的完整流程～',[
+        {cls:'green',text:'需要教程',action:()=>{hideModal();WANT_TUTORIAL=true;go();}},
+        {cls:'ghost',text:'直接开始',action:()=>{hideModal();WANT_TUTORIAL=false;go();}}
+      ]);
+    }else{WANT_TUTORIAL=false;go();}
   });
   document.getElementById('btn-deck-back').addEventListener('click',()=>{
     playSound('click');
@@ -7656,7 +7489,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     playSound('roundStart');
     playTransition('选择难度','linear-gradient(135deg,#1a0a2e,#4a1a6e,#1a0a2e)',()=>showStakeSelect());
   });
-  document.getElementById('btn-tutorial-start').addEventListener('click',()=>{initAudio();initDialogueAudio();showTutorial();});
+  // btn-tutorial-start 已移除
   document.getElementById('tut-skip-btn').addEventListener('click',()=>{playSound('click');tutSkip();});
   document.getElementById('btn-shop-preview').addEventListener('click',()=>{initAudio();showShopPreview();});
   document.getElementById('btn-settings-start').addEventListener('click',()=>showSettings('s-start'));
@@ -7904,10 +7737,6 @@ document.addEventListener('DOMContentLoaded',()=>{
       this.classList.remove('out');
     }
   });
-  // 教程
-  document.getElementById('tut-next').addEventListener('click',tutorialNext);
-  document.getElementById('tut-skip').addEventListener('click',()=>startNewGame());
-  document.getElementById('tut-menu').addEventListener('click',()=>{stopBGM();showScreen('s-start');updateStartStats();});
   // 对战
   document.getElementById('btn-play').addEventListener('click',playCards);
   document.getElementById('btn-discard').addEventListener('click',discardCards);
