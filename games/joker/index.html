@@ -2116,8 +2116,8 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
   }
   #s-round{flex-direction:column!important;padding:var(--pad-t) var(--pad-r) calc(var(--pad-b) + 62px) var(--pad-l)!important;gap:6px!important;}
   #s-round #sidebar{position:fixed!important;top:calc(var(--pad-t) + 6px)!important;right:calc(var(--pad-r) + 6px)!important;bottom:auto!important;left:auto!important;
-    width:auto!important;flex-direction:row!important;padding:4px 8px!important;gap:6px!important;z-index:35!important;
-    background:rgba(0,0,0,.55)!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.12)!important;}
+    width:max-content!important;flex-direction:row!important;flex-wrap:wrap!important;padding:4px 8px!important;gap:6px!important;z-index:35!important;
+    background:rgba(0,0,0,.55)!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.12)!important;max-width:70vw!important;}
   #s-round #sidebar > *{flex:0 0 auto!important;margin:0!important;}
   #play-area{flex:1;min-height:0;margin-top:42px!important;}
   #top-zones{flex-wrap:wrap!important;padding:4px 0!important;gap:4px!important;}
@@ -2203,8 +2203,8 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
     --pad-l:calc(var(--safe-l) + 14px);--pad-r:calc(var(--safe-r) + 14px);}
   #s-round{flex-direction:column!important;padding:var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l)!important;gap:8px!important;}
   #s-round #sidebar{position:fixed!important;top:calc(var(--pad-t) + 8px)!important;right:calc(var(--pad-r) + 8px)!important;bottom:auto!important;left:auto!important;
-    width:auto!important;flex-direction:row!important;padding:6px 12px!important;gap:10px!important;z-index:35!important;
-    background:rgba(0,0,0,.5)!important;border-radius:14px!important;border:1px solid rgba(255,255,255,.12)!important;}
+    width:max-content!important;flex-direction:row!important;flex-wrap:wrap!important;padding:6px 12px!important;gap:10px!important;z-index:35!important;
+    background:rgba(0,0,0,.5)!important;border-radius:14px!important;border:1px solid rgba(255,255,255,.12)!important;max-width:60vw!important;}
   #play-area{flex:1;min-height:0;margin-top:54px!important;}
   .joker-zone{flex-wrap:wrap!important;max-width:100%!important;gap:6px!important;}
   .joker-zone .owned-joker{transform:scale(.9)!important;}
@@ -2218,7 +2218,7 @@ body,button{ -webkit-font-smoothing:none; -moz-osx-font-smoothing:grayscale; }
   .shop-col{flex:1 1 50%!important;max-width:600px!important;margin:0 auto!important;}
   /* 盲注选择：平板竖屏大卡片居中 */
   #s-blind{padding:calc(var(--pad-t) + 12px) calc(var(--pad-r) + 12px) calc(var(--pad-b) + 12px) calc(var(--pad-l) + 12px)!important;}
-  .blind-cards{gap:16px!important;max-width:600px!important;}
+  .blind-cards{gap:16px!important;max-width:min(600px,92vw)!important;}
   .blind-card{min-height:180px!important;padding:16px 20px!important;}
   .blind-name{font-size:24px!important;}
   .blind-req{font-size:16px!important;}
